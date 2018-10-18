@@ -2,6 +2,7 @@ package com.ap.pacyourcultureman;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,12 +30,12 @@ public class Register extends Activity {
     TextView txt_Errorchecker;
     Button btn_Register;
     EditText edit_user, edit_email, edit_firstName, edit_lastName, edit_password, edit_confirmPassword;
-    String username, email, firstName, lastName, password, confirmpassword, errorcheck, targetURL;
+    String username, email, firstName, lastName, password, confirmpassword, targetURL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_form);
-        targetURL = "";
+        targetURL = "http://localhost:56898/users/register";
         txt_Errorchecker = findViewById(R.id.reg_txt_errorCecker);
         btn_Register = findViewById(R.id.reg_btn_register);
         edit_user = findViewById(R.id.reg_edit_username);
@@ -53,8 +54,14 @@ public class Register extends Activity {
                 password = edit_password.getText().toString();
                 confirmpassword = edit_confirmPassword.getText().toString();
                 txt_Errorchecker.setVisibility(View.GONE);
-                if(password != confirmpassword) {
+                if(!password.equals(confirmpassword)) {
                     errorSetter("Passwords must match");
+                }
+                if(username == null || username.length() <= 3) {
+                    errorSetter("Please enter a username with a minimum of 3 characters");
+                }
+                if(lastName == null || lastName == null || firstName.equals(lastName)) {
+                    errorSetter("Please enter your full name");
                 }
                 Boolean correctEmail = EmailValidator.getInstance().isValid(email);
                 if(!correctEmail) {
@@ -132,6 +139,7 @@ public class Register extends Activity {
                 response.append('\r');
             }
             rd.close();
+            errorSetter(response.toString());
             return response.toString();
 
         } catch (SocketTimeoutException ex) {
