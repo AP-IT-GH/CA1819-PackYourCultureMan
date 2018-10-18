@@ -11778,11 +11778,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\ASP\\ASP\\ASP.csproj",
+      "projectUniqueName": "D:\\Git\\CA1819-PackYourCultureMan\\src\\ASP\\ASP\\ASP.csproj",
       "projectName": "ASP",
-      "projectPath": "D:\\ASP\\ASP\\ASP.csproj",
+      "projectPath": "D:\\Git\\CA1819-PackYourCultureMan\\src\\ASP\\ASP\\ASP.csproj",
       "packagesPath": "C:\\Users\\CarlV\\.nuget\\packages\\",
-      "outputPath": "D:\\ASP\\ASP\\obj\\",
+      "outputPath": "D:\\Git\\CA1819-PackYourCultureMan\\src\\ASP\\ASP\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
