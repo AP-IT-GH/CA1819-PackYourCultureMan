@@ -1,0 +1,15 @@
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\bin\Release\netcoreapp2.1\ASP.deps.json
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\bin\Release\netcoreapp2.1\ASP.runtimeconfig.json
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\bin\Release\netcoreapp2.1\ASP.runtimeconfig.dev.json
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\bin\Release\netcoreapp2.1\ASP.dll
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\bin\Release\netcoreapp2.1\ASP.pdb
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.csprojAssemblyReference.cache
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.csproj.CoreCompileInputs.cache
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.RazorAssemblyInfo.cache
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.RazorAssemblyInfo.cs
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.AssemblyInfoInputs.cache
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.AssemblyInfo.cs
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.RazorTargetAssemblyInfo.cache
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.dll
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Release\netcoreapp2.1\ASP.pdb

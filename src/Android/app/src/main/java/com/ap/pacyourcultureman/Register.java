@@ -1,7 +1,9 @@
 package com.ap.pacyourcultureman;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,33 +11,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.apache.commons.validator.routines.EmailValidator;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import android.os.Handler;
+import com.ap.pacyourcultureman.Helpers.ApiHelper;
 
 public class Register extends Activity {
     TextView txt_Errorchecker;
     Button btn_Register;
     EditText edit_user, edit_email, edit_firstName, edit_lastName, edit_password, edit_confirmPassword;
-    String username, email, firstName, lastName, password, confirmpassword, targetURL;
+    String username, email, firstName, lastName, password, confirmpassword, targetURL, resp, reply;
+    private Handler mHandler;
+    ApiHelper apiHelper;
+    HttpURLConnection conn;
+    URL url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_form);
-        targetURL = "http://localhost:56898/users/register";
+        targetURL = "https://pacyourculturemanapi.azurewebsites.net/users/register";
+        resp = "";
+        reply = "";
+        apiHelper = new ApiHelper(targetURL);
         txt_Errorchecker = findViewById(R.id.reg_txt_errorCecker);
         btn_Register = findViewById(R.id.reg_btn_register);
         edit_user = findViewById(R.id.reg_edit_username);
@@ -71,17 +72,7 @@ public class Register extends Activity {
                     errorSetter("Password must include atleast 1 lowercase char, 1 uppercase char and 1 digit");
                 }
                 else {
-                    JSONObject loginParams = new JSONObject();
-                    try {
-                        loginParams.put("username", username);
-                        loginParams.put("password", password);
-                        loginParams.put("firstname", firstName);
-                        loginParams.put("lastname", lastName);
-                        loginParams.put("email", email);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    executePost(targetURL,loginParams.toString());
+                    sendPost();
                 }
             }
         });
@@ -95,71 +86,81 @@ public class Register extends Activity {
             return false;
         }
     }
-    private void errorSetter(String errormsg) {
-        txt_Errorchecker.setVisibility(View.VISIBLE);
-        txt_Errorchecker.setText(errormsg);
+    private void errorSetter(final String errormsg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                txt_Errorchecker.setVisibility(View.VISIBLE);
+                txt_Errorchecker.setText(errormsg);
+            }
+        });
     }
-    public String executePost(String targetURL,String urlParameters) {
-        int timeout=5000;
-        URL url;
-        HttpURLConnection connection = null;
-        try {
-            // Create connection
-
-            url = new URL(targetURL);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-
-            connection.setRequestProperty("Content-Length",
-                    "" + Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US");
-
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
-
-            // Send request
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream());
-            wr.writeBytes(urlParameters);
-            wr.flush();
-            wr.close();
-
-            // Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
+    public void sendPost() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    url = new URL(targetURL);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("username", username);
+                    jsonParam.put("password", password);
+                    jsonParam.put("firstname", firstName);
+                    jsonParam.put("lastname", lastName);
+                    jsonParam.put("email", email);
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    os.writeBytes(jsonParam.toString());
+                    os.flush();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                        InputStreamReader streamReader = new InputStreamReader(conn.getErrorStream());
+                        BufferedReader bufferedReader = new BufferedReader(streamReader);
+                        String response = null;
+                        while ((response = bufferedReader.readLine()) != null) {
+                            stringBuilder.append(response + "\n");
+                        }
+                        bufferedReader.close();
+                        Log.d("TAG" ,stringBuilder.toString());
+                        reply = stringBuilder.toString();
+                        reply = reply.substring(reply.indexOf(':') + 2, reply.lastIndexOf('"'));
+                        Log.i("Reply", reply);
+                        errorSetter(reply);
+                    }
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        reply = "User created";
+                        errorSetter(reply);
+                        Looper.prepare();
+                        mHandler = new Handler();
+                        mHandler.postDelayed(mLaunchTask, 1500);
+                        Looper.loop();
+                    }
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                        reply = "Unauthorized";
+                    }
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+                    os.close();
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            rd.close();
-            errorSetter(response.toString());
-            return response.toString();
+        });
+        thread.start();
 
-        } catch (SocketTimeoutException ex) {
-            ex.printStackTrace();
-
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException ex) {
-
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
-            if (connection != null) {
-                connection.disconnect();
-            }
+    }
+    private Runnable mLaunchTask = new Runnable() {
+        public void run() {
+            Intent i = new Intent(getApplicationContext(),Login.class);
+            i.putExtra("username", username);
+            i.putExtra("pass", password);
+            startActivity(i);
         }
-        return null;
-    }
+    };
 }

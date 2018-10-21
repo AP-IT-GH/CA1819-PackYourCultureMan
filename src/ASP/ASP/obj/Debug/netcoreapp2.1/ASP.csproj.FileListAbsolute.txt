@@ -26,3 +26,4 @@ D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Debug\netcoreapp2.1\ASP.Assembl
 D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Debug\netcoreapp2.1\ASP.RazorTargetAssemblyInfo.cache
 D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Debug\netcoreapp2.1\ASP.dll
 D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Debug\netcoreapp2.1\ASP.pdb
+D:\Git\CA1819-PackYourCultureMan\src\ASP\ASP\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs

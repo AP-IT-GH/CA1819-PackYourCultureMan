@@ -61,7 +61,7 @@ namespace ASP.Services
                 throw new AppException("Password is required");
 
             if (_context.Users.Any(x => x.Username == user.Username))
-                throw new AppException("Username \"" + user.Username + "\" is already taken");
+                throw new AppException("Username " + user.Username + " is already taken");
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -70,8 +70,8 @@ namespace ASP.Services
             user.PasswordSalt = passwordSalt;
 
             _context.Users.Add(user);
+         
             _context.SaveChanges();
-
             return user;
         }
 

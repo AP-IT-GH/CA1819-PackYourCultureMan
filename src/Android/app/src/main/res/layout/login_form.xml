@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Email"
+            android:text="Username"
             android:textColor="@android:color/holo_orange_light"
             android:textCursorDrawable="@android:color/holo_orange_light"
             android:textStyle="bold" />
