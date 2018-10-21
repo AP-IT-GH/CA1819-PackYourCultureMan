@@ -4,44 +4,38 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.SupportMapFragment;
-
 import org.apache.commons.validator.routines.EmailValidator;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Login extends Activity {
-    private String email, password, targetURL;
+    private String email, password, targetURL, reply;
     Button btn_login, btn_register, btn_dev;
     EditText edit_email, edit_password;
     TextView errorChecker;
     CheckBox chb_rememberme, chb_loginauto;
     Boolean rememberMe, loginauto;
+    HttpURLConnection conn;
+    URL url;
+    private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_form);
-        targetURL = "http://localhost:56898/users/authenticate";
+        targetURL = "https://pacyourculturemanapi.azurewebsites.net/users/authenticate";
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
         btn_dev = findViewById(R.id.btn_dev);
@@ -50,8 +44,16 @@ public class Login extends Activity {
         errorChecker = findViewById(R.id.txt_errorchecker);
         chb_rememberme = findViewById(R.id.login_chb_rememember);
         chb_loginauto = findViewById(R.id.login_chb_autologin);
-
+        Intent intent = getIntent();
         Load();
+        String intentuser = intent.getStringExtra("username");
+        String intentpassword = intent.getStringExtra("pass");
+        if(intentuser != null && intentpassword != null) {
+            edit_password.setText(intentpassword);
+            edit_email.setText(intentuser);
+            chb_loginauto.setChecked(false);
+            chb_rememberme.setChecked(false);
+        }
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,15 +62,8 @@ public class Login extends Activity {
                 password = edit_password.getText().toString();
                 Boolean correctEmail = EmailValidator.getInstance().isValid(email);
                 if(correctEmail) {
-                    JSONObject loginParams = new JSONObject();
-                    try {
-                        loginParams.put("password", password);
-                        loginParams.put("email", email);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Save();
-                    executePost(targetURL,loginParams.toString());
+                        Save();
+                        sendPost();
                 }
                 else {
                     errorChecker.setVisibility(View.VISIBLE);
@@ -91,65 +86,74 @@ public class Login extends Activity {
             }
         });
     }
-    public String executePost(String targetURL,String urlParameters) {
-        int timeout=5000;
-        URL url;
-        HttpURLConnection connection = null;
-        try {
-            // Create connection
-
-            url = new URL(targetURL);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-
-            connection.setRequestProperty("Content-Length",
-                    "" + Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US");
-
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
-
-            // Send request
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream());
-            wr.writeBytes(urlParameters);
-            wr.flush();
-            wr.close();
-
-            // Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
+    public void sendPost() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    url = new URL(targetURL);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("username", email);
+                    jsonParam.put("password", password);
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+                    os.flush();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                        InputStreamReader streamReader = new InputStreamReader(conn.getErrorStream());
+                        BufferedReader bufferedReader = new BufferedReader(streamReader);
+                        String response = null;
+                        while ((response = bufferedReader.readLine()) != null) {
+                            stringBuilder.append(response + "\n");
+                        }
+                        bufferedReader.close();
+                        Log.d("TAG" ,stringBuilder.toString());
+                        reply = stringBuilder.toString();
+                        reply = reply.substring(reply.indexOf(':') + 2, reply.lastIndexOf('"'));
+                        Log.i("Reply", reply);
+                        errorSetter(reply);
+                    }
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        reply = "Login success";
+                        errorSetter(reply);
+                        Looper.prepare();
+                        mHandler = new Handler();
+                        mHandler.postDelayed(mLaunchTask, 1500);
+                        Looper.loop();
+                    }
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                        reply = "Unauthorized";
+                    }
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+                    os.close();
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            rd.close();
-            return response.toString();
+        });
+        thread.start();
 
-        } catch (SocketTimeoutException ex) {
-            ex.printStackTrace();
+    }
+    private void errorSetter(final String errormsg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
+                errorChecker.setVisibility(View.VISIBLE);
+                errorChecker.setText(errormsg);
+
             }
-        }
-        return null;
+        });
     }
     private void Save() {
         SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
@@ -195,5 +199,10 @@ public class Login extends Activity {
             }
         }
     }
-
+    private Runnable mLaunchTask = new Runnable() {
+        public void run() {
+            Intent i = new Intent(getApplicationContext(),GameActivity.class);
+            startActivity(i);
+        }
+    };
 }
