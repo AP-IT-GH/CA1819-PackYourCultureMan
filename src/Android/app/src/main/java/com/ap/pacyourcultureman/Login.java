@@ -54,23 +54,23 @@ public class Login extends Activity {
             chb_loginauto.setChecked(false);
             chb_rememberme.setChecked(false);
         }
+        if(chb_loginauto.isChecked()) {
+            email = edit_email.getText().toString();
+            password = edit_password.getText().toString();
+            sendPost();
+        }
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 errorChecker.setVisibility(View.GONE);
                 email = edit_email.getText().toString();
                 password = edit_password.getText().toString();
-                Boolean correctEmail = EmailValidator.getInstance().isValid(email);
-                if(correctEmail) {
-                        Save();
+                if(chb_rememberme.isChecked()) {
+                    Save();
+                }
                         sendPost();
                 }
-                else {
-                    errorChecker.setVisibility(View.VISIBLE);
-                    errorChecker.setText("Please enter a correct email address.");
-                }
-            }
-        });
+            });
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
