@@ -9,7 +9,7 @@ using ASPCoreApi.Models;
 
 namespace ASPCoreApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SightsController : ControllerBase
     {

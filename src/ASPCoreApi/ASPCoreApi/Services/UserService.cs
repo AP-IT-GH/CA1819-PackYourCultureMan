@@ -56,13 +56,30 @@ namespace ASP.Services
 
         public Users Create(Users user, string password)
         {
+            Boolean hasUpper = false;
+            Boolean hasLower = false;
+            Boolean hasNumber = false;
+            foreach (char var in password)
+            {
+                if (var.ToString() == char.ToUpper(var).ToString()) hasUpper = true;
+                if (var.ToString() == char.ToLower(var).ToString()) hasLower = true;
+                if (Char.IsDigit(var)) hasNumber = true;
+            }
             // validation
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
-
+            if (password.Length <= 5 || !hasUpper || !hasLower || !hasNumber)
+            {
+                throw new AppException("Password must be atleast 6 chars with numbers, lower and uppercase chars");
+            }
             if (_context.users.Any(x => x.Username == user.Username))
-                throw new AppException("Username \"" + user.Username + "\" is already taken");
-
+                throw new AppException("Username " + user.Username + " is already taken");
+            if (string.IsNullOrWhiteSpace(user.Email))
+                throw new AppException("Email is required");
+            if (string.IsNullOrWhiteSpace(user.FirstName) || string.IsNullOrWhiteSpace(user.LastName))
+                throw new AppException("First and last name are required");
+            if (_context.users.Any(x => x.Email == user.Email))
+                throw new AppException("Email " + user.Email + " is already in use");
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 

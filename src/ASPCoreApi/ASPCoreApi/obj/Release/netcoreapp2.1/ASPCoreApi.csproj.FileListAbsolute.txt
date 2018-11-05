@@ -1,0 +1,15 @@
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\bin\Release\netcoreapp2.1\ASPCoreApi.deps.json
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\bin\Release\netcoreapp2.1\ASPCoreApi.runtimeconfig.json
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\bin\Release\netcoreapp2.1\ASPCoreApi.runtimeconfig.dev.json
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\bin\Release\netcoreapp2.1\ASPCoreApi.dll
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\bin\Release\netcoreapp2.1\ASPCoreApi.pdb
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.csprojAssemblyReference.cache
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.csproj.CoreCompileInputs.cache
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.RazorAssemblyInfo.cache
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.RazorAssemblyInfo.cs
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.AssemblyInfoInputs.cache
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.AssemblyInfo.cs
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.RazorTargetAssemblyInfo.cache
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.dll
+D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Release\netcoreapp2.1\ASPCoreApi.pdb
