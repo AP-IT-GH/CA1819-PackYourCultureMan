@@ -1,0 +1,1 @@
+﻿Enable-Migrations -ContextTypeName DatebaseContext -MigrationsDirectory Migrations\PYCM
