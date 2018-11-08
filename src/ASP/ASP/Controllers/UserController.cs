@@ -16,8 +16,8 @@ using ASP.Entities;
 namespace ASP.Dtos
 {
     [Authorize]
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     public class UsersController : ControllerBase
     {
         private IUserService _userService;

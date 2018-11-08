@@ -36,7 +36,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.security.cert.LDAPCertStoreParameters;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback{
 
@@ -44,24 +46,28 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
-
+    List<Assignment> assignments;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-
+    Assignment currentAssigment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_game);
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        hardcodedAssigments();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        for (int i = 0; i<=90;i++) {
+            currentAssigment = getRandomAssignment();
+            Log.d("Assignment", currentAssigment.name);
+        }
     }
 
 
@@ -169,6 +175,32 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     };
+    private void hardcodedAssigments() {
+        assignments = new ArrayList<>();
+        assignments.add(new Assignment("Red Star Line Museum", "https://www.redstarline.be/nl", "51.2330564", "4.4011707", "Museum exhibition based on the 3 million who emigrated to America using this historic shipping line.", "The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935. \n" +
+                "Of course, you will also find art in its more traditional form. For example, the Red Star Line and Antwerp, as a migration hub, inspired artists like Eugeen Van Mieghem and Louis van Engelen.\n" +
+                "What makes this museum even more special is the fact that it adopts a very modern approach in the original Red Star Line buildings. The port warehouses that were used for passengers’ administrative and medical checks are the very highlight of the collection.\n" +
+                "More than a museum\n" +
+                "The Red Star Line Museum is not just a museum. The observation tower that rises above the warehouses, in the shape of a ship's smokestack, affords an amazing panoramic view. And you can visit The Shed, a cozy café and nice museum shop, up to an hour after the museum closes.\n" +
+                "Be touched by the testimonies of people who have boarded the Red Star Line - for pleasure, for business or in the hope to find a better life - and enjoy a unique view of the Scheldt and the centre of Antwerp. And sit down and talk about it afterwards in The Shed.\n" +
+                "After a visit to the Red Star Line Museum, it is definitely worth walking through the trendy Eilandje and enjoy a meal at one of the many restaurants located nearby. From Eilandje, you can also see the Port House, famously designed by the world-renowned architect Zaha Hadid Architects.\n"));
+        assignments.add(new Assignment("Museum aan de stroom", "www.mas.be", "51.2289238", "4.4026316", "Striking red sandstone museum with high-tech exhibitions exploring Antwerp's place in the world.", "A river runs through it\n" +
+                "Antwerp is the city on the Scheldt, the city on the river, facilitating encounters and exchanges between people from all over the world for several centuries. The MAS museum collects proof of these encounters, using this to tell new stories. About the city, the river and the port on the one hand. But also about the world. The MAS has many facets, and is teeming with stories and surprises.\n" +
+                "From the port to life and death\n" +
+                "The MAS has a phenomenally large collection, which to date comprises about 500,000 items, including artworks and utensils. New objects are constantly being added to the collection.\n" +
+                "The museum uses its entire collection to weave a new narrative, based on five universal themes, on just as many floors. The MAS takes a closer look at power politics and world ports. At how food shaped and will shape today’s metropolises in the past, present and future. And at life and death, of people and gods, in the upper and under world. Moreover, the third floor and the walking boulevard host some fascinating and highly diverse temporary exhibitions.\n" +
+                "But above all, the MAS excels at connecting all these stories. This is not your typical museum, where you walk from display case to display case. Instead all the stories engage with each other, thanks to the way in which the floors have been arranged and are connected with each other. Ensuring you understand Antwerp and the world a bit better at the end of your visit.\n"));
+        assignments.add(new Assignment("Saint Paul’s Church", "http://www.sint-paulusparochie.be/", "51.224049", "4.4012982", "This restored Gothic church with a Baroque tower houses works by Antwerp painters Rubens & van Dyck.", "Originally, Saint Paul’s Church was part of a large Dominican abbey. It was consecrated in 1571 as a replacement for another church. A new Baroque steeple was built after a ravaging fire destroyed the church in 1679.\n" +
+                "The church's striking interior hosts fifty paintings by renowned Antwerp masters, Rubens, Van Dyck and Jordaens, over 200 sculptures, beautiful Baroque altars and sculpted church furniture, widely considered to be amongst the most beautiful in the world. The organ was built in the 17th century, but has been repeatedly restored and expanded.\n" +
+                "An eye-catching feature is the 18th century Calvary with sixty life-sized figures, next to the church on the corner of Veemarkt and Zwartzustersstraat.\n"));
+        assignments.add(new Assignment("Stadswaag", "N/A", "51.2239475", "4.4050828", "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.\n", "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.\n" +
+                "In the past, the goods of merchants were weighed here, but a Zeppelin bombardment unfortunately caused a total disappearance of the actual weigh house. In the sixties this square was the entertainment district par excellence. Today it is not only populated by terrace people and students, but many families have also found a permanent home here.\n"));
+    }
+    private Assignment getRandomAssignment() {
+        Random rand = new Random();
+        int n = rand.nextInt(assignments.size());
+        return assignments.get(n);
+    }
 
 
     @NonNull
