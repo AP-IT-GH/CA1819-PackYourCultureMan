@@ -1,0 +1,147 @@
+ <!-- <h6>Webapi : Heroes Controller</h6>
+<h4 class="uitleg">Je kan hier alle http requests uitvoeren van de heroes controller</h4>
+<h4 class="uitleg">Bij test urls kan je de raw json opvragen in browser door op de links te drukken.</h4>
+<h4 class="uitleg">voorbeeld invoer: "flash","batman"</h4>
+<div class="row">
+    <div class="col">
+            <h1>Get Hero</h1>
+        <div class = wrapper >
+                <h4>Hero Name:</h4>
+                <input type="text" (keyup)="GetName($event)">
+                <div class="innerWrapper">
+                <h2 *ngIf="getInfo">ID:</h2>
+                <h4 *ngIf="getInfo">{{data[1].id}}</h4> 
+                <h2 *ngIf="getInfo">Hero Name:</h2>
+                <h4 *ngIf="getInfo">{{data[0].name}} </h4>
+                <h2 *ngIf="getInfo">Lore:</h2>
+                <h4 *ngIf="getInfo">{{data[0].lore}} </h4>
+                </div>
+                <button class="button" (click)="getHero()">Get Hero</button>
+    </div>
+    </div>
+    <div class="col">
+        <h1>Test Urls</h1>
+        <div class="wrapper">
+        <h4>Get All Items: </h4>
+        <a href="http://localhost:4201/api/v1/heroes?page=0">Link1_GetAllHeroes</a>
+        <h4 class="uitleg">Paging: </h4>
+        <a href="http://localhost:4201/api/v1/heroes?page=1&length=2">Link2_Paging</a>
+        <h4 class="uitleg">OrderBy: </h4>
+        <a href="http://localhost:4201/api/v1/heroes?sort=name&dir=desc">Link3_Order</a>
+        <h4 class="uitleg">QueryName: </h4>
+        <a href="http://localhost:4201/api/v1/heroes?name=Flash">Link4_Name</a>
+        <h4 class="uitleg">Combined: </h4>
+        <a href="http://localhost:4201/api/v1/heroes?page=0&length=2&sort=name&dir=asc&name=Flash">Link5_AllCombined</a>
+    </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
+        <h1>Post/Delete Hero</h1>
+        <div class="wrapper">
+            <form>
+                    <h4>Hero Name:</h4>
+                    <input type="text" (keyup)="GetName($event)">
+                    <h4>Lore:</h4>
+                    <input type="text" (keyup)="GetLore($event)"> 
+                    <button class="button" (click)="postDataToAPI()">Post Hero</button>
+            </form>
+            <form>
+                <h4>Hero ID:</h4>
+                <input type="text" (keyup)="GetId($event)">
+                <button class="button" (click)="deleteDataFromAPI()">Delete Hero</button>
+            </form>
+        </div>
+    </div>
+    <div class="col">
+        <h1>Put Hero</h1>
+        <div class="wrapper">
+                <form>
+                        <h4>Hero ID:</h4>
+                        <input type="text"  (keyup)="GetId($event)">
+                        <h4>Comic Name:</h4>
+                        <input type="text" (keyup)="GetName($event)">
+                        <h4>Lore:</h4>
+                        <input type="text"  (keyup)="GetLore($event)"> 
+                        <button class="button" (click)="putDataToAPI()">Put Hero</button>
+                </form>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- <h1>Get Hero</h1>
+        <div class = wrapper >
+                <h4>Hero Name:</h4>
+                <input type="text" (keyup)="GetName($event)">
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                <div class="innerWrapper">
+                <h2 *ngIf="getInfo">ID:</h2>
+                <h4 *ngIf="getInfo">{{data[0].id}}</h4> 
+                <h2 *ngIf="getInfo">Hero Name:</h2>
+                <h4 *ngIf="getInfo">{{data[0].name}} </h4>
+                <h2 *ngIf="getInfo">Lore:</h2>
+                <h4 *ngIf="getInfo">{{data[0].lore}} </h4>
+                </div>
+                <button class="button" (click)="getHero()">Get Hero</button>
+    </div> -->
+
+  <!-- <div class="container">
+    <input type="text" (keyup)="startsWith($event)">
+    <button  class="button"  (click)="getComics()">Get Comics</button>
+  </div>
+  <div *ngIf ="data.data" class="wrapper1">
+    <div  class ="wrapper" *ngFor ="let comic of data.data.results | paginate: { itemsPerPage:1, currentPage: p}" >
+      <h1>{{comic.title}}</h1>
+      <img src="{{comic.thumbnail.path}}/portrait_uncanny.jpg"/> 
+      <h2>Price</h2>
+      <h5>€ {{comic.prices[0].price}}</h5>
+      <h2>Release Date</h2>
+      <h5>{{comic.dates[1].date| date : format : timezone : 'fullDate'}}</h5>
+      <h2>Character(s):</h2>
+      <div *ngFor ="let character of comic.characters.items" >
+      <h5>{{character.name}}</h5>
+    </div>
+    <h2>Creator(s):</h2>
+    <div *ngFor ="let creator of comic.creators.items" >
+      <h5>{{creator.name}} : {{creator.role}}</h5>
+    </div>
+  </div>
+</div>
+<pagination-controls class="pagination" *ngIf ="data.data" (pageChange)="p =$event"></pagination-controls>
+</div> -->
+<div class="container">
+    <div class="row">
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+    </div>
+
+</div>
