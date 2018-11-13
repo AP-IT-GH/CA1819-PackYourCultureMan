@@ -12311,11 +12311,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
+      "projectUniqueName": "C:\\Users\\Gebruiker\\Desktop\\REPO\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
       "projectName": "ASPCoreApi",
-      "projectPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
+      "projectPath": "C:\\Users\\Gebruiker\\Desktop\\REPO\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
       "packagesPath": "C:\\Users\\Gebruiker\\.nuget\\packages\\",
-      "outputPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\obj\\",
+      "outputPath": "C:\\Users\\Gebruiker\\Desktop\\REPO\\ASPCoreApi\\ASPCoreApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
