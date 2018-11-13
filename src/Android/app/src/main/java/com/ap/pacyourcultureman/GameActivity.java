@@ -32,6 +32,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -159,9 +160,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng arg0)
             {
-                bottomPanel.setPanelHeight(0);
+                bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
         });
+        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
+
+        if (!success) {
+            Log.e("Style failed", "Style parsing failed.");
+        }
+
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
     }
@@ -216,7 +223,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 //mMap.addCircle(circleOptions);
 
                 //move map camera
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+              //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
             }
         }
     };
