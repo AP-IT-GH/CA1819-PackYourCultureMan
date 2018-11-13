@@ -11,9 +11,7 @@ import 'rxjs/add/operator/map';
 export class SightsComponent  implements OnInit {
  //declaratie
  data: any = {};
- id:String;
- name:String;
- lore:String;
+
  showSpinner:boolean;
  getInfo:boolean;
 
@@ -36,11 +34,10 @@ export class SightsComponent  implements OnInit {
      this.getDataFromAPI().subscribe(data => {
        console.log("Data werd ingelezen en in array gestoken");
        console.log(data);
-       console.log(this.name + " is de ingevoerde naam");
        //data wordt in array gestoken
        this.data = data
+       this.getInfo = true;
        this.showSpinner = false;
-       this.getInfo = true;  
      })
    }
  
