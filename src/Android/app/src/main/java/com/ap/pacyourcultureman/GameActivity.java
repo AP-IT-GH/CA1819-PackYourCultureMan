@@ -57,6 +57,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     SlidingUpPanelLayout bottomPanel;
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc;
     ImageView imgSight;
+    Marker selectedMarker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -268,6 +269,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i = 0; i < assignments.size(); i++) {
             if (marker.equals(assigmentMarkers.get(i)))
             {
+                bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 bottomPanel.setPanelHeight(400);
                 txtName.setText(assignments.get(i).name);
                 if(assignments.get(i).website != "N/A") {
@@ -285,6 +287,23 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
+        selectedMarker = marker;
         return false;
+    }
+    @Override
+    public void onBackPressed() {
+        if (bottomPanel != null &&
+                (bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)) {
+            bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+
+        }
+        else if(bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        }
+        else {
+            if(selectedMarker != null) {
+                selectedMarker.hideInfoWindow();
+            }
+        }
     }
 }

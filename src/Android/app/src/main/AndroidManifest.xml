@@ -38,6 +38,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register"></activity>
+        <activity android:name=".Settings"></activity>
+
     </application>
 
 </manifest>
