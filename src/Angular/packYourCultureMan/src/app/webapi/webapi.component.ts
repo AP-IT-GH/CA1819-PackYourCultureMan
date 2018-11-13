@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
   templateUrl: './webapi.component.html',
   styleUrls: ['./webapi.component.scss']
 })
-export class WebapiComponent {
+export class WebapiComponent  implements OnInit {
  //declaratie
  data: any = {};
  id:String;
@@ -20,72 +20,16 @@ export class WebapiComponent {
  constructor(private http: HttpClient) {
  }
 
- //invoervensters
-GetId(event:any){
-  this.id = event.target.value;
-  console.log("Invoervenster id " + this.id);
-}
-GetName(event:any){
-  this.name = event.target.value;
-  console.log("Invoervenster name " + this.name);
-}
 
-GetLore(event:any){
-  this.lore = event.target.value;
-  console.log("Invoervenster lore " + this.lore);
-}
+ ngOnInit() { this. getSights(); }
 
-postDataToAPI(){
-  this.http.post(`http://localhost:4201/api/v1/heroes`, {
-    Name :this.name,
-    Lore : this.lore
-})
-      .subscribe(
-        res => {
-          console.log(res);
-        },
-        err => {
-          console.log("Error occured");
-        }
-      );
-}
-
-
-putDataToAPI(){
-  this.http.put(`http://localhost:4201/api/v1/heroes`, {
-    Id : this.id,
-    Name :this.name,
-    Lore : this.lore
-})
-      .subscribe(
-        res => {
-          console.log(res);
-        },
-        err => {
-          console.log("Error occured");
-        }
-      );
-}
-deleteDataFromAPI(){
-  this.http.delete(`http://localhost:4201/api/v1/heroes/${this.id}`)
-      .subscribe(
-        res => {
-          console.log(res);
-        },
-        err => {
-          console.log("Error occured");
-        }
-      );
-}
- 
- 
-getDataFromAPI(){
-    return this.http.get(`http://localhost:4201/api/v1/heroes?page=0&length=1&sort=name&dir=asc&name=${this.name}`)
-    .map(res => res)
+   getDataFromAPI(){
+    // http://aspcorepycmapi.azurewebsites.net/Sights
+     return this.http.get(`http://localhost:4201/api/v1/heroes?page=0`)
+     .map(res => res)
    }
 
-
-   getHero(){
+   getSights(){
     this.showSpinner = true;
     this.getInfo = false;
      this.getDataFromAPI().subscribe(data => {
@@ -95,7 +39,8 @@ getDataFromAPI(){
        //data wordt in array gestoken
        this.data = data
        this.showSpinner = false;
-       this.getInfo = true;    
+       this.getInfo = true;  
      })
    }
+ 
 }

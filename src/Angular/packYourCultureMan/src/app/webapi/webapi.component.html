@@ -109,7 +109,7 @@
 </div>
 <pagination-controls class="pagination" *ngIf ="data.data" (pageChange)="p =$event"></pagination-controls>
 </div> -->
-<div class="container">
+<!-- <div class="container">
     <div class="row">
         <div class="sm-col-3">
           <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
@@ -144,4 +144,29 @@
         </div>
     </div>
 
+</div> -->
+<!-- <h1>Get Hero</h1>
+<loading-spinner *ngIf="showSpinner"></loading-spinner>
+<div class = wrapper  *ngFor =" paginate: { itemsPerPage:1, currentPage: p}"  >
+    <h4>Hero Name:</h4>
+    <input type="text" (keyup)="GetName($event)">
+    <div class="innerWrapper"> -->
+      
+      <div class="jumbotron">
+      <ul>
+        <li *ngFor="let item of data | paginate: { itemsPerPage:1, currentPage: p}">
+            <h2 *ngIf="getInfo">Locatie: </h2>
+            <img src="assets/Het_Steen.jpg" width="400">
+            <h4 *ngIf="getInfo">locatie {{item.id}} </h4> 
+            <h2 *ngIf="getInfo">Monument :</h2>
+            <h4 *ngIf="getInfo">{{item.name}} </h4>
+            <h2 *ngIf="getInfo">Beschrijving :</h2>
+            <h4 *ngIf="getInfo">{{item.lore}} </h4>
+        </li>
+      </ul>
+      <pagination-controls class="pagination" *ngIf ="data" (pageChange)="p =$event"></pagination-controls>
+    </div>
+    <!-- </div>
 </div>
+ -->
+

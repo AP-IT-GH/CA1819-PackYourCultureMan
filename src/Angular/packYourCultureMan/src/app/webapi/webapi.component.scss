@@ -7,3 +7,12 @@
 height: 100%;
 width: 100%;
 padding: 5px;}
+ul {
+    list-style-type: none;
+  }
+.jumbotron{
+width: 50%;
+position: fixed; /* or absolute */
+  top: 10%;
+  left: 25%;
+}
