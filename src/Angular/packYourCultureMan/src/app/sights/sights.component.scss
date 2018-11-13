@@ -10,9 +10,7 @@ padding: 5px;}
 ul {
     list-style-type: none;
   }
-.jumbotron{
-width: 50%;
-position: fixed; /* or absolute */
-  top: 10%;
-  left: 25%;
+  pagination-controls{
+    display: inline;
+    text-align: center;
 }

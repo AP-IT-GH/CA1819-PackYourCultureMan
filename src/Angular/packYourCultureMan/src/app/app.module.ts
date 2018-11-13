@@ -15,7 +15,7 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
-import { WebapiComponent } from './webapi/webapi.component';
+import { SightsComponent } from './sights/sights.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { WebapiComponent } from './webapi/webapi.component';
     LoginComponent,
     RegisterComponent, 
     LoadingSpinnerComponent,
-    WebapiComponent, ],
+    SightsComponent, ],
   imports: [
     BrowserModule,
     NgbModule,

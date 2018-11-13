@@ -5,10 +5,10 @@ import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-webapi',
-  templateUrl: './webapi.component.html',
-  styleUrls: ['./webapi.component.scss']
+  templateUrl: './sights.component.html',
+  styleUrls: ['./sights.component.scss']
 })
-export class WebapiComponent  implements OnInit {
+export class SightsComponent  implements OnInit {
  //declaratie
  data: any = {};
  id:String;
@@ -25,6 +25,7 @@ export class WebapiComponent  implements OnInit {
 
    getDataFromAPI(){
     // http://aspcorepycmapi.azurewebsites.net/Sights
+    // http://localhost:4201/api/v1/heroes?page=0
      return this.http.get(`http://localhost:4201/api/v1/heroes?page=0`)
      .map(res => res)
    }
