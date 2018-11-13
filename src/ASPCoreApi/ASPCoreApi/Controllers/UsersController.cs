@@ -105,7 +105,7 @@ namespace ASP.Dtos
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody]UserDto userDto)
+        public IActionResult Update(int id,string username,string  [FromBody]UserDto userDto)
         {
             // map dto to entity and set id
             var user = _mapper.Map<Users>(userDto);
