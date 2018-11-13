@@ -54,3 +54,4 @@ D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Debug\netcorea
 D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Debug\netcoreapp2.1\ASPCoreApi.RazorTargetAssemblyInfo.cache
 D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Debug\netcoreapp2.1\ASPCoreApi.dll
 D:\Github\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Debug\netcoreapp2.1\ASPCoreApi.pdb
+D:\School\CloudApplications\ASPBackend\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCoreApi\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
