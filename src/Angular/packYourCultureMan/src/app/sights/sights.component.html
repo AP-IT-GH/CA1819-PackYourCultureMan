@@ -1,0 +1,55 @@
+ 
+<!-- <div class="container">
+    <div class="row">
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+        <div class="sm-col-3">
+          <img src="https://images.pexels.com/photos/301326/pexels-photo-301326.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="image-5" />
+        </div>
+    </div> -->
+        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        <div  *ngIf="getInfo" class="container">
+            <div class="row">
+                <div class="col-md-12 jumbotron">
+                    <div class="text-center">
+                        <div *ngFor="let item of data | paginate: { itemsPerPage:1, currentPage: p}">
+                            <h5>{{item.name}} </h5>
+                            <h4>{{item.shortDescription}} </h4>
+                            <h5>{{item.longDescription}} </h5>
+                            <a href="{{item.website}}" target="_blank" >Visit {{item.name}} </a>
+                            <hr>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{item.name}}" target="_blank">Show location on google maps </a>
+                        </div>
+                        <pagination-controls class="pagination" *ngIf ="data" (pageChange)="p =$event"></pagination-controls>
+                    </div>
+                  </div>
+              </div>
+          </div>   
+
+

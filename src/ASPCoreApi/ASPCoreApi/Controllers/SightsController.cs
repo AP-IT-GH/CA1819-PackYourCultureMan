@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPCoreApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASPCoreApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SightsController : ControllerBase
@@ -95,8 +97,8 @@ namespace ASPCoreApi.Controllers
 
             return CreatedAtAction("GetSight", new { id = sight.id }, sight);
         }
-        // POST: api/Sights/array
-        [HttpPost("array")]
+        // POST: api/Sights/postarray
+        [HttpPost("postarray")]
         public async Task<IActionResult> PostSight([FromBody] Sight[] sightlist)
         {
             if (!ModelState.IsValid)
