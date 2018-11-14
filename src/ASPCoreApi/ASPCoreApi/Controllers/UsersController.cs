@@ -56,7 +56,6 @@ namespace ASP.Dtos
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-
             // return basic user info (without password) and token to store client side
             return Ok(new
             {

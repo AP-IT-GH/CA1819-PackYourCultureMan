@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using ASPCoreApi.Models;
 using Model;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ASPCoreApi
 {
@@ -75,6 +76,18 @@ namespace ASPCoreApi
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
+            services.AddSwaggerGen(c => {
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme { In = "header", Description = "Please enter JWT with Bearer into field", Name = "Authorization", Type = "apiKey" });
+                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+                { "Bearer", Enumerable.Empty<string>() },
+            });
+
+            });
 
         }
 
@@ -93,6 +106,13 @@ namespace ASPCoreApi
 
             app.UseAuthentication();
 
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
             app.UseMvc();
             
 
