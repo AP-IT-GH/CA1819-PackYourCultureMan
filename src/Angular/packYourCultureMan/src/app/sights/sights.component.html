@@ -39,12 +39,12 @@
                 <div class="col-md-12 jumbotron">
                     <div class="text-center">
                         <div *ngFor="let item of data | paginate: { itemsPerPage:1, currentPage: p}">
-                            <h3>Locatie: </h3>
-                            <img src="assets/Het_Steen.jpg" width="400">
-                            <h3>Monument :</h3>
                             <h5>{{item.name}} </h5>
-                            <h3>Beschrijving :</h3>
-                            <h5>{{item.lore}} </h5>
+                            <h4>{{item.shortDescription}} </h4>
+                            <h5>{{item.longDescription}} </h5>
+                            <a href="{{item.website}}" target="_blank" >Visit {{item.name}} </a>
+                            <hr>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{item.name}}" target="_blank">Show location on google maps </a>
                         </div>
                         <pagination-controls class="pagination" *ngIf ="data" (pageChange)="p =$event"></pagination-controls>
                     </div>

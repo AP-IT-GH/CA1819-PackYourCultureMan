@@ -22,9 +22,7 @@ export class SightsComponent  implements OnInit {
  ngOnInit() { this. getSights(); }
 
    getDataFromAPI(){
-    // http://aspcorepycmapi.azurewebsites.net/Sights
-    // http://localhost:4201/api/v1/heroes?page=0
-     return this.http.get(`http://localhost:4201/api/v1/heroes?page=0`)
+     return this.http.get(`https://aspcoreapipycm.azurewebsites.net/api/Sights`)
      .map(res => res)
    }
 
