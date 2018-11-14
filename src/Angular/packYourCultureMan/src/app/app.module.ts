@@ -16,6 +16,7 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { SightsComponent } from './sights/sights.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SightsComponent } from './sights/sights.component';
     LoginComponent,
     RegisterComponent, 
     LoadingSpinnerComponent,
-    SightsComponent, ],
+    SightsComponent,
+    SettingsComponent, ],
   imports: [
     BrowserModule,
     NgbModule,
