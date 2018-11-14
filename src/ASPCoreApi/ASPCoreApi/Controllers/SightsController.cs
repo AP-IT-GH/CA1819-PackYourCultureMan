@@ -95,7 +95,23 @@ namespace ASPCoreApi.Controllers
 
             return CreatedAtAction("GetSight", new { id = sight.id }, sight);
         }
+        // POST: api/Sights/array
+        [HttpPost("array")]
+        public async Task<IActionResult> PostSight([FromBody] Sight[] sightlist)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            foreach(Sight sight in sightlist)
+            {
+                _context.sights.Add(sight);
+            }
+            
+            int x  = await _context.SaveChangesAsync();
 
+            return Created(string.Empty,x);
+        }
         // DELETE: api/Sights/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSight([FromRoute] int id)

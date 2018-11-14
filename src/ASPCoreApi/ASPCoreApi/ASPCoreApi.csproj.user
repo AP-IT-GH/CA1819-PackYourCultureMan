@@ -11,6 +11,7 @@
     <WebStackScaffolding_DbContextTypeFullName>ASPCoreApi.Models.DatabaseContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <ActiveDebugProfile>ASPCoreApi</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>aspcoreapipycm - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>

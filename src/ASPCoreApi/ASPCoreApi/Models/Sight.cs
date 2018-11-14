@@ -9,9 +9,11 @@ namespace ASPCoreApi.Models
     {
         public int id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string shortDescription { get; set; }
+        public string longDescription { get; set; }
         public float Longitude { get; set; }
         public float Latitude { get; set; }
-        public byte[] sightImage { get; set; } 
+        public string sightImage { get; set; }
+        public string Website { get; set; }
     }
 }

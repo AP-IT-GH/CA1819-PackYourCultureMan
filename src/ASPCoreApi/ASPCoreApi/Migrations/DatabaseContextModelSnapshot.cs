@@ -25,9 +25,19 @@ namespace ASPCoreApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<float>("Latitude");
+
+                    b.Property<float>("Longitude");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Website");
+
+                    b.Property<string>("longDescription");
+
+                    b.Property<string>("shortDescription");
+
+                    b.Property<string>("sightImage");
 
                     b.HasKey("id");
 

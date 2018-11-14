@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181101195506_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20181113181929_firstmigration")]
+    partial class firstmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,9 +27,19 @@ namespace ASPCoreApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<float>("Latitude");
+
+                    b.Property<float>("Longitude");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Website");
+
+                    b.Property<string>("longDescription");
+
+                    b.Property<string>("shortDescription");
+
+                    b.Property<string>("sightImage");
 
                     b.HasKey("id");
 

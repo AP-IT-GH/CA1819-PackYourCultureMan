@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPCoreApi.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class firstmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,12 @@ namespace ASPCoreApi.Migrations
                     id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    shortDescription = table.Column<string>(nullable: true),
+                    longDescription = table.Column<string>(nullable: true),
+                    Longitude = table.Column<float>(nullable: false),
+                    Latitude = table.Column<float>(nullable: false),
+                    sightImage = table.Column<string>(nullable: true),
+                    Website = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
