@@ -1,25 +1,26 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -29,18 +30,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.security.cert.LDAPCertStoreParameters;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameActivity extends FragmentActivity implements OnMapReadyCallback{
+public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private Ghost Blinky;
@@ -53,10 +54,42 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
     Assignment currentAssigment;
+    List<Marker> assigmentMarkers = new ArrayList<>();
+    SlidingUpPanelLayout bottomPanel;
+    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc;
+    ImageView imgSight;
+    Marker selectedMarker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.menu);
+        bottomPanel = findViewById(R.id.sliding_layout);
+        bottomPanel.setPanelHeight(0);
+        txtName = findViewById(R.id.txtName);
+        imgSight = findViewById(R.id.imgSight);
+        txtWebsite = findViewById(R.id.txtWebsite);
+        txtShortDesc = findViewById(R.id.txtShortDesc);
+        txtLongDesc = findViewById(R.id.txtLongDesc);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.nav_logout:
+                        SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putBoolean("chbremember", false);
+                        editor.putBoolean("chbloginauto", false);
+                        editor.apply();
+                        intent = new Intent(getBaseContext(), Login.class);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+            }
+        });
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         hardcodedAssigments();
@@ -94,14 +127,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
         Blinky.Draw(mMap, getApplicationContext());
-
+        for(int i = 0; i < assignments.size(); i++) {
+            Marker mark;
+            LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
+            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
+            assigmentMarkers.add(mark);
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -119,6 +155,22 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION);
             }
         }
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+        {
+            @Override
+            public void onMapClick(LatLng arg0)
+            {
+                bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            }
+        });
+        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
+
+        if (!success) {
+            Log.e("Style failed", "Style parsing failed.");
+        }
+
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     @Override
@@ -171,34 +223,41 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 //mMap.addCircle(circleOptions);
 
                 //move map camera
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+              //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
             }
         }
     };
     private void hardcodedAssigments() {
         assignments = new ArrayList<>();
-        assignments.add(new Assignment("Red Star Line Museum", "https://www.redstarline.be/nl", "51.2330564", "4.4011707", "Museum exhibition based on the 3 million who emigrated to America using this historic shipping line.", "The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935. \n" +
+        assignments.add(new Assignment("Red Star Line Museum", "https://www.redstarline.be/nl", 51.2329543, 4.4034171, "Museum exhibition based on the 3 million who emigrated to America using this historic shipping line.", "The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935. \n" +
                 "Of course, you will also find art in its more traditional form. For example, the Red Star Line and Antwerp, as a migration hub, inspired artists like Eugeen Van Mieghem and Louis van Engelen.\n" +
                 "What makes this museum even more special is the fact that it adopts a very modern approach in the original Red Star Line buildings. The port warehouses that were used for passengers’ administrative and medical checks are the very highlight of the collection.\n" +
                 "More than a museum\n" +
                 "The Red Star Line Museum is not just a museum. The observation tower that rises above the warehouses, in the shape of a ship's smokestack, affords an amazing panoramic view. And you can visit The Shed, a cozy café and nice museum shop, up to an hour after the museum closes.\n" +
                 "Be touched by the testimonies of people who have boarded the Red Star Line - for pleasure, for business or in the hope to find a better life - and enjoy a unique view of the Scheldt and the centre of Antwerp. And sit down and talk about it afterwards in The Shed.\n" +
-                "After a visit to the Red Star Line Museum, it is definitely worth walking through the trendy Eilandje and enjoy a meal at one of the many restaurants located nearby. From Eilandje, you can also see the Port House, famously designed by the world-renowned architect Zaha Hadid Architects.\n"));
-        assignments.add(new Assignment("Museum aan de stroom", "www.mas.be", "51.2289238", "4.4026316", "Striking red sandstone museum with high-tech exhibitions exploring Antwerp's place in the world.", "A river runs through it\n" +
+                "After a visit to the Red Star Line Museum, it is definitely worth walking through the trendy Eilandje and enjoy a meal at one of the many restaurants located nearby. From Eilandje, you can also see the Port House, famously designed by the world-renowned architect Zaha Hadid Architects.\n",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Red_Star_Line_Museum.jpg/220px-Red_Star_Line_Museum.jpg"));
+        assignments.add(new Assignment("Museum aan de stroom", "www.mas.be", 51.2289219, 4.4047576, "Striking red sandstone museum with high-tech exhibitions exploring Antwerp's place in the world.", "A river runs through it\n" +
                 "Antwerp is the city on the Scheldt, the city on the river, facilitating encounters and exchanges between people from all over the world for several centuries. The MAS museum collects proof of these encounters, using this to tell new stories. About the city, the river and the port on the one hand. But also about the world. The MAS has many facets, and is teeming with stories and surprises.\n" +
                 "From the port to life and death\n" +
                 "The MAS has a phenomenally large collection, which to date comprises about 500,000 items, including artworks and utensils. New objects are constantly being added to the collection.\n" +
                 "The museum uses its entire collection to weave a new narrative, based on five universal themes, on just as many floors. The MAS takes a closer look at power politics and world ports. At how food shaped and will shape today’s metropolises in the past, present and future. And at life and death, of people and gods, in the upper and under world. Moreover, the third floor and the walking boulevard host some fascinating and highly diverse temporary exhibitions.\n" +
-                "But above all, the MAS excels at connecting all these stories. This is not your typical museum, where you walk from display case to display case. Instead all the stories engage with each other, thanks to the way in which the floors have been arranged and are connected with each other. Ensuring you understand Antwerp and the world a bit better at the end of your visit.\n"));
-        assignments.add(new Assignment("Saint Paul’s Church", "http://www.sint-paulusparochie.be/", "51.224049", "4.4012982", "This restored Gothic church with a Baroque tower houses works by Antwerp painters Rubens & van Dyck.", "Originally, Saint Paul’s Church was part of a large Dominican abbey. It was consecrated in 1571 as a replacement for another church. A new Baroque steeple was built after a ravaging fire destroyed the church in 1679.\n" +
+                "But above all, the MAS excels at connecting all these stories. This is not your typical museum, where you walk from display case to display case. Instead all the stories engage with each other, thanks to the way in which the floors have been arranged and are connected with each other. Ensuring you understand Antwerp and the world a bit better at the end of your visit.\n",
+                "https://archello.imgix.net/images/2015/03/16/2099SB05.1506066063.5785.jpg?fit=crop&h=518&w=414"));
+        assignments.add(new Assignment("Saint Paul’s Church", "http://www.sint-paulusparochie.be/", 51.22414, 4.4006885, "This restored Gothic church with a Baroque tower houses works by Antwerp painters Rubens & van Dyck.", "Originally, Saint Paul’s Church was part of a large Dominican abbey. It was consecrated in 1571 as a replacement for another church. A new Baroque steeple was built after a ravaging fire destroyed the church in 1679.\n" +
                 "The church's striking interior hosts fifty paintings by renowned Antwerp masters, Rubens, Van Dyck and Jordaens, over 200 sculptures, beautiful Baroque altars and sculpted church furniture, widely considered to be amongst the most beautiful in the world. The organ was built in the 17th century, but has been repeatedly restored and expanded.\n" +
-                "An eye-catching feature is the 18th century Calvary with sixty life-sized figures, next to the church on the corner of Veemarkt and Zwartzustersstraat.\n"));
-        assignments.add(new Assignment("Stadswaag", "N/A", "51.2239475", "4.4050828", "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.\n", "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.\n" +
-                "In the past, the goods of merchants were weighed here, but a Zeppelin bombardment unfortunately caused a total disappearance of the actual weigh house. In the sixties this square was the entertainment district par excellence. Today it is not only populated by terrace people and students, but many families have also found a permanent home here.\n"));
+                "An eye-catching feature is the 18th century Calvary with sixty life-sized figures, next to the church on the corner of Veemarkt and Zwartzustersstraat.\n",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sint-Pauluskerk_op_de_Veemarkt_in_Antwerpen.jpg/260px-Sint-Pauluskerk_op_de_Veemarkt_in_Antwerpen.jpg"));
+        assignments.add(new Assignment("Stadswaag", "N/A", 51.2239475, 4.4050828, "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district.", "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.\n" +
+                "In the past, the goods of merchants were weighed here, but a Zeppelin bombardment unfortunately caused a total disappearance of the actual weigh house. In the sixties this square was the entertainment district par excellence. Today it is not only populated by terrace people and students, but many families have also found a permanent home here.\n",
+                "http://www.aviewoncities.com/img/antwerp/kvefl141s.jpg"));
     }
     private Assignment getRandomAssignment() {
         Random rand = new Random();
         int n = rand.nextInt(assignments.size());
+        if(assignments.get(n) == currentAssigment) {
+            n = rand.nextInt(assignments.size());
+        }
         return assignments.get(n);
     }
 
@@ -210,5 +269,48 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bmp;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        for(int i = 0; i < assignments.size(); i++) {
+            if (marker.equals(assigmentMarkers.get(i)))
+            {
+                bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                bottomPanel.setPanelHeight(400);
+                txtName.setText(assignments.get(i).name);
+                if(assignments.get(i).website != "N/A") {
+                    txtWebsite.setVisibility(View.VISIBLE);
+                    txtWebsite.setText(assignments.get(i).website);
+                }
+                else txtWebsite.setVisibility(View.INVISIBLE);
+                Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
+                txtShortDesc.setText(assignments.get(i).shortDescr);
+                txtLongDesc.setText(assignments.get(i).longDescr);
+            }
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.d("Pushed", "pushed");
+        selectedMarker = marker;
+        return false;
+    }
+    @Override
+    public void onBackPressed() {
+        if (bottomPanel != null &&
+                (bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)) {
+            bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+
+        }
+        else if(bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        }
+        else {
+            if(selectedMarker != null) {
+                selectedMarker.hideInfoWindow();
+            }
+        }
     }
 }
