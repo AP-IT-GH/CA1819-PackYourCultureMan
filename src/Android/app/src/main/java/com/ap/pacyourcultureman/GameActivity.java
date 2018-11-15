@@ -47,7 +47,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
-    List<Assignment> assignments;
+    List<Assignment> assignments = Login.assignments;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -92,7 +92,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         });
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        hardcodedAssigments();
+      //  hardcodedAssigments();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
