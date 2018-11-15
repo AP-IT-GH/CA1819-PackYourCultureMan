@@ -47,7 +47,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
-    List<Assignment> assignments;
+    List<Assignment> assignments = Login.assignments;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -92,7 +92,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         });
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        hardcodedAssigments();
+      //  hardcodedAssigments();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -127,11 +127,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.227076, 4.417227), 16));
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         Blinky.Draw(mMap, getApplicationContext());
+        Blinky.Move(new LatLng(51.227076, 4.417227));
         for(int i = 0; i < assignments.size(); i++) {
             Marker mark;
             LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
@@ -307,10 +309,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         else if(bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
             bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
-        else {
-            if(selectedMarker != null) {
+        else if(selectedMarker != null) {
                 selectedMarker.hideInfoWindow();
-            }
-        }
+        } else super.onBackPressed();
+
     }
 }

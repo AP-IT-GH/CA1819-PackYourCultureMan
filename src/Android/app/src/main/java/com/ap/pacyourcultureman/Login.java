@@ -3,6 +3,7 @@ package com.ap.pacyourcultureman;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,14 +13,30 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.apache.commons.validator.routines.EmailValidator;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Login extends Activity {
     private String email, password, targetURL, reply;
@@ -31,6 +48,8 @@ public class Login extends Activity {
     HttpURLConnection conn;
     URL url;
     private Handler mHandler;
+    RequestQueue queue;  // this = context
+    static List<Assignment> assignments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +64,7 @@ public class Login extends Activity {
         chb_rememberme = findViewById(R.id.login_chb_rememember);
         chb_loginauto = findViewById(R.id.login_chb_autologin);
         Intent intent = getIntent();
+        queue = Volley.newRequestQueue(this);
         Load();
         String intentuser = intent.getStringExtra("username");
         String intentpassword = intent.getStringExtra("pass");
@@ -62,13 +82,44 @@ public class Login extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                errorChecker.setVisibility(View.GONE);
+              /*  errorChecker.setVisibility(View.GONE);
                 email = edit_email.getText().toString();
                 password = edit_password.getText().toString();
                 if(chb_rememberme.isChecked()) {
                     Save();
-                }
-                        sendPost();
+                } */
+                // sendPost();
+                final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
+// prepare the Request
+                JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        assignments = new ArrayList<>();
+                        for(int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                String name = jsonObject.getString("name");
+                                String website = jsonObject.getString("website");
+                                String shortDesc = jsonObject.getString("shortDescription");
+                                String longDesc = jsonObject.getString("longDescription");
+                                String imgUrl = jsonObject.getString("sightImage");
+                                Double lat = jsonObject.getDouble("latitude");
+                                Double lng = jsonObject.getDouble("longitude");
+                                Log.d("Lat", String.valueOf(lat));
+                                assignments.add(new Assignment(name, website, lat,lng, longDesc, shortDesc, imgUrl));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Log.v("Data from the web: ", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d("MainActivity", error.getMessage());
+                        }
+                });
+                AppController.getInstance().addToRequestQueue(request);
                 }
             });
         btn_register.setOnClickListener(new View.OnClickListener() {
@@ -205,4 +256,7 @@ public class Login extends Activity {
             startActivity(i);
         }
     };
+    /**
+     * Method to make json array request where response starts with [
+     * */
 }
