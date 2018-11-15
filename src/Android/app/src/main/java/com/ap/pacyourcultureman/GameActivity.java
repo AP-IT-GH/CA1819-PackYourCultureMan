@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Looper;
@@ -30,11 +31,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -59,6 +63,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc;
     ImageView imgSight;
     Marker selectedMarker;
+    Location location;
+    Circle Circle;
+    Marker perth;
+    static final LatLng PERTH = new LatLng(53.2289219, 4.5034171);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -97,10 +105,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        for (int i = 0; i<=90;i++) {
-            currentAssigment = getRandomAssignment();
-            Log.d("Assignment", currentAssigment.name);
-        }
     }
 
 
@@ -134,6 +138,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.Move(new LatLng(51.227076, 4.417227));
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
             Marker mark;
             LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
@@ -173,6 +179,41 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                Log.d("Draggable Marker loc: ", "latitude : "+ marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                collisionDetectMarker(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon), 0.0001);
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+            }
+
+        });
+        for (int i = 0; i<=90;i++) {
+            currentAssigment = getRandomAssignment();
+            Log.d("Assignment", currentAssigment.name);
+        }
+        perth = mMap.addMarker(new MarkerOptions()
+                .position(PERTH)
+                .draggable(true));
+
+        PolylineOptions rectOptions2 = new PolylineOptions()
+                .add(new LatLng(currentAssigment.lat - 0.0001, currentAssigment.lon - 0.0001))
+                .add(new LatLng(currentAssigment.lat - 0.0001, currentAssigment.lon + 0.0001))  // North of the previous point, but at the same longitude
+                .add(new LatLng(currentAssigment.lat + 0.0001, currentAssigment.lon + 0.0001))  // Same latitude, and 30km to the west
+                .add(new LatLng(currentAssigment.lat + 0.0001, currentAssigment.lon - 0.0001))  // Same longitude, and 16km to the south
+                .add(new LatLng(currentAssigment.lat - 0.0001, currentAssigment.lon - 0.0001)); // Closes the polyline.
+
+// Get back the mutable Polyline
+        Polyline polyline2 = mMap.addPolyline(rectOptions2);
     }
 
     @Override
@@ -205,17 +246,22 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             List<Location> locationList = locationResult.getLocations();
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
-                Location location = locationList.get(locationList.size() - 1);
+                location = locationList.get(locationList.size() - 1);
                 Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 mLastLocation = location;
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
+                for(int i = 0; i < assignments.size(); i++) {
+                    collisionDetectMarker(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 0.000100);
 
+                }
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
-
+                LatLng markable = perth.getPosition();
+                collisionDetectMarker(markable, new LatLng(currentAssigment.lat, currentAssigment.lon), 0.0001);
+                Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
 /*                circleOptions.center(latLng);
                 circleOptions.radius(20);
                 circleOptions.strokeColor(Color.BLUE);
@@ -255,11 +301,21 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 "http://www.aviewoncities.com/img/antwerp/kvefl141s.jpg"));
     }
     private Assignment getRandomAssignment() {
+        if(Circle != null) {
+            Circle.remove();
+        }
         Random rand = new Random();
         int n = rand.nextInt(assignments.size());
         if(assignments.get(n) == currentAssigment) {
             n = rand.nextInt(assignments.size());
         }
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
+                circleOptions.radius(10);
+                circleOptions.strokeColor(Color.YELLOW);
+                circleOptions.fillColor(0x30ff0000);
+                circleOptions.strokeWidth(2);
+                Circle = mMap.addCircle(circleOptions);
         return assignments.get(n);
     }
 
@@ -286,7 +342,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     txtWebsite.setText(assignments.get(i).website);
                 }
                 else txtWebsite.setVisibility(View.INVISIBLE);
-                Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
+           //     Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
                 txtShortDesc.setText(assignments.get(i).shortDescr);
                 txtLongDesc.setText(assignments.get(i).longDescr);
             }
@@ -313,5 +369,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 selectedMarker.hideInfoWindow();
         } else super.onBackPressed();
 
+    }
+    private void collisionDetectMarker(LatLng latLng1, LatLng latLng2, Double hitboxSize) {
+        if(latLng1.latitude > latLng2.latitude - hitboxSize && latLng1.latitude < latLng2.latitude + hitboxSize && latLng1.longitude > latLng2.longitude - hitboxSize && latLng1.longitude < latLng2.longitude + hitboxSize) {
+            Log.d("Hit", String.valueOf(latLng2.latitude) + " " + String.valueOf(latLng2.longitude));
+        }
     }
 }

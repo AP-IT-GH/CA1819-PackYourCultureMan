@@ -103,16 +103,20 @@ public class Login extends Activity {
                                 String shortDesc = jsonObject.getString("shortDescription");
                                 String longDesc = jsonObject.getString("longDescription");
                                 String imgUrl = jsonObject.getString("sightImage");
-                                Double lat = jsonObject.getDouble("latitude");
-                                Double lng = jsonObject.getDouble("longitude");
+                                String lat = jsonObject.getString("latitude");
+                                String lng = jsonObject.getString("longitude");
                                 Log.d("Lat", String.valueOf(lat));
-                                assignments.add(new Assignment(name, website, lat,lng, longDesc, shortDesc, imgUrl));
+                                assignments.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                         Log.v("Data from the web: ", response.toString());
+                        Log.d("Finish", "end");
+                        Intent i = new Intent(getApplicationContext(),GameActivity.class);
+                        startActivity(i);
+
                     }
                 }, new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
