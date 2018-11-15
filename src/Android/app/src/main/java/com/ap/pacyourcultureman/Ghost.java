@@ -16,6 +16,7 @@ import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
 public class Ghost {
     private LatLng location;
     private int id;
+    private Marker marker;
 
     public Ghost(){
 
@@ -34,8 +35,12 @@ public class Ghost {
         Bitmap smallerblinky = Bitmap.createScaledBitmap(bitmap, width, height, false);
 
         LatLng spookyloc = new LatLng(51.230108, 4.418516);
-        Marker spookymarker = mMap.addMarker(new MarkerOptions()
+        marker = mMap.addMarker(new MarkerOptions()
                 .position(spookyloc)
                 .icon(BitmapDescriptorFactory.fromBitmap(smallerblinky)));
+    }
+
+    public void Move(LatLng dest){
+        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical());
     }
 }

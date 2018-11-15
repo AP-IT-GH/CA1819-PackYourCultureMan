@@ -6,6 +6,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { AuthGuard } from './_guards';
+import {SightsComponent } from './sights/sights.component';
+import {SettingsComponent} from './settings/settings.component';
 const appRoutes: Routes = [
 
     
@@ -13,6 +15,8 @@ const appRoutes: Routes = [
     {path: 'home', component: HomeComponent},
     {path: '', component: HomeComponent, canActivate: [AuthGuard] },
     {path: 'contact', component: ContactComponent},
+    {path: 'sights', component: SightsComponent},
+    {path: 'settings', component: SettingsComponent},
     {path: 'login', component: LoginComponent },
     {path: 'register', component: RegisterComponent },
     {path: '**', component: NotFoundComponent},

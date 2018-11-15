@@ -8,11 +8,15 @@ import { ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AlertComponent } from './_directives';
 import { AuthGuard } from './_guards';
+import {NgxPaginationModule} from 'ngx-pagination';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AlertService, AuthenticationService, UserService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { SightsComponent } from './sights/sights.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -21,13 +25,16 @@ import { RegisterComponent } from './register';
     AlertComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
-  ],
+    RegisterComponent, 
+    LoadingSpinnerComponent,
+    SightsComponent,
+    SettingsComponent, ],
   imports: [
     BrowserModule,
     NgbModule,
     UiPageModule,
     AppRoutingModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
     HttpClientModule,
   ],
