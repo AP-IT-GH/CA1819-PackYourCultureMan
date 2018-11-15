@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ASPCoreApi.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
+    
+    [Route("[controller]")]
     [ApiController]
     public class SightsController : ControllerBase
     {

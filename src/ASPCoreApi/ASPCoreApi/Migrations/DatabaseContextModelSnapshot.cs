@@ -25,9 +25,9 @@ namespace ASPCoreApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Latitude");
+                    b.Property<string>("Latitude");
 
-                    b.Property<float>("Longitude");
+                    b.Property<string>("Longitude");
 
                     b.Property<string>("Name");
 
@@ -42,6 +42,27 @@ namespace ASPCoreApi.Migrations
                     b.HasKey("id");
 
                     b.ToTable("sights");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Statistics", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("highestScore");
+
+                    b.Property<int>("totalFailed");
+
+                    b.Property<int>("totalLost");
+
+                    b.Property<int>("totalScore");
+
+                    b.Property<int>("totalSucces");
+
+                    b.HasKey("id");
+
+                    b.ToTable("statistics");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
