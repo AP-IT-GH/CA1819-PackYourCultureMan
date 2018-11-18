@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, EmailValidator } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, UserService } from '../_services';
@@ -19,11 +19,11 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            username: ['', Validators.required],
-            email: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            firstName: ['', Validators.required,Validators.name],
+            lastName: ['', Validators.required,Validators.name],
+            username: ['', Validators.required,Validators.name],
+            email: ['', Validators.required,Validators.email],
+            password: ['', [Validators.required]]
         });
     }
 
