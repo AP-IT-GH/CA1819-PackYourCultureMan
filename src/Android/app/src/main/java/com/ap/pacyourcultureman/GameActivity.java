@@ -49,6 +49,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
+    private Dot dot;
+    private Dot dot2;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = Login.assignments;
@@ -66,7 +68,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Location location;
     Circle Circle;
     Marker perth;
-    static final LatLng PERTH = new LatLng(53.2289219, 4.5034171);
+    static final LatLng PERTH = new LatLng(51.230663, 4.407146);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,6 +100,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+        dot = new Dot();
+        LatLng location = new LatLng(51.232356, 4.409553);
+        dot.setLocation(location);
+        dot2 = new  Dot();
+        LatLng location2 = new LatLng(51.230866, 4.405495);
+        dot2.setLocation(location2);
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
       //  hardcodedAssigments();
@@ -136,6 +144,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        dot.Draw(mMap, getApplicationContext());
+        dot2.Draw(mMap, getApplicationContext());
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.Move(new LatLng(51.227076, 4.417227));
         List<LatLng> latLngs = new ArrayList<>();
