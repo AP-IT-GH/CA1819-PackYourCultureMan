@@ -267,16 +267,20 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetectMarker(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 0.000100);
 
                 }
-                for(int i = 0; i < dots.size(); i++) {
-                    collisionDetectMarker(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 0.000100);
 
-                }
+
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
                 LatLng markable = perth.getPosition();
                 collisionDetectMarker(markable, new LatLng(currentAssigment.lat, currentAssigment.lon), 0.0001);
                 Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
+
+                //dots collision
+                for(int i = 0; i < dots.size(); i++) {
+                    collisionDetectMarker(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 0.000100);
+                }
+
 /*                circleOptions.center(latLng);
                 circleOptions.radius(20);
                 circleOptions.strokeColor(Color.BLUE);
@@ -367,6 +371,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
+       /*
+        dots klikken moet uitstaan
+
+       for(int i = 0; i < dots.size(); i++) {
+            if (dots.get(i).equals(marker)){
+                return false;
+            }
+        }*/
         selectedMarker = marker;
         return false;
     }
@@ -387,7 +399,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void collisionDetectMarker(LatLng latLng1, LatLng latLng2, Double hitboxSize) {
         if(latLng1.latitude > latLng2.latitude - hitboxSize && latLng1.latitude < latLng2.latitude + hitboxSize && latLng1.longitude > latLng2.longitude - hitboxSize && latLng1.longitude < latLng2.longitude + hitboxSize) {
-            Log.d("Hit", String.valueOf(latLng2.latitude) + " " + String.valueOf(latLng2.longitude));
+            Log.d("Hit", "fucking hit motherfucker ");
         }
     }
 }

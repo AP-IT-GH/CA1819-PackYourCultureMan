@@ -3,6 +3,8 @@ package com.ap.pacyourcultureman;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -109,5 +111,4 @@ public class Dot {
                 .alpha(0.7f)
                 .flat(true));
     }
-
 }
