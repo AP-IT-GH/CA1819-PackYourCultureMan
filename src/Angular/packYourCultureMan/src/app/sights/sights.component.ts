@@ -22,7 +22,7 @@ export class SightsComponent  implements OnInit {
  ngOnInit() { this. getSights(); }
 
    getDataFromAPI(){
-     return this.http.get(`https://aspcoreapipycm.azurewebsites.net/api/Sights`)
+     return this.http.get(`https://aspcoreapipycm.azurewebsites.net/Sights`)
      .map(res => res)
    }
 
