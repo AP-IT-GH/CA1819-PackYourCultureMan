@@ -49,9 +49,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
-    private Dot dot;
-    private Dot dot2;
-
+    //dots
+    List<Dot> dots = new ArrayList<>();
+    //List<Dot> dots = Login.dots;
+    //dots
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = Login.assignments;
     Location mLastLocation;
@@ -100,12 +101,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
-        dot = new Dot();
-        LatLng location = new LatLng(51.232356, 4.409553);
-        dot.setLocation(location);
-        dot2 = new  Dot();
-        LatLng location2 = new LatLng(51.230866, 4.405495);
-        dot2.setLocation(location2);
+        //dots
+        for (int i = 0; i < 10; i++) {
+            dots.add( new Dot( 51.232356 -(i * 0.001) , 4.409553 + (i * 0.001)));
+        }
+        //dots
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
       //  hardcodedAssigments();
@@ -144,8 +144,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        dot.Draw(mMap, getApplicationContext());
-        dot2.Draw(mMap, getApplicationContext());
+        //dots
+        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        //dots
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.Move(new LatLng(51.227076, 4.417227));
         List<LatLng> latLngs = new ArrayList<>();
@@ -266,6 +267,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetectMarker(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 0.000100);
 
                 }
+                for(int i = 0; i < dots.size(); i++) {
+                    collisionDetectMarker(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 0.000100);
+
+                }
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
@@ -285,7 +290,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     };
-    private void hardcodedAssigments() {
+    /*private void hardcodedAssigments() {
         assignments = new ArrayList<>();
         assignments.add(new Assignment("Red Star Line Museum", "https://www.redstarline.be/nl", 51.2329543, 4.4034171, "Museum exhibition based on the 3 million who emigrated to America using this historic shipping line.", "The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935. \n" +
                 "Of course, you will also find art in its more traditional form. For example, the Red Star Line and Antwerp, as a migration hub, inspired artists like Eugeen Van Mieghem and Louis van Engelen.\n" +
@@ -309,7 +314,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         assignments.add(new Assignment("Stadswaag", "N/A", 51.2239475, 4.4050828, "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district.", "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.\n" +
                 "In the past, the goods of merchants were weighed here, but a Zeppelin bombardment unfortunately caused a total disappearance of the actual weigh house. In the sixties this square was the entertainment district par excellence. Today it is not only populated by terrace people and students, but many families have also found a permanent home here.\n",
                 "http://www.aviewoncities.com/img/antwerp/kvefl141s.jpg"));
-    }
+    }*/
     private Assignment getRandomAssignment() {
         if(Circle != null) {
             Circle.remove();
