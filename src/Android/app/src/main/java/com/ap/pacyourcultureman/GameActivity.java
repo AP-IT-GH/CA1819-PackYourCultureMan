@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Looper;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -51,7 +53,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
-    List<Assignment> assignments = Login.assignments;
+    List<Assignment> assignments = ApiHelper.assignments;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -69,7 +71,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     static final LatLng PERTH = new LatLng(53.2289219, 4.5034171);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         NavigationView navigationView = (NavigationView) findViewById(R.id.menu);
