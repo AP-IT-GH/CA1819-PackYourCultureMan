@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181113181929_firstmigration")]
-    partial class firstmigration
+    [Migration("20181119135429_stats2")]
+    partial class stats2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,9 +27,9 @@ namespace ASPCoreApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Latitude");
+                    b.Property<string>("Latitude");
 
-                    b.Property<float>("Longitude");
+                    b.Property<string>("Longitude");
 
                     b.Property<string>("Name");
 
@@ -44,6 +44,27 @@ namespace ASPCoreApi.Migrations
                     b.HasKey("id");
 
                     b.ToTable("sights");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Statistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("highestScore");
+
+                    b.Property<int>("totalFailed");
+
+                    b.Property<int>("totalLost");
+
+                    b.Property<int>("totalScore");
+
+                    b.Property<int>("totalSucces");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("stats");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
@@ -62,13 +83,24 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
+                    b.Property<int?>("StatsId");
+
                     b.Property<string>("Username");
 
                     b.Property<int>("accessLevel");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StatsId");
+
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
+                        .WithMany()
+                        .HasForeignKey("StatsId");
                 });
 #pragma warning restore 612, 618
         }

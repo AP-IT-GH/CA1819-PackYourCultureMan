@@ -2,54 +2,57 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ASPCoreApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ASPCoreApi.Models;
 
 namespace ASPCoreApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatController : ControllerBase
+    public class StatisticsController : ControllerBase
     {
         private readonly DatabaseContext _context;
 
-        public StatController(DatabaseContext context)
+        public StatisticsController(DatabaseContext context)
         {
             _context = context;
         }
+        // GET: api/Statistics/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetStats([FromRoute] int id)
+        public async Task<IActionResult> GetStatistics([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var sight = await _context.statistics.FindAsync(id);
+            var statistics = await _context.stats.FindAsync(id);
 
-            if (sight == null)
+            if (statistics == null)
             {
                 return NotFound();
             }
 
-            return Ok(sight);
+            return Ok(statistics);
         }
+
+        // PUT: api/Statistics/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStats([FromRoute] int id, [FromBody] Statistics stats)
+        public async Task<IActionResult> PutStatistics([FromRoute] int id, [FromBody] Statistics statistics)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != stats.id)
+            if (id != statistics.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(stats).State = EntityState.Modified;
+            _context.Entry(statistics).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +60,7 @@ namespace ASPCoreApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StatsExists(id))
+                if (!StatisticsExists(id))
                 {
                     return NotFound();
                 }
@@ -67,11 +70,11 @@ namespace ASPCoreApi.Controllers
                 }
             }
 
-            return Ok();
+            return NoContent();
         }
-        private bool StatsExists(int id)
+        private bool StatisticsExists(int id)
         {
-            return _context.statistics.Any(e => e.id == id);
+            return _context.stats.Any(e => e.Id == id);
         }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181114171132_float to double")]
-    partial class floattodouble
+    [Migration("20181119135005_stats")]
+    partial class stats
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,9 +27,9 @@ namespace ASPCoreApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Latitude");
+                    b.Property<string>("Latitude");
 
-                    b.Property<double>("Longitude");
+                    b.Property<string>("Longitude");
 
                     b.Property<string>("Name");
 
@@ -48,7 +48,7 @@ namespace ASPCoreApi.Migrations
 
             modelBuilder.Entity("ASPCoreApi.Models.Statistics", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("StatisticsId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -62,9 +62,9 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<int>("totalSucces");
 
-                    b.HasKey("id");
+                    b.HasKey("StatisticsId");
 
-                    b.ToTable("statistics");
+                    b.ToTable("stats");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
@@ -83,13 +83,24 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
+                    b.Property<int?>("StatsStatisticsId");
+
                     b.Property<string>("Username");
 
                     b.Property<int>("accessLevel");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StatsStatisticsId");
+
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
+                        .WithMany()
+                        .HasForeignKey("StatsStatisticsId");
                 });
 #pragma warning restore 612, 618
         }

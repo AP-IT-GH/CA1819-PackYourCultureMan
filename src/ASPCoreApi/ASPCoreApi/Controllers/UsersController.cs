@@ -22,15 +22,18 @@ namespace ASP.Dtos
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
+        
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
         private readonly DatabaseContext _context;
 
         public UsersController(
+            
             IUserService userService,
             IMapper mapper,
             IOptions<AppSettings> appSettings, DatabaseContext context)
         {
+            
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
@@ -42,10 +45,10 @@ namespace ASP.Dtos
         public IActionResult Authenticate([FromBody]UserDto userDto)
         {
             var user = _userService.Authenticate(userDto.Username, userDto.Password);
-
+            
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
-
+            var stats = _context.stats.Find(user.Id);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -60,13 +63,18 @@ namespace ASP.Dtos
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
             // return basic user info (without password) and token to store client side
+            
+            
             return Ok(new
             {
                 Id = user.Id,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Token = tokenString
+                Token = tokenString,
+                Email = user.Email,
+                stats = stats           
+       
             });
         }
 
@@ -80,15 +88,10 @@ namespace ASP.Dtos
             try
             {
                 // save 
+              
+
                 _userService.Create(user, userDto.Password);
-                Statistics stats = new Statistics();
-                stats.id = userDto.Id;
-                stats.totalFailed = 0;
-                stats.totalLost = 0;
-                stats.totalScore = 0;
-                stats.totalSucces = 0;
-                stats.highestScore = 0;
-                _context.statistics.Add(stats);
+                
                 await _context.SaveChangesAsync();
                 return Ok();
             }

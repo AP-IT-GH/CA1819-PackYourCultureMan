@@ -30,8 +30,8 @@ namespace ASP.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.users.SingleOrDefault(x => x.Username == username);
-
+            var user = _context.users.FirstOrDefault(x => x.Username == username);
+            
             // check if username exists
             if (user == null)
                 return null;
@@ -41,6 +41,7 @@ namespace ASP.Services
                 return null;
 
             // authentication successful
+            
             return user;
         }
 
@@ -91,7 +92,14 @@ namespace ASP.Services
             {
                 user.accessLevel = 0;
             }
-
+            var stats = new Statistics
+            {              
+                totalFailed = 0,
+                totalLost = 0,
+                totalScore = 0,
+                totalSucces = 0,
+                highestScore = 0
+            };                  
             _context.users.Add(user);
             _context.SaveChanges();
 
