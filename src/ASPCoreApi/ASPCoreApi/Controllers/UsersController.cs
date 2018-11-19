@@ -67,7 +67,8 @@ namespace ASP.Dtos
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Token = tokenString,
-                Email =  user.Email
+                Email = user.Email,
+                stats = user.Stats
             });
         }
 
