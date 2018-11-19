@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAP8UurYD/u0GxM0h0FpG28wAAAAACAAAAAAAQZgAAAAEAACAAAAD4gRdfhMTgLaVdHMmxe9zf/8ef8UTcET+6dcBTJoxdbgAAAAAOgAAAAAIAACAAAACpVJbuRWLZDBFUuzuHgLJ/ErJ2hX+255RSE9kftV7ozoAAAADZWFFrxS1H+XRjW1r7PZUSxjfQ7+3xUN49f7lxyK28G7pX9X3eETTE6JgeaElxDeEXcwAnaQQAYVLAPEm5gXGeihcT1SVXK5s5CONjziAualN6v7tg4yehukqxGXSJtjTMNAk4qu3/CXK4iVUADPO2iccm2yJLZKUqM8poDuU9QUAAAADyJdgXB8AceVxGEMvS/IfKvxhxYb5m8qPuk3LikLRUXDy0S83BCgJWQqpoUNhbikq7Ou/46jLg7kp8rNXSDP5L</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAP8UurYD/u0GxM0h0FpG28wAAAAACAAAAAAAQZgAAAAEAACAAAACvZSFNk4kBUrf5SZlR7hen2hiGaL5/bDux4eWuywxs0wAAAAAOgAAAAAIAACAAAADCEdsvZOGFzwMeuNjRf/77yCXlV1M/pyqL9jm0KKywtIAAAACEqcRubAKhE8z1IOcE02Rj0/BUVv7U1fJf9uq+n00l6yY9S1iuGmb40Xko/uSAcWhRaogQ1bGfzJxBkZW0xHT2zTwXkQeFLJaZ0Kg3BgfvuugBbgtQu62TZ0iWjEkbI7N+V67GkZ/4hiE/Rs2RPKd+1pI3KazURowA3VI+wV291kAAAACQiPUowKZeEFmUZGRolC/VCfk1xGfQkVCA4zB3uUnoRSnvTiliSQcMRsbN3C1Z/cCkmRsUeAdHbvNJXyaJwFdU</EncryptedPassword>
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="DefaultConnection">

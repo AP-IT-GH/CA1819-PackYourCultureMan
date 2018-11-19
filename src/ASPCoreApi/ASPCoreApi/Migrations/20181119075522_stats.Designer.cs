@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181114190812_double to string")]
-    partial class doubletostring
+    [Migration("20181119075522_stats")]
+    partial class stats
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,7 +64,7 @@ namespace ASPCoreApi.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("statistics");
+                    b.ToTable("Statistics");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
@@ -83,13 +83,24 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
+                    b.Property<int?>("Statsid");
+
                     b.Property<string>("Username");
 
                     b.Property<int>("accessLevel");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Statsid");
+
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
+                        .WithMany()
+                        .HasForeignKey("Statsid");
                 });
 #pragma warning restore 612, 618
         }

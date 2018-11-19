@@ -66,7 +66,8 @@ namespace ASP.Dtos
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Token = tokenString
+                Token = tokenString,
+                Email =  user.Email
             });
         }
 
@@ -81,14 +82,8 @@ namespace ASP.Dtos
             {
                 // save 
                 _userService.Create(user, userDto.Password);
-                Statistics stats = new Statistics();
-                stats.id = userDto.Id;
-                stats.totalFailed = 0;
-                stats.totalLost = 0;
-                stats.totalScore = 0;
-                stats.totalSucces = 0;
-                stats.highestScore = 0;
-                _context.statistics.Add(stats);
+           
+                
                 await _context.SaveChangesAsync();
                 return Ok();
             }
