@@ -15,6 +15,7 @@ namespace ASPCoreApi.Models
 
         public DbSet<Users> users { get; set; }
         public DbSet<Sight> sights { get; set; }
+        public DbSet<Dot> dots { get; set; }
         public DbSet<Statistics> statistics { get; set; }
 
     }
