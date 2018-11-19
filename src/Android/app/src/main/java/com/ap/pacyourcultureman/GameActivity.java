@@ -65,17 +65,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
-    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc;
+    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore;
     ImageView imgSight;
     Marker selectedMarker;
     Location location;
     Circle Circle;
     Marker perth;
+    int currentScore;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        currentScore = 0;
         NavigationView navigationView = (NavigationView) findViewById(R.id.menu);
         bottomPanel = findViewById(R.id.sliding_layout);
         bottomPanel.setPanelHeight(0);
@@ -84,6 +86,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtWebsite = findViewById(R.id.txtWebsite);
         txtShortDesc = findViewById(R.id.txtShortDesc);
         txtLongDesc = findViewById(R.id.txtLongDesc);
+        txtCurrentScore = findViewById(R.id.game_txt_currentscore);
+        txtCurrentScore.setText("x " + currentScore);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -201,7 +205,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMarkerDragEnd(Marker marker) {
                 Log.d("Draggable Marker loc: ", "latitude : "+ marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-                collisionDetectMarker(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon), 0.0001);
+                if(collisionDetectMarker(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon), 0.0001)){
+                    Log.d("assigmentHit", "assigmentHit");
+                }
+                for(int i = 0; i < dots.size(); i++) {
+                    if(collisionDetectMarker(marker.getPosition(), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 0.00007)) {
+                        Log.v("Dot", "dot hit");
+                        currentScore++;
+                        txtCurrentScore.setText("x " + currentScore);
+                    }
+                }
+                if(collisionDetectMarker(marker.getPosition(), Blinky.getLoc(), 0.00007)) {
+                    Log.d("Spook", "hit");
+                }
             }
 
             @Override
@@ -398,9 +414,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         } else super.onBackPressed();
 
     }
-    private void collisionDetectMarker(LatLng latLng1, LatLng latLng2, Double hitboxSize) {
+    private boolean collisionDetectMarker(LatLng latLng1, LatLng latLng2, Double hitboxSize) {
         if(latLng1.latitude > latLng2.latitude - hitboxSize && latLng1.latitude < latLng2.latitude + hitboxSize && latLng1.longitude > latLng2.longitude - hitboxSize && latLng1.longitude < latLng2.longitude + hitboxSize) {
-            Log.d("Hit", "fucking hit motherfucker ");
-        }
+          //  Log.d("Hit", "fucking hit motherfucker ");
+            return true;
+            }
+            else return false;
     }
 }

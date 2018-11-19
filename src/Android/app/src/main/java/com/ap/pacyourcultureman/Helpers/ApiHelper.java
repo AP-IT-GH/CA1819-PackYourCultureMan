@@ -78,6 +78,10 @@ public class ApiHelper {
                         Log.d("TAG", stringBuilder.toString());
                          run = false;
                     }
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        resp = "Server down";
+                        run = false;
+                    }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                         resp = "User created";
                         run = false;
@@ -132,6 +136,10 @@ public class ApiHelper {
                         resp = stringBuilder.toString();
                         resp= resp.substring(resp.indexOf(':') + 2, resp.lastIndexOf('"'));
                         Log.i("Reply", resp);
+                        run = false;
+                    }
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        resp = "Server down";
                         run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
