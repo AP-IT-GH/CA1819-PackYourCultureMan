@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import android.os.Handler;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
@@ -33,10 +34,10 @@ public class Register extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_form);
-        targetURL = "https://pacyourculturemanapi.azurewebsites.net/users/register";
+        targetURL = "https://aspcoreapipycm.azurewebsites.net/Users/register";
         resp = "";
         reply = "";
-        apiHelper = new ApiHelper(targetURL);
+        apiHelper = new ApiHelper();
         txt_Errorchecker = findViewById(R.id.reg_txt_errorCecker);
         btn_Register = findViewById(R.id.reg_btn_register);
         edit_user = findViewById(R.id.reg_edit_username);
@@ -72,7 +73,17 @@ public class Register extends Activity {
                     errorSetter("Password must include atleast 1 lowercase char, 1 uppercase char and 1 digit");
                 }
                 else {
-                    sendPost();
+                    apiHelper.sendPostRegister("https://aspcoreapipycm.azurewebsites.net/Users/register", username, password, firstName, lastName, email);
+                    while(apiHelper.run) {
+
+                    }
+                    errorSetter(apiHelper.getResponse());
+                    if(apiHelper.getResponse() == "User created") {
+                   //     Looper.prepare();
+                        mHandler = new Handler();
+                        mHandler.postDelayed(mLaunchTask, 1500);
+                    //    Looper.loop();
+                    }
                 }
             }
         });
@@ -94,66 +105,6 @@ public class Register extends Activity {
                 txt_Errorchecker.setText(errormsg);
             }
         });
-    }
-    public void sendPost() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    url = new URL(targetURL);
-                    conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    conn.setRequestProperty("Accept", "application/json");
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-                    JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("username", username);
-                    jsonParam.put("password", password);
-                    jsonParam.put("firstname", firstName);
-                    jsonParam.put("lastname", lastName);
-                    jsonParam.put("email", email);
-                    Log.i("JSON", jsonParam.toString());
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    os.writeBytes(jsonParam.toString());
-                    os.flush();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    if (conn.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
-                        InputStreamReader streamReader = new InputStreamReader(conn.getErrorStream());
-                        BufferedReader bufferedReader = new BufferedReader(streamReader);
-                        String response = null;
-                        while ((response = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(response + "\n");
-                        }
-                        bufferedReader.close();
-                        Log.d("TAG" ,stringBuilder.toString());
-                        reply = stringBuilder.toString();
-                        reply = reply.substring(reply.indexOf(':') + 2, reply.lastIndexOf('"'));
-                        Log.i("Reply", reply);
-                        errorSetter(reply);
-                    }
-                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        reply = "User created";
-                        errorSetter(reply);
-                        Looper.prepare();
-                        mHandler = new Handler();
-                        mHandler.postDelayed(mLaunchTask, 1500);
-                        Looper.loop();
-                    }
-                    if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        reply = "Unauthorized";
-                    }
-                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-                    Log.i("MSG" , conn.getResponseMessage());
-                    os.close();
-                    conn.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-
     }
     private Runnable mLaunchTask = new Runnable() {
         public void run() {

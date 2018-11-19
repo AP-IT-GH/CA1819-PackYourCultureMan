@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using ASP.Services;
 using ASP.Dtos;
 using ASPCoreApi.Models;
+using System.Threading.Tasks;
 
 namespace ASP.Dtos
 {
@@ -23,15 +24,17 @@ namespace ASP.Dtos
         private IUserService _userService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
+        private readonly DatabaseContext _context;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings, DatabaseContext context)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -69,7 +72,7 @@ namespace ASP.Dtos
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody]UserDto userDto)
+        public async Task<IActionResult> Register([FromBody]UserDto userDto)
         {
             // map dto to entity
             var user = _mapper.Map<Users>(userDto);
@@ -78,6 +81,15 @@ namespace ASP.Dtos
             {
                 // save 
                 _userService.Create(user, userDto.Password);
+                Statistics stats = new Statistics();
+                stats.id = userDto.Id;
+                stats.totalFailed = 0;
+                stats.totalLost = 0;
+                stats.totalScore = 0;
+                stats.totalSucces = 0;
+                stats.highestScore = 0;
+                _context.statistics.Add(stats);
+                await _context.SaveChangesAsync();
                 return Ok();
             }
             catch (AppException ex)
