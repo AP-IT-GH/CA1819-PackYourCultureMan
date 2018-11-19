@@ -4,14 +4,16 @@ using ASPCoreApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181119135005_stats")]
+    partial class stats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace ASPCoreApi.Migrations
 
             modelBuilder.Entity("ASPCoreApi.Models.Statistics", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StatisticsId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -60,7 +62,7 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<int>("totalSucces");
 
-                    b.HasKey("Id");
+                    b.HasKey("StatisticsId");
 
                     b.ToTable("stats");
                 });
@@ -81,7 +83,7 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<int?>("StatsId");
+                    b.Property<int?>("StatsStatisticsId");
 
                     b.Property<string>("Username");
 
@@ -89,7 +91,7 @@ namespace ASPCoreApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatsId");
+                    b.HasIndex("StatsStatisticsId");
 
                     b.ToTable("users");
                 });
@@ -98,7 +100,7 @@ namespace ASPCoreApi.Migrations
                 {
                     b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
                         .WithMany()
-                        .HasForeignKey("StatsId");
+                        .HasForeignKey("StatsStatisticsId");
                 });
 #pragma warning restore 612, 618
         }
