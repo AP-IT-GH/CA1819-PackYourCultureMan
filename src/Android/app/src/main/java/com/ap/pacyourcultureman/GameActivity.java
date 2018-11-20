@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -72,6 +73,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Circle Circle;
     Marker perth;
     int currentScore;
+    CollisionDetection collisionDetection;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtLongDesc = findViewById(R.id.txtLongDesc);
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
         txtCurrentScore.setText("x " + currentScore);
+        collisionDetection = new CollisionDetection();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -205,7 +208,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMarkerDragEnd(Marker marker) {
                 Log.d("Draggable Marker loc: ", "latitude : "+ marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-                if(collisionDetectMarker(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon), 0.0001)){
+                if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.latLng, 10)){
                     Log.d("assigmentHit", "assigmentHit");
                 }
                 for(int i = 0; i < dots.size(); i++) {
@@ -214,9 +217,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         currentScore++;
                         txtCurrentScore.setText("x " + currentScore);
                     }
-                }
-                if(collisionDetectMarker(marker.getPosition(), Blinky.getLoc(), 0.00007)) {
-                    Log.d("Spook", "hit");
                 }
             }
 
