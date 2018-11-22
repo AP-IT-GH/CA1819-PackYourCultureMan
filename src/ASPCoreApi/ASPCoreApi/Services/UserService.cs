@@ -93,13 +93,16 @@ namespace ASP.Services
                 user.accessLevel = 0;
             }
             var stats = new Statistics
-            {              
+            {
+                
                 totalFailed = 0,
                 totalLost = 0,
                 totalScore = 0,
                 totalSucces = 0,
                 highestScore = 0
-            };                  
+            };
+            
+            
             _context.users.Add(user);
             _context.SaveChanges();
 

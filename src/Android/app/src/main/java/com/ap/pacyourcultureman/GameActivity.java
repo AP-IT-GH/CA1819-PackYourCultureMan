@@ -215,7 +215,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         txtCurrentScore.setText("x " + currentScore);
                     }
                 }
-                if(collisionDetectMarker(marker.getPosition(), Blinky.getLoc(), 0.00007)) {
+                if(collisionDetectMarker(marker.getPosition(), Blinky.marker.getPosition(), 0.00007)) {
                     Log.d("Spook", "hit");
                 }
             }
@@ -297,7 +297,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 for(int i = 0; i < dots.size(); i++) {
                     collisionDetectMarker(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 0.000100);
                 }
+                for(int i = 0; i < assignments.size(); i++) {
+                    LatLng latLng1 = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
+                    if(!collisionDetectMarker(markable, latLng1, 0.00001)) {
 
+                    }
+                }
 /*                circleOptions.center(latLng);
                 circleOptions.radius(20);
                 circleOptions.strokeColor(Color.BLUE);
