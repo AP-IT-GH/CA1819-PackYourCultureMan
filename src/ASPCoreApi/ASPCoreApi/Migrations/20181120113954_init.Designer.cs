@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181114190812_double to string")]
-    partial class doubletostring
+    [Migration("20181120113954_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,23 @@ namespace ASPCoreApi.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ASPCoreApi.Models.Dot", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longitude");
+
+                    b.Property<bool>("Taken");
+
+                    b.HasKey("id");
+
+                    b.ToTable("dots");
+                });
 
             modelBuilder.Entity("ASPCoreApi.Models.Sight", b =>
                 {
@@ -48,7 +65,7 @@ namespace ASPCoreApi.Migrations
 
             modelBuilder.Entity("ASPCoreApi.Models.Statistics", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -62,9 +79,9 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<int>("totalSucces");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("statistics");
+                    b.ToTable("stats");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
@@ -83,13 +100,24 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
+                    b.Property<int?>("StatsId");
+
                     b.Property<string>("Username");
 
                     b.Property<int>("accessLevel");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StatsId");
+
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
+                        .WithMany()
+                        .HasForeignKey("StatsId");
                 });
 #pragma warning restore 612, 618
         }

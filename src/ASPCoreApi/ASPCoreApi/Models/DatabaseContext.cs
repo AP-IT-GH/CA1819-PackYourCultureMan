@@ -11,11 +11,11 @@ namespace ASPCoreApi.Models
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
 
-        }
-
+        }       
         public DbSet<Users> users { get; set; }
         public DbSet<Sight> sights { get; set; }
-        public DbSet<Statistics> statistics { get; set; }
+        public DbSet<Dot> dots { get; set; }
+        public DbSet<Statistics> stats { get; set; }
 
     }
 }

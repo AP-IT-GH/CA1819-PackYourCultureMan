@@ -27,13 +27,16 @@
                 android:id="@+id/imageView"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/blinky" />
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/pacman_dot" />
 
             <TextView
-                android:layout_width="20dp"
+                android:id="@+id/game_txt_currentscore"
+                android:layout_width="35dp"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:text="5" />
+                android:gravity="center"
+                android:text="x 0"
+                android:textColor="@android:color/holo_orange_light" />
 
             <ImageView
                 android:id="@+id/imageView2"

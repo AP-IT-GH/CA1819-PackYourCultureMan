@@ -50,6 +50,7 @@ public class Ghost {
         Bitmap smallerblinky = Bitmap.createScaledBitmap(bitmap, width, height, false);
 
         LatLng spookyloc = new LatLng(51.230108, 4.418516);
+        location = spookyloc;
         marker = mMap.addMarker(new MarkerOptions()
                 .position(spookyloc)
                 .icon(BitmapDescriptorFactory.fromBitmap(smallerblinky)));
