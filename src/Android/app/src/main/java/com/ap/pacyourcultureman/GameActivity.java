@@ -140,7 +140,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.227076, 4.417227), 16));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.227076, 4.417227), 15));
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
@@ -149,7 +149,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
         //dots
         Blinky.Draw(mMap, getApplicationContext());
-        Blinky.Move(new LatLng(51.227076, 4.417227));
+        Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
@@ -217,7 +217,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 .position(PERTH)
                 .draggable(true));
 
-        PolylineOptions rectOptions2 = new PolylineOptions()
+        /*PolylineOptions rectOptions2 = new PolylineOptions()
                 .add(new LatLng(currentAssigment.lat - 0.0001, currentAssigment.lon - 0.0001))
                 .add(new LatLng(currentAssigment.lat - 0.0001, currentAssigment.lon + 0.0001))  // North of the previous point, but at the same longitude
                 .add(new LatLng(currentAssigment.lat + 0.0001, currentAssigment.lon + 0.0001))  // Same latitude, and 30km to the west
@@ -226,6 +226,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
 // Get back the mutable Polyline
         Polyline polyline2 = mMap.addPolyline(rectOptions2);
+        */
     }
 
     @Override
@@ -268,7 +269,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetectMarker(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 0.000100);
 
                 }
-
 
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());

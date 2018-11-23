@@ -2,7 +2,11 @@ package com.ap.pacyourcultureman;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
+import android.util.Size;
 
 import com.ap.pacyourcultureman.R;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,15 +15,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.commons.digester.SetPropertiesRule;
+
+import java.util.ArrayList;
+
 import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
 
 public class Ghost {
     private LatLng location;
     private int id;
-    private Marker marker;
+    public Marker marker;
+    private ArrayList<LatLng> steps = new ArrayList<LatLng>(){};
+    private int iter;
+    Handler handler;
 
     public Ghost(){
-
+        steps.add(new LatLng(51.2298337, 4.4208078));
+        steps.add(new LatLng(51.227979, 4.418715));
+        steps.add(new LatLng(51.227706, 4.416001));
+        steps.add(new LatLng(51.229796, 4.415240));
+        steps.add(new LatLng(51.229816, 4.420570));
     }
 
     public int setColor(){
@@ -40,7 +55,32 @@ public class Ghost {
                 .icon(BitmapDescriptorFactory.fromBitmap(smallerblinky)));
     }
 
-    public void Move(LatLng dest){
-        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical());
+    public void FollowPath(LatLng origin, LatLng dest){
+        handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+
+        handler.post(new Runnable() {
+            long elapsed;
+            @Override
+            public void run() {
+                elapsed = SystemClock.uptimeMillis() - start;
+                Log.d("Movement", "Moving to point: " + iter);
+                Move(steps.get(iter), marker);
+                iter++;
+                if (iter < steps.size()){
+                    handler.postDelayed(this, 2000);
+                }
+            }
+        });
+    }
+
+    public void Move(LatLng dest, Marker mrkr){
+        Log.d("Movement", "MarkerLocation: " + mrkr.getPosition());
+        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), 2000);
+
+    }
+
+    public void handlerPostHelper(final int iter, long time){
+
     }
 }
