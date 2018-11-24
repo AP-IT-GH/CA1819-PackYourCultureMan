@@ -71,7 +71,7 @@ public class Login extends Activity {
         chb_loginauto = findViewById(R.id.login_chb_autologin);
         Intent intent = getIntent();
         queue = Volley.newRequestQueue(this);
-        Load();
+        //Load();
         String intentuser = intent.getStringExtra("username");
         String intentpassword = intent.getStringExtra("pass");
         if (intentuser != null && intentpassword != null) {
@@ -85,7 +85,7 @@ public class Login extends Activity {
             password = edit_password.getText().toString();
           //  sendPost();
         }
-        btn_login.setOnClickListener(new View.OnClickListener() {
+      /*  btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 errorChecker.setVisibility(View.GONE);
@@ -123,17 +123,37 @@ public class Login extends Activity {
                 Intent intent = new Intent(getBaseContext(), Register.class);
                 startActivity(intent);
             }
-        });
+        });*/
         btn_dev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), GameActivity.class);
-                startActivity(intent);
-            }
+                //apiHelper.getDots();
+                apiHelper.getAssignments();
+
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                while (apiHelper.run) {}
+                                if(chb_rememberme.isChecked()) {
+                                    //Save();
+                                }
+                                Intent intent = new Intent(getBaseContext(), GameActivity.class);
+                                startActivity(intent);
+                                Log.d("Nailed", "it");
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
+                }
+
         });
     }
 
-    private void errorSetter(final String errormsg) {
+   /* private void errorSetter(final String errormsg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -188,5 +208,5 @@ public class Login extends Activity {
             }
         }
     }
-
+*/
 }

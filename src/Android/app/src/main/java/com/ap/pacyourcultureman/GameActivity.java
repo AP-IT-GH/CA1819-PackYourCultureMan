@@ -52,12 +52,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
-    //dots
-    List<Dot> dots = new ArrayList<>();
-    //List<Dot> dots = Login.dots;
-    //dots
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
+    List<Dot> dots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -109,11 +106,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
-        //dots
-        for (int i = 0; i < 10; i++) {
-            dots.add( new Dot( 51.232356 -(i * 0.001) , 4.409553 + (i * 0.001)));
-        }
-        //dots
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
       //  hardcodedAssigments();
@@ -152,9 +144,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        //dots
-        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
-        //dots
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
@@ -165,6 +154,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
             assigmentMarkers.add(mark);
         }
+        //dots
+        //for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        //dots
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
