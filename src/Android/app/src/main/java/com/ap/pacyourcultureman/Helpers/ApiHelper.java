@@ -231,7 +231,7 @@ public class ApiHelper {
             @Override
             public void run() {
                 try {
-                    final String url = "https://api.myjson.com/bins/6r9im";
+                    final String url = "https://api.myjson.com/bins/xscdq";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {

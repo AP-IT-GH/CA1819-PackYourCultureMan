@@ -155,7 +155,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             assigmentMarkers.add(mark);
         }
         //dots
-        //for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
         //dots
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {

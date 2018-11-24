@@ -52,7 +52,7 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    ApiHelper apiHelper;
+    ApiHelper apiHelper,apiHelper2;
     Boolean running;
     Handler handler;
     @Override
@@ -60,6 +60,7 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_form);
         apiHelper = new ApiHelper();
+        apiHelper2 = new ApiHelper();
         targetURL = "https://pacyourculturemanapi.azurewebsites.net/users/authenticate";
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
@@ -127,7 +128,7 @@ public class Login extends Activity {
         btn_dev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //apiHelper.getDots();
+                apiHelper2.getDots();
                 apiHelper.getAssignments();
 
                     Thread thread = new Thread(new Runnable() {
