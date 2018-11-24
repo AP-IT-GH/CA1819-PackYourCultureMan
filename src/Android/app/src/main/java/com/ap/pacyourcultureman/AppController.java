@@ -1,4 +1,4 @@
-package com.ap.pacyourcultureman.Helpers;
+package com.ap.pacyourcultureman;
 
 import android.app.Application;
 import android.text.TextUtils;
