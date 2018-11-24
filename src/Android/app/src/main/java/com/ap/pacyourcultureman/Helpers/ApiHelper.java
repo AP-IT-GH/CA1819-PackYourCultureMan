@@ -1,19 +1,14 @@
 package com.ap.pacyourcultureman.Helpers;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.ap.pacyourcultureman.AppController;
 import com.ap.pacyourcultureman.Assignment;
-import com.ap.pacyourcultureman.GameActivity;
 import com.ap.pacyourcultureman.Player;
-import com.google.android.gms.common.api.Api;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +18,12 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ApiHelper {
     String targetURL;
@@ -53,11 +49,22 @@ public class ApiHelper {
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
                     JSONObject jsonParam = new JSONObject();
+                    JSONObject jsonObject1 = new JSONObject();
+                    try {
+                        jsonObject1.put("highestScore", 0);
+                        jsonObject1.put("totalScore", 0);
+                        jsonObject1.put("totalFailed", 0);
+                        jsonObject1.put("totalSucces", 0);
+                        jsonObject1.put("totalLost", 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     jsonParam.put("username", username);
                     jsonParam.put("password", password);
                     jsonParam.put("firstname", firstName);
                     jsonParam.put("lastname", lastName);
                     jsonParam.put("email", email);
+                    jsonParam.put("stats", jsonObject1);
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
@@ -143,6 +150,7 @@ public class ApiHelper {
                         run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        Log.d("Succes", "Success");
                         String reply;
                         InputStream in = conn.getInputStream();
                         StringBuffer sb = new StringBuffer();
@@ -155,14 +163,15 @@ public class ApiHelper {
                         } finally {
                             in.close();
                         }
-                        String[] parts = reply.split(",");
-                        for(int i = 0; i < parts.length; i++) {
-                            if(i == 0) parts[i] = parts[i].substring(parts[i].indexOf(':') + 1, parts[i].length());
-                            else {
-                                parts[i] = parts[i].substring(parts[i].indexOf(':') + 2, parts[i].length() - 1);
-                            }
-                            Log.d("PARTS", parts[i]);
-                        }
+                        JSONObject jsonObject = new JSONObject(reply);
+                        String username = jsonObject.getString("username");
+                        String firstName = jsonObject.getString("firstName");
+                        String lastName = jsonObject.getString("lastName");
+                        String email = jsonObject.getString("email");
+                        Log.d("XXXXX", username);
+                        Log.d("XXXXX", firstName);
+                        Log.d("XXXXX", lastName);
+                        Log.d("XXXXX", email);
                  //       player = new Player(Integer.valueOf(parts[0]), parts[1], parts[2], parts[3], parts[4]);
                         resp = "Login success";
                         run = false;
@@ -189,6 +198,11 @@ public class ApiHelper {
             public void run() {
                 try {
                     final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
+                    JSONObject parameters = new JSONObject();
+                    try {
+                        parameters.put("key", "value");
+                    } catch (Exception e) {
+                    }
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -217,12 +231,30 @@ public class ApiHelper {
                         public void onErrorResponse(VolleyError error) {
                             VolleyLog.d("MainActivity", error.getMessage());
                         }
-                    });
-                    AppController.getInstance().addToRequestQueue(request);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    }) {
+                        //This is for Headers If You Needed
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Content-Type", "application/json; charset=UTF-8");
+                            params.put("token", " ");
+                            return params;
+                        }
+
+                        //Pass Your Parameters here
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("User", " ");
+                            params.put("Pass", "");
+                            return params;
+                        }
+                    };
+                    AppController.getInstance().
+
+                        addToRequestQueue(request);
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
-            }
         });
         thread.start();
     }
