@@ -81,7 +81,7 @@ public class Ghost {
 
     }
 
-    public void handlerPostHelper(final int iter, long time){
-
+    public LatLng getLocation(){
+        return marker.getPosition();
     }
 }
