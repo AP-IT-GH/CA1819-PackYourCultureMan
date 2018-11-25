@@ -102,6 +102,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         intent = new Intent(getBaseContext(), Login.class);
                         startActivity(intent);
                         break;
+                    case R.id.nav_sights:
+                        intent = new Intent(getBaseContext(), Sights.class);
+                        startActivity(intent);
+                        break;
+
                 }
                 return false;
             }

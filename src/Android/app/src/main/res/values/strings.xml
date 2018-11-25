@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PacYourCultureMan</string>
     <string name="title_activity_game">PackYourCultureMan</string>
+    <string name="sights">Sights</string>
+    <string name="reset">Reset</string>
+    <string name="logout">Logout</string>
+    <string name="statistics">Statistics</string>
+    <string name="settings">Settings</string>
+    <string name="my_account">My Account</string>
 </resources>
