@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 @Component({
-  selector: 'app-webapi',
+  selector: 'app-sights',
   templateUrl: './sights.component.html',
   styleUrls: ['./sights.component.scss']
 })
@@ -22,7 +22,7 @@ export class SightsComponent  implements OnInit {
  ngOnInit() { this. getSights(); }
 
    getDataFromAPI(){
-     return this.http.get(`https://aspcoreapipycm.azurewebsites.net/Sights`)
+     return this.http.get(`https://api.myjson.com/bins/iilka`)
      .map(res => res)
    }
 

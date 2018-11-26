@@ -375,7 +375,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     txtWebsite.setText(assignments.get(i).website);
                 }
                 else txtWebsite.setVisibility(View.INVISIBLE);
-           //     Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
+               Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
                 txtShortDesc.setText(assignments.get(i).shortDescr);
                 txtLongDesc.setText(assignments.get(i).longDescr);
             }
