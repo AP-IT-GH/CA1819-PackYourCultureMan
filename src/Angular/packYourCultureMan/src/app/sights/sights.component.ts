@@ -22,7 +22,7 @@ export class SightsComponent  implements OnInit {
  ngOnInit() { this. getSights(); }
 
    getDataFromAPI(){
-     return this.http.get(`https://api.myjson.com/bins/iilka`)
+     return this.http.get(`http://192.168.1.51:56898/sights`)
      .map(res => res)
    }
 

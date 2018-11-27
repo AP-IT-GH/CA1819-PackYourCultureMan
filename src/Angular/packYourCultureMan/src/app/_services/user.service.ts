@@ -9,22 +9,22 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getAll() {
-        return this.http.get<User[]>(`https://aspcoreapipycm.azurewebsites.net/Users`);
+        return this.http.get<User[]>(`http://192.168.1.51:56898/Users`);
     }
 
     getById(id: number) {
-        return this.http.get(`https://aspcoreapipycm.azurewebsites.net/Users` + id);
+        return this.http.get(`http://192.168.1.51:56898/Users` + id);
     }
 
     register(user: User) {
-        return this.http.post(`https://aspcoreapipycm.azurewebsites.net/Users/register`, user);
+        return this.http.post(`http://192.168.1.51:56898/Users/register`, user);
     }
 
     update(user: User) {
-        return this.http.put(`https://aspcoreapipycm.azurewebsites.net/Users` + user.id, user);
+        return this.http.put(`http://192.168.1.51:56898/Users` + user.id, user);
     }
 
     delete(id: number) {
-        return this.http.delete(`https://aspcoreapipycm.azurewebsites.net/Users` + id);
+        return this.http.delete(`http://192.168.1.51:56898/Users` + id);
     }
 }

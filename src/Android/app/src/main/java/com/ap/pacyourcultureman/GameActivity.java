@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,15 +177,16 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
-        for(int i = 0; i < assignments.size(); i++) {
+        //dots
+        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        //dots
+      for(int i = 0; i < assignments.size(); i++) {
             Marker mark;
             LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
             mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
             assigmentMarkers.add(mark);
         }
-        //dots
-        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
-        //dots
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);

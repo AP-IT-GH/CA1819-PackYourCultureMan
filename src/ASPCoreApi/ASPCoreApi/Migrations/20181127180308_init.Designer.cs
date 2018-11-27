@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181127024835_gamestat")]
-    partial class gamestat
+    [Migration("20181127180308_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

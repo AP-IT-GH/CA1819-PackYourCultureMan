@@ -200,8 +200,7 @@ public class ApiHelper {
             public void run() {
                 try {
                     //final String url = "https://api.myjson.com/bins/iilka";
-
-                    final String url = "http://192.168.0.198:56898/Sights";
+                    final String url = "http://192.168.1.51:56898/Sights";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -241,13 +240,48 @@ public class ApiHelper {
         thread.start();
     }
 
+
+
+    public void getUser(int userId){
+        run = true;
+        int _userId = userId;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    final String url = "http://192.168.1.51:56898/Sights";
+                }catch (Exception e){  e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+
+    public void getStats() {
+
+    }
+    public HttpURLConnection getConn() {
+        return this.conn;
+    }
+    public String getResponse() {
+        return resp;
+    }
+    public String getJwt(){
+        return jwt;
+    }
+    public int getUserId(){
+        return userId;
+    }
+
+
     public void getDots() {
         run = true;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final String url = "https://api.myjson.com/bins/xscdq";
+                    final String url = "http://192.168.1.51:56898/Dot";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -275,44 +309,12 @@ public class ApiHelper {
                         }
                     });
                     AppController.getInstance().addToRequestQueue(request);
-                } catch (Exception e) {  e.printStackTrace();
-                }
-            }
-        });
-       thread.start();
-    }
-
-
-    public void getUser(int userId){
-        run = true;
-        int _userId = userId;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    final String url = "http://192.168.0.198:56898/Sights";
-                }catch (Exception e){  e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
         thread.start();
-    }
-}
-
-    public void getStats() {
-
-    }
-    public HttpURLConnection getConn() {
-        return this.conn;
-    }
-    public String getResponse() {
-        return resp;
-    }
-    public String getJwt(){
-        return jwt;
-    }
-    public int getUserId(){
-        return userId;
     }
 }
 
