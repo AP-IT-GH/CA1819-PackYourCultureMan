@@ -3,10 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <view class="android.support.v7.widget.RecyclerView"
+    <TextView
+        android:id="@+id/textView_sightName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Unlocked Sights"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:layout_marginBottom="5dp"/>
+
+    <view
         android:id="@+id/recycler_view"
+        class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/darker_gray" />
 
 </RelativeLayout>

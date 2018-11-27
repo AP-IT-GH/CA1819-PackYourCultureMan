@@ -20,7 +20,15 @@ import java.util.ArrayList;
 public class SightsAdapter extends RecyclerView.Adapter<SightsAdapter.SightsViewHolder>{
     private Context mContext;
     private ArrayList<Assignment> mSightList;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setonItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
     public SightsAdapter(Context context,ArrayList<Assignment> sightList){
         mContext = context;
         mSightList = sightList;
@@ -55,6 +63,18 @@ public class SightsAdapter extends RecyclerView.Adapter<SightsAdapter.SightsView
             super(itemView);
             mImageView = itemView.findViewById(R.id.imageView_sight);
             mTextviewName = itemView.findViewById(R.id.textView_sightName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
