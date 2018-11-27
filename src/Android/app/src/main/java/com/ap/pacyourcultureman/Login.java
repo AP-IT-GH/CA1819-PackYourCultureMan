@@ -92,7 +92,6 @@ public class Login extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apiHelper2.getDots();
                 errorChecker.setVisibility(View.GONE);
                 String user = edit_email.getText().toString();
                 String pass = edit_password.getText().toString();
@@ -138,9 +137,6 @@ public class Login extends Activity {
        btn_dev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apiHelper2.getDots();
-                apiHelper.getAssignments();
-
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
