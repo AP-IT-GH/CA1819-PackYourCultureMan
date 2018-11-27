@@ -153,12 +153,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
-//        for(int i = 0; i < assignments.size(); i++) {
-//            Marker mark;
-//            LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
-//            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
-//            assigmentMarkers.add(mark);
-//        }
+        for(int i = 0; i < assignments.size(); i++) {
+            Marker mark;
+            LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
+            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
+            assigmentMarkers.add(mark);
+        }
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
         //dots
