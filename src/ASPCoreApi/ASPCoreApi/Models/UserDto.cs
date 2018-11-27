@@ -18,5 +18,9 @@ namespace ASPCoreApi.Models
 
         [ForeignKey("StatsId")]
         public Statistics Stats { get; set; }
+
+        public int gameStatsId { get; set; }
+        [ForeignKey("gameStatsId")]
+        public GameStats gameStats { get; set; }
     }
 }

@@ -54,7 +54,9 @@ namespace ASP.Services
             foreach (var user in users)
             {
                 var stats = _context.stats.Find(user.StatsId);
+                var gameStats = _context.gameStats.Find(user.gameStatsId);
                 user.Stats = stats;
+                user.gameStats = gameStats;
             }
             return users;
         }
@@ -63,7 +65,9 @@ namespace ASP.Services
         {
             var userIn = _context.users.Find(id);
             var statsIn = _context.stats.Find(userIn.StatsId);
+            var gameStatsIn = _context.gameStats.Find(userIn.gameStatsId);
             userIn.Stats = statsIn;
+            userIn.gameStats = gameStatsIn;
             return userIn;
         }
 
@@ -104,14 +108,7 @@ namespace ASP.Services
             {
                 user.accessLevel = 0;
             }
-            //var stats = new Statistics
-            //{              
-            //    totalFailed = 0,
-            //    totalLost = 0,
-            //    totalScore = 0,
-            //    totalSucces = 0,
-            //    highestScore = 0
-            //};                  
+                            
             _context.users.Add(user);
             _context.SaveChanges();
 

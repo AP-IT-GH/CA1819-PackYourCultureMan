@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPCoreApi.Migrations
 {
-    public partial class final : Migration
+    public partial class gamestat : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,22 @@ namespace ASPCoreApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_dots", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "gameStats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    lifePoints = table.Column<int>(nullable: false),
+                    rifle = table.Column<int>(nullable: false),
+                    pushBackGun = table.Column<int>(nullable: false),
+                    freezeGun = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_gameStats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +88,8 @@ namespace ASPCoreApi.Migrations
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
                     accessLevel = table.Column<int>(nullable: false),
-                    StatsId = table.Column<int>(nullable: false)
+                    StatsId = table.Column<int>(nullable: false),
+                    gameStatsId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,12 +100,23 @@ namespace ASPCoreApi.Migrations
                         principalTable: "stats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_users_gameStats_gameStatsId",
+                        column: x => x.gameStatsId,
+                        principalTable: "gameStats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_users_StatsId",
                 table: "users",
                 column: "StatsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_gameStatsId",
+                table: "users",
+                column: "gameStatsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -104,6 +132,9 @@ namespace ASPCoreApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "stats");
+
+            migrationBuilder.DropTable(
+                name: "gameStats");
         }
     }
 }

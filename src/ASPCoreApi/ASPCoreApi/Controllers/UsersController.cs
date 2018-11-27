@@ -49,6 +49,7 @@ namespace ASP.Dtos
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
             var stats = _context.stats.Find(user.StatsId);
+            var gameStats = _context.gameStats.Find(user.gameStatsId);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -74,7 +75,8 @@ namespace ASP.Dtos
                 Token = tokenString,
                 Email = user.Email,
                 stats = stats,   
-                StatsId = user.StatsId
+                StatsId = user.StatsId,
+                gameStats = user.gameStats
        
             });
         }
@@ -94,6 +96,15 @@ namespace ASP.Dtos
                 highestScore = 0
             };
             user.Stats = stats;
+            var gameStats = new GameStats
+            {
+                lifePoints = 2,
+                rifle = 0,
+                freezeGun = 0,
+                pushBackGun = 0
+
+            };
+            user.gameStats = gameStats;
             try
             {
                 // save 
