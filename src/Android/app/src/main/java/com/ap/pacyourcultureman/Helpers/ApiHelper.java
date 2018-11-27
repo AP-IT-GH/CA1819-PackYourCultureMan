@@ -1,8 +1,5 @@
 package com.ap.pacyourcultureman.Helpers;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -11,10 +8,11 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.ap.pacyourcultureman.AppController;
 import com.ap.pacyourcultureman.Assignment;
-import com.ap.pacyourcultureman.GameActivity;
+import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.PlayerStats;
 import com.google.android.gms.common.api.Api;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,11 +22,12 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import okio.ByteString;
 
 public class ApiHelper {
     String targetURL;
@@ -37,6 +36,7 @@ public class ApiHelper {
     public String responseMessage;
     public Boolean run;
     static public List<Assignment> assignments;
+    static public List<Dot> dots;
     static public Player player;
     int userId;
     String jwt;
@@ -199,6 +199,8 @@ public class ApiHelper {
             @Override
             public void run() {
                 try {
+                    //final String url = "https://api.myjson.com/bins/iilka";
+
                     final String url = "http://192.168.0.198:56898/Sights";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
@@ -238,6 +240,49 @@ public class ApiHelper {
         });
         thread.start();
     }
+
+    public void getDots() {
+        run = true;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final String url = "https://api.myjson.com/bins/xscdq";
+                    JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            dots = new ArrayList<>();
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+                                    JSONObject jsonObject = response.getJSONObject(i);
+                                    Integer id = jsonObject.getInt("id");
+                                    Double lat = jsonObject.getDouble("latitude");
+                                    Double lng = jsonObject.getDouble("longitude");
+                                    Boolean taken = jsonObject.getBoolean("taken");
+                                    dots.add(new Dot(id,lat,lng,taken ));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Log.v("Data from the web: ", response.toString());
+                            Log.d("Finish", "end");
+                            responseMessage = "end";
+                            run = false;
+                        }
+                    }, new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+                            VolleyLog.d("MainActivity", error.getMessage());
+                        }
+                    });
+                    AppController.getInstance().addToRequestQueue(request);
+                } catch (Exception e) {  e.printStackTrace();
+                }
+            }
+        });
+       thread.start();
+    }
+
+
     public void getUser(int userId){
         run = true;
         int _userId = userId;
@@ -246,12 +291,14 @@ public class ApiHelper {
             public void run() {
                 try{
                     final String url = "http://192.168.0.198:56898/Sights";
-                }catch (Exception e){
-                    e.printStackTrace();
+                }catch (Exception e){  e.printStackTrace();
                 }
             }
         });
+        thread.start();
     }
+}
+
     public void getStats() {
 
     }
