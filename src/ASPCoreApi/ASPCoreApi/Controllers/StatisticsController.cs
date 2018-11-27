@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPCoreApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASPCoreApi.Controllers
 {
-    [Route("api/[controller]")]
+    
+    [Route("[controller]")]
     [ApiController]
     public class StatisticsController : ControllerBase
     {

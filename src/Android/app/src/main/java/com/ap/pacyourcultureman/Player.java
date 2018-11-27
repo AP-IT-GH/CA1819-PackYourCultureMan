@@ -2,19 +2,17 @@ package com.ap.pacyourcultureman;
 
 public class Player {
     int id;
-    String userName, firstName, lastName, email;
+    String userName, firstName, lastName, email,jwt;
+    PlayerStats playerStats;
     int highestScore, totalScore, totalFailed, totalSuccess, totalLost;
     int currentScore = 0;
-    public Player(int id,String userName, String firstName, String lastName, String email, int highestScore, int totalScore, int totalFailed, int totalSuccess, int totalLost) {
+    public Player(int id,String userName, String firstName, String lastName, String email,PlayerStats playerstats,String jwt) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.highestScore = highestScore;
-        this.totalScore = totalScore;
-        this.totalFailed = totalFailed;
-        this.totalSuccess = totalSuccess;
-        this.totalLost = totalLost;
+        this.playerStats = playerstats;
+        this.jwt = jwt;
     }
 }
