@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181120144209_all")]
-    partial class all
+    [Migration("20181126215320_final")]
+    partial class final
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,7 +100,7 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<int?>("StatsId");
+                    b.Property<int>("StatsId");
 
                     b.Property<string>("Username");
 
@@ -117,7 +117,8 @@ namespace ASPCoreApi.Migrations
                 {
                     b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
                         .WithMany()
-                        .HasForeignKey("StatsId");
+                        .HasForeignKey("StatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

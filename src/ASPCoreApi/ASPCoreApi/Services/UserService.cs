@@ -12,7 +12,8 @@ namespace ASP.Services
         IEnumerable<Users> GetAll();
         Users GetById(int id);
         Users Create(Users user, string password);
-        void Update(Users user, string password = null);
+        Users Update(Users user, string password = null);
+        Users UpdateStats(Users user);
         void Delete(int id);
     }
 
@@ -47,12 +48,23 @@ namespace ASP.Services
 
         public IEnumerable<Users> GetAll()
         {
-            return _context.users;
+            
+            var users = _context.users;
+
+            foreach (var user in users)
+            {
+                var stats = _context.stats.Find(user.StatsId);
+                user.Stats = stats;
+            }
+            return users;
         }
 
         public Users GetById(int id)
         {
-            return _context.users.Find(id);
+            var userIn = _context.users.Find(id);
+            var statsIn = _context.stats.Find(userIn.StatsId);
+            userIn.Stats = statsIn;
+            return userIn;
         }
 
         public Users Create(Users user, string password)
@@ -92,27 +104,24 @@ namespace ASP.Services
             {
                 user.accessLevel = 0;
             }
-            var stats = new Statistics
-            {
-                
-                totalFailed = 0,
-                totalLost = 0,
-                totalScore = 0,
-                totalSucces = 0,
-                highestScore = 0
-            };
-            
-            
+            //var stats = new Statistics
+            //{              
+            //    totalFailed = 0,
+            //    totalLost = 0,
+            //    totalScore = 0,
+            //    totalSucces = 0,
+            //    highestScore = 0
+            //};                  
             _context.users.Add(user);
             _context.SaveChanges();
 
             return user;
         }
 
-        public void Update(Users userParam, string password = null)
+        public Users Update(Users userParam, string password = null)
         {
             var user = _context.users.Find(userParam.Id);
-
+            var stats = _context.stats.Find(userParam.StatsId);
             if (user == null)
                 throw new AppException("User not found");
 
@@ -124,9 +133,10 @@ namespace ASP.Services
             }
 
             // update user properties
-            user.FirstName = userParam.FirstName;
-            user.LastName = userParam.LastName;
-            user.Username = userParam.Username;
+            if (userParam.FirstName != null && userParam.FirstName != "string" && userParam.FirstName != "") user.FirstName = userParam.FirstName;
+            if (userParam.LastName != null && userParam.LastName != "string"&& userParam.LastName != "") user.LastName = userParam.LastName;
+            if (userParam.Username != null && userParam.Username != "string" && userParam.Username != "") user.Username = userParam.Username;
+            if (userParam.Email != null && userParam.Email != "string" && userParam.Email != "") user.Email = userParam.Email;
 
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
@@ -137,16 +147,43 @@ namespace ASP.Services
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
             }
-
+            _context.stats.Update(stats);
             _context.users.Update(user);
             _context.SaveChanges();
+            user.Stats = stats;
+            return user;
+        }
+        public Users UpdateStats(Users userParam)
+        {
+            var user = _context.users.Find(userParam.Id);
+            var stats = _context.stats.Find(user.StatsId);
+            if (user == null)
+                throw new AppException("User not found");
+            if (stats == null)
+                throw new AppException("stats not found");   
+            
+            //update stats
+            stats.highestScore = userParam.Stats.highestScore;
+            stats.totalScore = userParam.Stats.totalScore;
+            stats.totalSucces = userParam.Stats.totalSucces;
+            stats.totalFailed = userParam.Stats.totalFailed;
+            stats.totalLost = userParam.Stats.totalLost;
+
+            
+            _context.stats.Update(stats);
+            _context.users.Update(user);
+            _context.SaveChanges();
+            user.Stats = stats;
+            return user;
         }
 
         public void Delete(int id)
         {
             var user = _context.users.Find(id);
+            var stats = _context.stats.Find(user.StatsId);
             if (user != null)
             {
+                _context.stats.Remove(stats);
                 _context.users.Remove(user);
                 _context.SaveChanges();
             }

@@ -55,12 +55,14 @@ public class Login extends Activity {
     ApiHelper apiHelper;
     Boolean running;
     Handler handler;
+    int userId;
+    String jwt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_form);
         apiHelper = new ApiHelper();
-        targetURL = "https://pacyourculturemanapi.azurewebsites.net/users/authenticate";
+        targetURL = "http://192.168.0.198:56898/Users/authenticate";
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
         btn_dev = findViewById(R.id.btn_dev);
@@ -91,11 +93,13 @@ public class Login extends Activity {
                 errorChecker.setVisibility(View.GONE);
                 String user = edit_email.getText().toString();
                 String pass = edit_password.getText().toString();
-                apiHelper.sendPostLogin("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", user, pass);
+                apiHelper.sendPostLogin("http://192.168.0.198:56898/Users/authenticate", user, pass);
                 while (apiHelper.run) {}
                 errorSetter(apiHelper.getResponse());
                 if(apiHelper.getResponse() == "Login success") {
                     apiHelper.getAssignments();
+                    userId = apiHelper.getUserId();
+                    jwt = apiHelper.getJwt();
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -105,6 +109,8 @@ public class Login extends Activity {
                                     Save();
                                 }
                                 Intent intent = new Intent(getBaseContext(), GameActivity.class);
+                                intent.putExtra("userid",userId);
+                                intent.putExtra("jwt",jwt);
                                 startActivity(intent);
                                 Log.d("Nailed", "it");
 

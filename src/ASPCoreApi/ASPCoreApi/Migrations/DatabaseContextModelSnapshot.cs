@@ -98,7 +98,7 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<int?>("StatsId");
+                    b.Property<int>("StatsId");
 
                     b.Property<string>("Username");
 
@@ -115,7 +115,8 @@ namespace ASPCoreApi.Migrations
                 {
                     b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
                         .WithMany()
-                        .HasForeignKey("StatsId");
+                        .HasForeignKey("StatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

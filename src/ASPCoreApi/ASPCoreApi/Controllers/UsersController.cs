@@ -48,7 +48,7 @@ namespace ASP.Dtos
             
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
-            var stats = _context.stats.Find(user.Id);
+            var stats = _context.stats.Find(user.StatsId);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -73,7 +73,8 @@ namespace ASP.Dtos
                 LastName = user.LastName,
                 Token = tokenString,
                 Email = user.Email,
-                stats = stats           
+                stats = stats,   
+                StatsId = user.StatsId
        
             });
         }
@@ -84,7 +85,15 @@ namespace ASP.Dtos
         {
             // map dto to entity
             var user = _mapper.Map<Users>(userDto);
-
+            var stats = new Statistics
+            {
+                totalFailed = 0,
+                totalLost = 0,
+                totalScore = 0,
+                totalSucces = 0,
+                highestScore = 0
+            };
+            user.Stats = stats;
             try
             {
                 // save 
@@ -118,8 +127,8 @@ namespace ASP.Dtos
             return Ok(userDto);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id,string username,string Password,  [FromBody]UserDto userDto)
+        [HttpPut("updateuser/{id}")]
+        public IActionResult Update(int id,[FromBody]UserDto userDto)
         {
             // map dto to entity and set id
             var user = _mapper.Map<Users>(userDto);
@@ -129,6 +138,25 @@ namespace ASP.Dtos
             {
                 // save 
                 _userService.Update(user, userDto.Password);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+        [HttpPut("updatestats/{id}")]
+        public IActionResult UpdateStats(int id, [FromBody]UserDto userDto)
+        {
+            // map dto to entity and set id
+            var user = _mapper.Map<Users>(userDto);
+            user.Id = id;
+
+            try
+            {
+                // save 
+                _userService.UpdateStats(user);
                 return Ok();
             }
             catch (AppException ex)
