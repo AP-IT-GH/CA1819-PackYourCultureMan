@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Looper;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -22,7 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,10 +39,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -71,6 +68,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Marker perth;
     int currentScore;
     CollisionDetection collisionDetection;
+    Intent iin;
+    Bundle b;
+    int userId;
+    String jwt;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +89,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
         txtCurrentScore.setText("x " + currentScore);
         collisionDetection = new CollisionDetection();
+
+        iin = getIntent();
+        b = iin.getExtras();
+        if(b!=null){
+            userId = (int) b.get("userid");
+            jwt = (String) b.get("jwt");
+        }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 Intent intent;
+
                 switch (item.getItemId()) {
                     case R.id.nav_logout:
                         SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
@@ -106,7 +116,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         intent = new Intent(getBaseContext(), Sights.class);
                         startActivity(intent);
                         break;
-
+                    case R.id.nav_stats:
+                        intent = new Intent(getBaseContext(),StatsPage.class);
+                        intent.putExtra("userid",userId);
+                        intent.putExtra("jwt",jwt);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_settings:
+                        intent = new Intent(getBaseContext(),Settings.class);
+                        Log.e("jwt",jwt);
+                        startActivity(intent);
+                        break;
                 }
                 return false;
             }
@@ -153,12 +173,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
-//        for(int i = 0; i < assignments.size(); i++) {
-//            Marker mark;
-//            LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
-//            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
-//            assigmentMarkers.add(mark);
-//        }
+        for(int i = 0; i < assignments.size(); i++) {
+           Marker mark;
+           LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
+           mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
+           assigmentMarkers.add(mark);
+        }
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
         //dots

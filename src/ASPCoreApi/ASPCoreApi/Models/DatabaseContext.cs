@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ASPCoreApi.Models;
 
 namespace ASPCoreApi.Models
 {
@@ -16,6 +17,7 @@ namespace ASPCoreApi.Models
         public DbSet<Sight> sights { get; set; }
         public DbSet<Dot> dots { get; set; }
         public DbSet<Statistics> stats { get; set; }
+        public DbSet<GameStats> gameStats { get; set; }
 
     }
 }

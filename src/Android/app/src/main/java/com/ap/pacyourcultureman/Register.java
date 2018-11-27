@@ -34,7 +34,7 @@ public class Register extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_form);
-        targetURL = "https://aspcoreapipycm.azurewebsites.net/Users/register";
+        targetURL = "http://192.168.0.198:56898/Users/register";
         resp = "";
         reply = "";
         apiHelper = new ApiHelper();
@@ -73,7 +73,7 @@ public class Register extends Activity {
                     errorSetter("Password must include atleast 1 lowercase char, 1 uppercase char and 1 digit");
                 }
                 else {
-                    apiHelper.sendPostRegister("https://aspcoreapipycm.azurewebsites.net/Users/register", username, password, firstName, lastName, email);
+                    apiHelper.sendPostRegister("http://192.168.0.198:56898/Users/register", username, password, firstName, lastName, email);
                     while(apiHelper.run) {
 
                     }

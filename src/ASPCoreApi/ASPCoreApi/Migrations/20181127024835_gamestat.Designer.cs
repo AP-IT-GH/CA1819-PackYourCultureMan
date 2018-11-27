@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181120113954_init")]
-    partial class init
+    [Migration("20181127024835_gamestat")]
+    partial class gamestat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,25 @@ namespace ASPCoreApi.Migrations
                     b.HasKey("id");
 
                     b.ToTable("dots");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.GameStats", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("freezeGun");
+
+                    b.Property<int>("lifePoints");
+
+                    b.Property<int>("pushBackGun");
+
+                    b.Property<int>("rifle");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("gameStats");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Sight", b =>
@@ -100,15 +119,19 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<int?>("StatsId");
+                    b.Property<int>("StatsId");
 
                     b.Property<string>("Username");
 
                     b.Property<int>("accessLevel");
 
+                    b.Property<int>("gameStatsId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StatsId");
+
+                    b.HasIndex("gameStatsId");
 
                     b.ToTable("users");
                 });
@@ -117,7 +140,13 @@ namespace ASPCoreApi.Migrations
                 {
                     b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
                         .WithMany()
-                        .HasForeignKey("StatsId");
+                        .HasForeignKey("StatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ASPCoreApi.Models.GameStats", "gameStats")
+                        .WithMany()
+                        .HasForeignKey("gameStatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

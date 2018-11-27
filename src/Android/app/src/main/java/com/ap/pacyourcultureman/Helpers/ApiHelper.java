@@ -10,6 +10,9 @@ import com.ap.pacyourcultureman.AppController;
 import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
+import com.ap.pacyourcultureman.PlayerStats;
+import com.google.android.gms.common.api.Api;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +38,8 @@ public class ApiHelper {
     static public List<Assignment> assignments;
     static public List<Dot> dots;
     static public Player player;
+    int userId;
+    String jwt;
     public ApiHelper() {
     }
     public void sendPostRegister(final String urlstring, final String username, final String password, final String firstName, final String lastName, final String email) {
@@ -153,15 +158,23 @@ public class ApiHelper {
                         } finally {
                             in.close();
                         }
-                        String[] parts = reply.split(",");
-                        for(int i = 0; i < parts.length; i++) {
-                            if(i == 0) parts[i] = parts[i].substring(parts[i].indexOf(':') + 1, parts[i].length());
-                            else {
-                                parts[i] = parts[i].substring(parts[i].indexOf(':') + 2, parts[i].length() - 1);
-                            }
-                            Log.d("PARTS", parts[i]);
-                        }
-                 //       player = new Player(Integer.valueOf(parts[0]), parts[1], parts[2], parts[3], parts[4]);
+
+                        JSONObject jsObject = new JSONObject(reply);
+                        userId = jsObject.getInt("id");
+                        jwt = jsObject.getString("token");
+                        String username = jsObject.getString("username");
+                        String firstName = jsObject.getString("firstName");
+                        String lastName = jsObject.getString("lastName");
+                        String email = jsObject.getString("email");
+
+                        JSONObject stats = jsObject.getJSONObject("stats");
+                        int totalScore = stats.getInt("totalScore");
+                        int totalSucces = stats.getInt("totalSucces");
+                        int totalFailed = stats.getInt("totalFailed");
+                        int totalLost = stats.getInt("totalLost");
+                        int highestScore = stats.getInt("highestScore");
+                        Log.d("totalScore",stats.toString());
+                        player = new Player(userId,username,firstName,lastName,email,new PlayerStats(highestScore,totalScore,totalFailed,totalSucces,totalLost),jwt);
                         resp = "Login success";
                         run = false;
                     }
@@ -186,7 +199,8 @@ public class ApiHelper {
             @Override
             public void run() {
                 try {
-                    final String url = "https://api.myjson.com/bins/iilka";
+                    //final String url = "https://api.myjson.com/bins/iilka";
+                    final String url = "http://192.168.0.198:56898/Sights";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -201,6 +215,7 @@ public class ApiHelper {
                                     String imgUrl = jsonObject.getString("sightImage");
                                     String lat = jsonObject.getString("latitude");
                                     String lng = jsonObject.getString("longitude");
+
                                     assignments.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -260,6 +275,16 @@ public class ApiHelper {
                     });
                     AppController.getInstance().addToRequestQueue(request);
                 } catch (Exception e) {
+
+    public void getUser(int userId){
+        run = true;
+        int _userId = userId;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    final String url = "http://192.168.0.198:56898/Sights";
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -268,7 +293,7 @@ public class ApiHelper {
     }
 
 
-
+    }
     public void getStats() {
 
     }
@@ -278,4 +303,11 @@ public class ApiHelper {
     public String getResponse() {
         return resp;
     }
+    public String getJwt(){
+        return jwt;
+    }
+    public int getUserId(){
+        return userId;
+    }
 }
+
