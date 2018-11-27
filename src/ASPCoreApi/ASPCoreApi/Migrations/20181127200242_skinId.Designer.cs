@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181127024835_gamestat")]
-    partial class gamestat
+    [Migration("20181127200242_skinId")]
+    partial class skinId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -126,6 +126,8 @@ namespace ASPCoreApi.Migrations
                     b.Property<int>("accessLevel");
 
                     b.Property<int>("gameStatsId");
+
+                    b.Property<int>("skinId");
 
                     b.HasKey("Id");
 

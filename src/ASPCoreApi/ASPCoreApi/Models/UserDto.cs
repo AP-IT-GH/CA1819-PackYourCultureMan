@@ -15,6 +15,7 @@ namespace ASPCoreApi.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public int StatsId { get; set; }
+        public int skinId { get; set; }
 
         [ForeignKey("StatsId")]
         public Statistics Stats { get; set; }

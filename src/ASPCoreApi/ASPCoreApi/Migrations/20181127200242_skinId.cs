@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPCoreApi.Migrations
 {
-    public partial class gamestat : Migration
+    public partial class skinId : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -88,6 +88,7 @@ namespace ASPCoreApi.Migrations
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
                     accessLevel = table.Column<int>(nullable: false),
+                    skinId = table.Column<int>(nullable: false),
                     StatsId = table.Column<int>(nullable: false),
                     gameStatsId = table.Column<int>(nullable: false)
                 },

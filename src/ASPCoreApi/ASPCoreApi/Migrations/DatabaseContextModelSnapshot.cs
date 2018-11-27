@@ -125,6 +125,8 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<int>("gameStatsId");
 
+                    b.Property<int>("skinId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StatsId");
