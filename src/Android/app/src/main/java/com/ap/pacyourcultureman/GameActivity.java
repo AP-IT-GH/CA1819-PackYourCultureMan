@@ -190,7 +190,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
             }
         });
-
+        Log.d("Movement", "Ik ben non-blocking");
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
