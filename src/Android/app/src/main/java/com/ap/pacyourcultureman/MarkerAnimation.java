@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.LatLngInterpolator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -29,7 +31,12 @@ public class MarkerAnimation {
                 t = elapsed / durationInMs;
                 v = interpolator.getInterpolation(t);
                 marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
-
+                CollisionDetection collisionDetection = new CollisionDetection();
+                if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
+                    GameActivity.ghostCollide = true;
+                    Log.d("Ghost hit", "Ghost hit");
+                    ApiHelper.player.playerStats.totalFailed++;
+                }
                 // Repeat till progress is complete.
                 if (t < 1) {
                     // Post again 16ms later.
