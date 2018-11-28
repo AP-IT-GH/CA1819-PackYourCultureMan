@@ -27,7 +27,7 @@ public class MarkerAnimation {
                 t = elapsed / durationInMs;
                 v = interpolator.getInterpolation(t);
                 marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
-                Log.d("Movement", "Moving");
+
                 // Repeat till progress is complete.
                 if (t < 1) {
                     // Post again 16ms later.

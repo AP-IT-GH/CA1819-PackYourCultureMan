@@ -40,7 +40,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +49,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
+    //dots
+    List<Dot> dots = new ArrayList<>();
+    //List<Dot> dots = Login.dots;
+    //dots
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
-    List<Dot> dots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -113,13 +115,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         intent = new Intent(getBaseContext(), Login.class);
                         startActivity(intent);
                         break;
-
-                    case R.id.nav_sights:
-                        intent = new Intent(getBaseContext(), Sights.class);
-                        startActivity(intent);
-                        break;
-
-
                     case R.id.nav_stats:
                         intent = new Intent(getBaseContext(),StatsPage.class);
                         intent.putExtra("userid",userId);
@@ -135,6 +130,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+        //dots
+        for (int i = 0; i < 10; i++) {
+            dots.add( new Dot( 51.232356 -(i * 0.001) , 4.409553 + (i * 0.001)));
+        }
+        //dots
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
       //  hardcodedAssigments();
@@ -173,20 +173,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        //dots
+        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        //dots
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
-        //dots
-        for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
-        //dots
-      for(int i = 0; i < assignments.size(); i++) {
+        for(int i = 0; i < assignments.size(); i++) {
             Marker mark;
             LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
             mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
             assigmentMarkers.add(mark);
         }
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -400,7 +399,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     txtWebsite.setText(assignments.get(i).website);
                 }
                 else txtWebsite.setVisibility(View.INVISIBLE);
-               Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
+           //     Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
                 txtShortDesc.setText(assignments.get(i).shortDescr);
                 txtLongDesc.setText(assignments.get(i).longDescr);
             }

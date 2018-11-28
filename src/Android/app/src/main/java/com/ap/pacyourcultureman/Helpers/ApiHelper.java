@@ -1,18 +1,24 @@
 package com.ap.pacyourcultureman.Helpers;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.ap.pacyourcultureman.AppController;
 import com.ap.pacyourcultureman.Assignment;
-import com.ap.pacyourcultureman.Dot;
+import com.ap.pacyourcultureman.GameActivity;
 import com.ap.pacyourcultureman.Player;
+import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
 import com.google.android.gms.common.api.Api;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,12 +28,13 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import okio.ByteString;
+import java.util.Map;
 
 public class ApiHelper {
     String targetURL;
@@ -36,7 +43,6 @@ public class ApiHelper {
     public String responseMessage;
     public Boolean run;
     static public List<Assignment> assignments;
-    static public List<Dot> dots;
     static public Player player;
     int userId;
     String jwt;
@@ -55,13 +61,37 @@ public class ApiHelper {
                     conn.setRequestProperty("Accept", "application/json");
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
+                    JSONObject jsonPayerStats = new JSONObject();
+                    try {
+                        jsonPayerStats.put("highestScore", 0);
+                        jsonPayerStats.put("totalScore", 0);
+                        jsonPayerStats.put("totalFailed", 0);
+                        jsonPayerStats.put("totalSucces", 0);
+                        jsonPayerStats.put("totalLost", 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JSONObject jsonGameStats = new JSONObject();
+                    try {
+                        jsonGameStats.put("lifePoints", 2);
+                        jsonGameStats.put("rifle", 0);
+                        jsonGameStats.put("pushBackGun", 0);
+                        jsonGameStats.put("freezeGun", 0);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("username", username);
                     jsonParam.put("password", password);
                     jsonParam.put("firstname", firstName);
                     jsonParam.put("lastname", lastName);
                     jsonParam.put("email", email);
+                    jsonParam.put("stats",jsonPayerStats);
+                    jsonParam.put("gameStats",jsonGameStats);
+
                     Log.i("JSON", jsonParam.toString());
+
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
                     os.writeBytes(jsonParam.toString());
@@ -166,6 +196,7 @@ public class ApiHelper {
                         String firstName = jsObject.getString("firstName");
                         String lastName = jsObject.getString("lastName");
                         String email = jsObject.getString("email");
+                        int skinId = jsObject.getInt("skinId");
 
                         JSONObject stats = jsObject.getJSONObject("stats");
                         int totalScore = stats.getInt("totalScore");
@@ -173,8 +204,19 @@ public class ApiHelper {
                         int totalFailed = stats.getInt("totalFailed");
                         int totalLost = stats.getInt("totalLost");
                         int highestScore = stats.getInt("highestScore");
-                        Log.d("totalScore",stats.toString());
-                        player = new Player(userId,username,firstName,lastName,email,new PlayerStats(highestScore,totalScore,totalFailed,totalSucces,totalLost),jwt);
+
+                        JSONObject gameStats = jsObject.getJSONObject("gameStats");
+                        int lifePoints = gameStats.getInt("lifePoints");
+                        int rifle = gameStats.getInt("rifle");
+                        int freezeGun = gameStats.getInt("freezeGun");
+                        int pushBackGun = gameStats.getInt("pushBackGun");
+
+
+                        Log.d("totalScore",gameStats.toString());
+                        PlayerStats playerStats = new PlayerStats(highestScore,totalScore,totalFailed,totalSucces,totalLost);
+                        PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints,rifle,freezeGun,pushBackGun);
+                        player = new Player(userId,username,firstName,lastName,email,playerStats,playerGameStats,jwt,skinId);
+
                         resp = "Login success";
                         run = false;
                     }
@@ -199,8 +241,7 @@ public class ApiHelper {
             @Override
             public void run() {
                 try {
-                    //final String url = "https://api.myjson.com/bins/iilka";
-                    final String url = "http://192.168.1.51:56898/Sights";
+                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -226,11 +267,19 @@ public class ApiHelper {
                             responseMessage = "end";
                             run = false;
                         }
+
                     }, new Response.ErrorListener() {
                         public void onErrorResponse(VolleyError error) {
                             VolleyLog.d("MainActivity", error.getMessage());
                         }
-                    });
+                    }){@Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", "Bearer "+ player.getJwt());
+                        Log.d("xxx",player.getJwt());
+                        return params;
+                    }
+                    };
                     AppController.getInstance().addToRequestQueue(request);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -239,9 +288,6 @@ public class ApiHelper {
         });
         thread.start();
     }
-
-
-
     public void getUser(int userId){
         run = true;
         int _userId = userId;
@@ -249,15 +295,13 @@ public class ApiHelper {
             @Override
             public void run() {
                 try{
-                    final String url = "http://192.168.1.51:56898/Sights";
-                }catch (Exception e){  e.printStackTrace();
+                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
-        thread.start();
     }
-
-
     public void getStats() {
 
     }
@@ -274,44 +318,110 @@ public class ApiHelper {
         return userId;
     }
 
-
-    public void getDots() {
+    public void updateStats(final int _userId,final int _highestScore,final int _totalScore,final int _totalSucces,final int _totalLost,final int _totalFailed){
         run = true;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                final String url = "https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(_userId);
+                final JSONObject jsonObject = new JSONObject();
                 try {
-                    final String url = "http://192.168.1.51:56898/Dot";
-                    JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            dots = new ArrayList<>();
-                            for (int i = 0; i < response.length(); i++) {
-                                try {
-                                    JSONObject jsonObject = response.getJSONObject(i);
-                                    Integer id = jsonObject.getInt("id");
-                                    Double lat = jsonObject.getDouble("latitude");
-                                    Double lng = jsonObject.getDouble("longitude");
-                                    Boolean taken = jsonObject.getBoolean("taken");
-                                    dots.add(new Dot(id,lat,lng,taken ));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            Log.v("Data from the web: ", response.toString());
-                            Log.d("Finish", "end");
-                            responseMessage = "end";
-                            run = false;
-                        }
-                    }, new Response.ErrorListener() {
-                        public void onErrorResponse(VolleyError error) {
-                            VolleyLog.d("MainActivity", error.getMessage());
-                        }
-                    });
-                    AppController.getInstance().addToRequestQueue(request);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    jsonObject.put("highestScore", _highestScore);
+                    jsonObject.put("totalScore", _totalScore);
+                    jsonObject.put("totalSucces", _totalSucces);
+                    jsonObject.put("totalFailed", _totalFailed);
+                    jsonObject.put("totalLost", _totalLost);
+                } catch (JSONException e) {
+                    // handle exception
                 }
+                JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // response
+                                Log.d("Response", response.toString());
+                                run = false;
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // error
+                                Log.d("Error.Response", error.toString());
+                                run = false;
+                            }
+                        }
+
+                ) {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Accept", "application/json");
+                        params.put("Authorization", "Bearer " + player.getJwt());
+                        Log.d("xxx", player.getJwt());
+                        return params;
+                    }
+                };
+                AppController.getInstance().addToRequestQueue(putRequest);
+
+            }
+        });
+        thread.start();
+    }
+    public void updatePlayer(final int _userId,final String _firstName,final String _lastName,final int _skinId,final String _password,final String _email){
+        run = true;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String url = "https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(_userId);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("skinId", _skinId);
+                    jsonObject.put("firstName", _firstName);
+                    jsonObject.put("lastName", _lastName);
+                    jsonObject.put("email", _email);
+                    jsonObject.put("password",_password);
+                    Log.d("xx",jsonObject.toString());
+
+
+                } catch (JSONException e) {
+                    // handle exception
+                }
+                JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // response
+                                Log.d("Response", response.toString());
+                                run = false;
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // error
+                                Log.d("Error.Response", error.toString());
+                                run = false;
+                            }
+                        }
+
+                ) {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Accept", "application/json");
+                        params.put("Authorization", "Bearer " + player.getJwt());
+                        Log.d("xxx", player.getJwt());
+                        return params;
+                    }
+                };
+                AppController.getInstance().addToRequestQueue(putRequest);
+
             }
         });
         thread.start();

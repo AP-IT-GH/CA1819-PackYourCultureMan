@@ -52,7 +52,7 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    ApiHelper apiHelper,apiHelper2;
+    ApiHelper apiHelper;
     Boolean running;
     Handler handler;
     int userId;
@@ -62,9 +62,7 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_form);
         apiHelper = new ApiHelper();
-        apiHelper2 = new ApiHelper();
-        //targetURL = "https://pacyourculturemanapi.azurewebsites.net/users/authenticate";
-        targetURL = "http://192.168.1.51:56898/Users/authenticate";
+        targetURL = "https://aspcoreapipycm.azurewebsites.net/Users/authenticate";
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
         btn_dev = findViewById(R.id.btn_dev);
@@ -75,7 +73,7 @@ public class Login extends Activity {
         chb_loginauto = findViewById(R.id.login_chb_autologin);
         Intent intent = getIntent();
         queue = Volley.newRequestQueue(this);
-        //Load();
+        Load();
         String intentuser = intent.getStringExtra("username");
         String intentpassword = intent.getStringExtra("pass");
         if (intentuser != null && intentpassword != null) {
@@ -95,11 +93,10 @@ public class Login extends Activity {
                 errorChecker.setVisibility(View.GONE);
                 String user = edit_email.getText().toString();
                 String pass = edit_password.getText().toString();
-                apiHelper.sendPostLogin("http://192.168.1.51:56898/Users/authenticate", user, pass);
+                apiHelper.sendPostLogin("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", user, pass);
                 while (apiHelper.run) {}
                 errorSetter(apiHelper.getResponse());
                 if(apiHelper.getResponse() == "Login success") {
-                    apiHelper2.getDots();
                     apiHelper.getAssignments();
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
@@ -133,30 +130,12 @@ public class Login extends Activity {
                 startActivity(intent);
             }
         });
-
-       btn_dev.setOnClickListener(new View.OnClickListener() {
+        btn_dev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                while (apiHelper.run) {}
-                                if(chb_rememberme.isChecked()) {
-                                    //Save();
-                                }
-                                Intent intent = new Intent(getBaseContext(), GameActivity.class);
-                                startActivity(intent);
-                                Log.d("Nailed", "it");
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
-                }
-
+                Intent intent = new Intent(getBaseContext(), GameActivity.class);
+                startActivity(intent);
+            }
         });
     }
 

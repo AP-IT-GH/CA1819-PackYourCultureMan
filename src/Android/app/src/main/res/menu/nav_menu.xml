@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/nav_account"
-        android:title="@string/my_account"/>
+        android:title="My Account"
+        />
     <item android:id="@+id/nav_settings"
-        android:title="@string/settings"/>
+        android:title="Settings" />
     <item
         android:id="@+id/nav_stats"
-        android:title="@string/statistics"/>
-    <item android:id="@+id/nav_sights"
-        android:title="@string/sights"/>
+        android:title="Statistics" />
     <item
         android:id="@+id/nav_reset"
-        android:title="@string/reset"/>
+        android:title="Reset" />
     <item android:id="@+id/nav_logout"
-        android:title="@string/logout"/>
+        android:title="Logout" />
 </menu>

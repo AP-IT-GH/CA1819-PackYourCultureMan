@@ -29,6 +29,7 @@ public class Register extends Activity {
     private Handler mHandler;
     ApiHelper apiHelper;
     HttpURLConnection conn;
+    int skinId;
     URL url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class Register extends Activity {
                     errorSetter("Password must include atleast 1 lowercase char, 1 uppercase char and 1 digit");
                 }
                 else {
-                    apiHelper.sendPostRegister("http://192.168.0.198:56898/Users/register", username, password, firstName, lastName, email);
+                    apiHelper.sendPostRegister("https://aspcoreapipycm.azurewebsites.net/Users/register", username, password, firstName, lastName, email);
                     while(apiHelper.run) {
 
                     }
@@ -89,7 +90,7 @@ public class Register extends Activity {
         });
     }
     private boolean passwordChecker(String password) {
-        String regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+        String regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}";
         if(password.matches(regexp)) {
             return true;
         }
