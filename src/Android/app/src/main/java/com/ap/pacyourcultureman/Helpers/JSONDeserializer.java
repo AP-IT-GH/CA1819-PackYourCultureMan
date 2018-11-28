@@ -3,6 +3,7 @@ package com.ap.pacyourcultureman.Helpers;
 import android.util.Log;
 
 import com.ap.pacyourcultureman.Assignment;
+import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
@@ -71,4 +72,21 @@ public class JSONDeserializer {
         }
         return assignments;
     }
+    public List<Dot> getDots(JSONArray reply) {
+        List<Dot> dots = new ArrayList<>();
+        for (int i = 0; i < reply.length(); i++) {
+            try {
+                JSONObject jsonObject = reply.getJSONObject(i);
+                Integer id = jsonObject.getInt("id");
+                Double lat = jsonObject.getDouble("latitude");
+                Double lng = jsonObject.getDouble("longitude");
+                Boolean taken = jsonObject.getBoolean("taken");
+                dots.add(new Dot(id,lat,lng,taken ));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return dots;
+    }
+
 }

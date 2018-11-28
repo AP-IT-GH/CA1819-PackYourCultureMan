@@ -41,6 +41,8 @@
         <activity android:name=".Register"></activity>
         <activity android:name=".Settings"></activity>
         <activity android:name=".StatsPage"></activity>
+        <activity android:name=".Sights"></activity>
+        <activity android:name=".SightsDetail"></activity>
 
     </application>
 

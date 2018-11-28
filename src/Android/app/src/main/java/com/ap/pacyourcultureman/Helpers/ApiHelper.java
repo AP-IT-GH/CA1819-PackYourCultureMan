@@ -11,6 +11,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ap.pacyourcultureman.Assignment;
+import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 
 import org.json.JSONArray;
@@ -32,6 +33,7 @@ public class ApiHelper {
     public String responseMessage;
     public Boolean run;
     static public List<Assignment> assignments;
+    static public List<Dot> dots;
     static public Player player;
     int userId;
     String jwt;
@@ -112,7 +114,6 @@ public class ApiHelper {
             @Override
             public void run() {
                 try {
-                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {

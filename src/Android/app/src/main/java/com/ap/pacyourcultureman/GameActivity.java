@@ -51,12 +51,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
-    //dots
-    List<Dot> dots = new ArrayList<>();
-    //List<Dot> dots = Login.dots;
-    //dots
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
+    List<Dot> dots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -126,15 +123,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.e("jwt", ApiHelper.player.jwt);
                         startActivity(intent);
                         break;
+                    case R.id.nav_sights:
+                        intent = new Intent(getBaseContext(),Sights.class);
+                        startActivity(intent);
+                        break;
                 }
                 return false;
             }
         });
-        //dots
-        for (int i = 0; i < 10; i++) {
-            dots.add( new Dot( 51.232356 -(i * 0.001) , 4.409553 + (i * 0.001)));
-        }
-        //dots
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -175,7 +171,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
-        //dots
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();

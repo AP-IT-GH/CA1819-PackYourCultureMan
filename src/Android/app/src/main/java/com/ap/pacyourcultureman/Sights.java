@@ -48,7 +48,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     }
 
     private void parseJSON() {
-        final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
+        final String url = "https://aspcoreapipycm.azurewebsites.net/sights";
         JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -86,11 +86,11 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(this,SightsDetail.class);
         Assignment clickedSight = mSightList.get(position);
-    /*    detailIntent.putExtra(DETAIL_NAME,clickedSight.getName());
+        detailIntent.putExtra(DETAIL_NAME,clickedSight.getName());
         detailIntent.putExtra(DETAIL_LONGD,clickedSight.getLongDescr());
         detailIntent.putExtra(DETAIL_SHORTD,clickedSight.getShortDescr());
         detailIntent.putExtra(DETAIL_IMAGE,clickedSight.getImgUrl());
-        detailIntent.putExtra(DETAIL_WEBSITE,clickedSight.getWebsite()); */
+        detailIntent.putExtra(DETAIL_WEBSITE,clickedSight.getWebsite());
         startActivity(detailIntent);
     }
 }
