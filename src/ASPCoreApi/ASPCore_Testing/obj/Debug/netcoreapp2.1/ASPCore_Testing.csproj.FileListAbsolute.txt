@@ -1,0 +1,14 @@
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\xunit.runner.utility.netcoreapp10.dll
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\ASPCore_Testing.deps.json
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\ASPCore_Testing.runtimeconfig.json
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\ASPCore_Testing.runtimeconfig.dev.json
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\ASPCore_Testing.dll
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\ASPCoreApi.dll
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\bin\Debug\netcoreapp2.1\ASPCoreApi.pdb
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\obj\Debug\netcoreapp2.1\ASPCore_Testing.csprojAssemblyReference.cache
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\obj\Debug\netcoreapp2.1\ASPCore_Testing.csproj.CoreCompileInputs.cache
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\obj\Debug\netcoreapp2.1\ASPCore_Testing.AssemblyInfoInputs.cache
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\obj\Debug\netcoreapp2.1\ASPCore_Testing.AssemblyInfo.cs
+C:\Users\jonas\Documents\School\CloudApplications\CA1819-PackYourCultureMan\src\ASPCoreApi\ASPCore_Testing\obj\Debug\netcoreapp2.1\ASPCore_Testing.csproj.CopyComplete
