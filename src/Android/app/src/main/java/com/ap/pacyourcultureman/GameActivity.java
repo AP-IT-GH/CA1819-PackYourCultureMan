@@ -27,6 +27,8 @@ import android.widget.TextView;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
+import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -44,6 +46,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +75,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Location location;
     Circle Circle;
     Marker perth;
+    Player player = ApiHelper.player;
     int currentScore;
+    ApiHelper apiHelper;
     CollisionDetection collisionDetection;
     Intent iin;
     Bundle b;
@@ -84,6 +91,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         currentScore = 0;
+        apiHelper = new ApiHelper();
         NavigationView navigationView = (NavigationView) findViewById(R.id.menu);
         bottomPanel = findViewById(R.id.sliding_layout);
         bottomPanel.setPanelHeight(0);
@@ -305,6 +313,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5);
                 }
                 if(ghostCollide) {
+                    JSONObject jsonObject = new JSONObject();
+                    JSONObject jsonParam = new JSONObject();
+                    try {
+                        jsonParam.put("totalFailed", player.playerStats.totalFailed);
+                        jsonObject.put("stats", jsonParam);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.id), jsonObject);
                     AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
                     alertDialog.setTitle("Game over");
                     alertDialog.setMessage("Press OK to start over");
