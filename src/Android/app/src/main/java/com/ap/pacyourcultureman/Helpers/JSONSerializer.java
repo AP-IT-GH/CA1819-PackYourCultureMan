@@ -55,6 +55,7 @@ public class JSONSerializer {
     public JSONObject jsonPutStats(int userId, int highestScore, int totalScore, int totalSucces, int totalLost, int totalFailed) {
         final JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("id", userId);
             jsonObject.put("highestScore", highestScore);
             jsonObject.put("totalScore", totalScore);
             jsonObject.put("totalSucces", totalSucces);
