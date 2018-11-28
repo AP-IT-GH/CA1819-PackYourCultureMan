@@ -165,7 +165,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.227076, 4.417227), 15));
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(2000); // 2 second interval
+        mLocationRequest.setInterval(500); // 0.5 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
