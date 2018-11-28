@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -86,6 +87,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     static LatLng currentPos;
     static Boolean ghostCollide = false;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
+
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,8 +188,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+
+        //Blinky draw and dummy movement
         Blinky.Draw(mMap, getApplicationContext());
-        Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
+        handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
+            }
+        });
+
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
