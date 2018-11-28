@@ -1,4 +1,4 @@
-package com.ap.pacyourcultureman;
+package com.ap.pacyourcultureman.Helpers;
 
 import com.google.android.gms.maps.model.LatLng;
 

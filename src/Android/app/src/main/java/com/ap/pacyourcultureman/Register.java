@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import android.os.Handler;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 
 public class Register extends Activity {
     TextView txt_Errorchecker;
@@ -60,7 +61,7 @@ public class Register extends Activity {
                 if(!password.equals(confirmpassword)) {
                     errorSetter("Passwords must match");
                 }
-                if(username == null || username.length() <= 3) {
+                if(username == null || username.length() < 3) {
                     errorSetter("Please enter a username with a minimum of 3 characters");
                 }
                 if(lastName == null || lastName == null || firstName.equals(lastName)) {
@@ -74,17 +75,28 @@ public class Register extends Activity {
                     errorSetter("Password must include atleast 1 lowercase char, 1 uppercase char and 1 digit");
                 }
                 else {
-                    apiHelper.sendPostRegister("https://aspcoreapipycm.azurewebsites.net/Users/register", username, password, firstName, lastName, email);
-                    while(apiHelper.run) {
-
-                    }
-                    errorSetter(apiHelper.getResponse());
-                    if(apiHelper.getResponse() == "User created") {
-                   //     Looper.prepare();
-                        mHandler = new Handler();
-                        mHandler.postDelayed(mLaunchTask, 1500);
-                    //    Looper.loop();
-                    }
+                    JSONSerializer jsonSerializer = new JSONSerializer();
+                    JSONObject jsonObject = jsonSerializer.jsonPostRegister(username, password, firstName, lastName, email);
+                    apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/register", jsonObject);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                while (apiHelper.run) {
+                                }
+                                errorSetter(apiHelper.getResponse());
+                                if(apiHelper.getResponse() == "Success") {
+                                         Looper.prepare();
+                                    mHandler = new Handler();
+                                    mHandler.postDelayed(mLaunchTask, 1500);
+                                        Looper.loop();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
                 }
             }
         });

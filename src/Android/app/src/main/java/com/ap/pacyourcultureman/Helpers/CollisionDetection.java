@@ -17,7 +17,6 @@ public class CollisionDetection {
         loc2.setLongitude(latLng2.longitude);
 
         float distanceInMeters = loc1.distanceTo(loc2);
-        Log.d("Collision","Distance in Meters: "  + String.valueOf(distanceInMeters));
         if(distanceInMeters < distance) {
             return true;
         }

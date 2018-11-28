@@ -24,6 +24,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
+import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.json.JSONArray;
@@ -93,11 +95,15 @@ public class Login extends Activity {
                 errorChecker.setVisibility(View.GONE);
                 String user = edit_email.getText().toString();
                 String pass = edit_password.getText().toString();
-                apiHelper.sendPostLogin("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", user, pass);
+                JSONSerializer jsonSerializer = new JSONSerializer();
+                JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
+                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate",jsonObject);
                 while (apiHelper.run) {}
                 errorSetter(apiHelper.getResponse());
-                if(apiHelper.getResponse() == "Login success") {
-                    apiHelper.getAssignments();
+                if(apiHelper.getResponse() == "Success") {
+                    errorSetter("Logging in");
+                    apiHelper.setPlayer(apiHelper.getReply());
+                    apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights");
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
                     Thread thread = new Thread(new Runnable() {
@@ -105,6 +111,8 @@ public class Login extends Activity {
                         public void run() {
                             try {
                                 while (apiHelper.run) {}
+                                JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
                                 if(chb_rememberme.isChecked()) {
                                     Save();
                                 }

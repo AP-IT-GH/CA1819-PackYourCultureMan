@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+
+import org.json.JSONObject;
 
 public class Settings extends Activity {
     EditText edit_password,edit_firstname,edit_lastname,edit_email;
@@ -49,16 +52,21 @@ public class Settings extends Activity {
                     password = "string";
                 }
                 Log.d("xxx",password);
-                apiHelper.updatePlayer(player.id,firstName,lastName,skinId,password,email);
-
+                JSONSerializer jsonSerializer = new JSONSerializer();
+                JSONObject jsonObject = jsonSerializer.jsonPutUserData(skinId, firstName, lastName, email, password);
+                apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(ApiHelper.player.id), jsonObject);
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             while (apiHelper.run) {}
-
-
-
+                            if(apiHelper.getmStatusCode() == 200) {
+                                ApiHelper.player.email = email;
+                                ApiHelper.player.lastName = lastName;
+                                ApiHelper.player.firstName = firstName;
+                                ApiHelper.player.id = skinId;
+                                Log.d("Test", "Test");
+                            }
                             Intent i = new Intent(getBaseContext(), GameActivity.class);
                             startActivity(i);
 

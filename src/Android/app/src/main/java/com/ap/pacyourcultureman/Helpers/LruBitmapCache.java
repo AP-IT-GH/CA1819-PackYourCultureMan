@@ -1,4 +1,4 @@
-package com.ap.pacyourcultureman;
+package com.ap.pacyourcultureman.Helpers;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;

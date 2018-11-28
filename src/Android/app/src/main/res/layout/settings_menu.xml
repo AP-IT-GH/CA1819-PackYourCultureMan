@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_orange_light"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:textColor="@android:color/holo_orange_light"
             android:textSize="14sp"
             android:textStyle="bold" />
