@@ -44,11 +44,11 @@ public class SightsAdapter extends RecyclerView.Adapter<SightsAdapter.SightsView
     public void onBindViewHolder(SightsViewHolder sightsViewHolder, int position) {
             Assignment currentItem = mSightList.get(position);
 
-            String imageUrl = currentItem.getImgUrl();
-            String sightName = currentItem.getName();
+       //     String imageUrl = currentItem.getImgUrl();
+        //    String sightName = currentItem.getName();
 
-            Picasso.get().load(imageUrl).fit().centerInside().into(sightsViewHolder.mImageView);
-            sightsViewHolder.mTextviewName.setText(sightName);
+        //    Picasso.get().load(imageUrl).fit().centerInside().into(sightsViewHolder.mImageView);
+         //   sightsViewHolder.mTextviewName.setText(sightName);
     }
 
     @Override

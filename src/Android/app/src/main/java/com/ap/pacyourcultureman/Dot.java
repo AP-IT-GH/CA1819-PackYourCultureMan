@@ -19,9 +19,6 @@ public class Dot {
     private Marker marker;
     private  int height;
     private  int width;
-
-
-
     private int id;
     private boolean taken;
     private Double lat, lon;
@@ -32,7 +29,7 @@ public class Dot {
         //init default settings
         height = 50;
         width = 50;
-        this.taken = false;
+        taken = false;
     }
 
 
@@ -66,31 +63,7 @@ public class Dot {
         this.taken = taken;
     }
 
-    //3nd constructor with location,boolean and id
-    public Dot(double lat, double lon, boolean taken ){
-
-        //init default settings
-        height = 50;
-        width = 50;
-        this.taken = false;
-
-        //set
-        this.lat = lat;
-        this.lon = lon;
-        this.location =  new LatLng(lat,lon);
-        this.taken = taken;
-    }
-
-
-
     // getters and setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setLocation(LatLng location){
         this.location = location;

@@ -51,8 +51,8 @@ public class SightsDetail extends Activity implements View.OnClickListener {
         textViewName = findViewById(R.id.textView_sightName_detail);
         textViewShort = findViewById(R.id.textView_short_detail);
         textViewLong = findViewById(R.id.textView_long_detail);
-        buttonMaps = findViewById(R.id.buttonGoogle_detail);
-        buttonweb = findViewById(R.id.buttonWeb_detail);
+       // buttonMaps = findViewById(R.id.buttonGoogle_detail);
+        //buttonweb = findViewById(R.id.buttonWeb_detail);
 
         Picasso.get().load(imageUrl).fit().centerInside().into(imageView);
         textViewName.setText(name);

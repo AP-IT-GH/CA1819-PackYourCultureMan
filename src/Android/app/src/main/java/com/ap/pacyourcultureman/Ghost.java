@@ -6,16 +6,13 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
-import android.util.Size;
 
-import com.ap.pacyourcultureman.R;
+import com.ap.pacyourcultureman.Helpers.LatLngInterpolator;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.apache.commons.digester.SetPropertiesRule;
 
 import java.util.ArrayList;
 

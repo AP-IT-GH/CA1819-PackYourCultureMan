@@ -64,8 +64,8 @@ namespace ASP.Dtos
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
             // return basic user info (without password) and token to store client side
-            
-            
+
+
             return Ok(new
             {
                 Id = user.Id,
@@ -74,10 +74,10 @@ namespace ASP.Dtos
                 LastName = user.LastName,
                 Token = tokenString,
                 Email = user.Email,
-                stats = stats,   
+                stats = user.Stats,
                 StatsId = user.StatsId,
-                gameStats = user.gameStats
-       
+                gameStats = user.gameStats,
+                skinId = user.skinId
             });
         }
 
@@ -104,6 +104,7 @@ namespace ASP.Dtos
                 pushBackGun = 0
 
             };
+            user.skinId = 1;
             user.gameStats = gameStats;
             try
             {

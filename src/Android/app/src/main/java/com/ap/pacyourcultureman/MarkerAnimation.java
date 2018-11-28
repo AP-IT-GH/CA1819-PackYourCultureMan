@@ -5,6 +5,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
+
+import com.ap.pacyourcultureman.Helpers.LatLngInterpolator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
@@ -27,7 +29,7 @@ public class MarkerAnimation {
                 t = elapsed / durationInMs;
                 v = interpolator.getInterpolation(t);
                 marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
-                Log.d("Movement", "Moving");
+
                 // Repeat till progress is complete.
                 if (t < 1) {
                     // Post again 16ms later.

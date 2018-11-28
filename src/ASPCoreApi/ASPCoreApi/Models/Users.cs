@@ -16,6 +16,7 @@ namespace ASPCoreApi.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }       
         public int accessLevel { get; set; }
+        public int skinId { get; set; }
 
         public int StatsId { get; set; }
         [ForeignKey("StatsId")]
@@ -23,6 +24,7 @@ namespace ASPCoreApi.Models
         public int gameStatsId { get; set; }
         [ForeignKey("gameStatsId")]
         public GameStats gameStats { get; set; }
+
         
     }
 }
