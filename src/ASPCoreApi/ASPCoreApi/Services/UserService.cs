@@ -136,7 +136,7 @@ namespace ASP.Services
             if (userParam.Email != null && userParam.Email != "string" && userParam.Email != "") user.Email = userParam.Email;
 
             // update password if it was entered
-            if (!string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrWhiteSpace(password)|| password != "string")
             {
                 byte[] passwordHash, passwordSalt;
                 CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -144,7 +144,7 @@ namespace ASP.Services
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
             }
-            _context.stats.Update(stats);
+            
             _context.users.Update(user);
             _context.SaveChanges();
             user.Stats = stats;

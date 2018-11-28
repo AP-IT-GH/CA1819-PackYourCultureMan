@@ -86,11 +86,11 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(this,SightsDetail.class);
         Assignment clickedSight = mSightList.get(position);
-        detailIntent.putExtra(DETAIL_NAME,clickedSight.getName());
+    /*    detailIntent.putExtra(DETAIL_NAME,clickedSight.getName());
         detailIntent.putExtra(DETAIL_LONGD,clickedSight.getLongDescr());
         detailIntent.putExtra(DETAIL_SHORTD,clickedSight.getShortDescr());
         detailIntent.putExtra(DETAIL_IMAGE,clickedSight.getImgUrl());
-        detailIntent.putExtra(DETAIL_WEBSITE,clickedSight.getWebsite());
+        detailIntent.putExtra(DETAIL_WEBSITE,clickedSight.getWebsite()); */
         startActivity(detailIntent);
     }
 }
