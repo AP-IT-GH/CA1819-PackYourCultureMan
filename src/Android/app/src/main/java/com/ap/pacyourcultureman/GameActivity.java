@@ -1,6 +1,7 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -92,7 +93,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
         txtCurrentScore.setText("x " + currentScore);
         collisionDetection = new CollisionDetection();
-
         iin = getIntent();
         b = iin.getExtras();
         if(b!=null){
@@ -104,7 +104,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 Intent intent;
-
                 switch (item.getItemId()) {
                     case R.id.nav_logout:
                         SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
@@ -118,12 +117,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     case R.id.nav_stats:
                         intent = new Intent(getBaseContext(),StatsPage.class);
                         intent.putExtra("userid",userId);
-                        intent.putExtra("jwt",jwt);
+                        Log.e("jwt", ApiHelper.player.jwt);
                         startActivity(intent);
                         break;
                     case R.id.nav_settings:
                         intent = new Intent(getBaseContext(),Settings.class);
-                        Log.e("jwt",jwt);
+                        Log.e("jwt", ApiHelper.player.jwt);
                         startActivity(intent);
                         break;
                 }
@@ -173,6 +172,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(2000); // 2 second interval
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
         //dots
@@ -246,10 +246,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-        for (int i = 0; i<=90;i++) {
-            currentAssigment = getRandomAssignment();
-            Log.d("Assignment", currentAssigment.name);
-        }
         perth = mMap.addMarker(new MarkerOptions()
                 .position(PERTH)
                 .draggable(true));

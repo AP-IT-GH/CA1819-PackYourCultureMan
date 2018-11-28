@@ -7,11 +7,13 @@ import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.ap.pacyourcultureman.AppController;
 import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.GameActivity;
@@ -377,7 +379,7 @@ public class ApiHelper {
             @Override
             public void run() {
                 final String url = "https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(_userId);
-                JSONObject jsonObject = new JSONObject();
+                final JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("skinId", _skinId);
                     jsonObject.put("firstName", _firstName);
@@ -385,8 +387,6 @@ public class ApiHelper {
                     jsonObject.put("email", _email);
                     jsonObject.put("password",_password);
                     Log.d("xx",jsonObject.toString());
-
-
                 } catch (JSONException e) {
                     // handle exception
                 }
@@ -412,12 +412,16 @@ public class ApiHelper {
 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
+                        HashMap<String, String> params = new HashMap<String, String>();
                         params.put("Content-Type", "application/json");
                         params.put("Accept", "application/json");
                         params.put("Authorization", "Bearer " + player.getJwt());
                         Log.d("xxx", player.getJwt());
                         return params;
+                    }
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
                     }
                 };
                 AppController.getInstance().addToRequestQueue(putRequest);
