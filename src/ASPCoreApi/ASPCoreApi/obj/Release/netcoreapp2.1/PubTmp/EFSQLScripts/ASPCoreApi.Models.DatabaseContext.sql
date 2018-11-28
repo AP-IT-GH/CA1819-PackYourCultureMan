@@ -9,7 +9,7 @@ END;
 
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181120144209_all')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
 BEGIN
     CREATE TABLE [dots] (
         [id] int NOT NULL IDENTITY,
@@ -22,7 +22,21 @@ END;
 
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181120144209_all')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
+BEGIN
+    CREATE TABLE [gameStats] (
+        [Id] int NOT NULL IDENTITY,
+        [lifePoints] int NOT NULL,
+        [rifle] int NOT NULL,
+        [pushBackGun] int NOT NULL,
+        [freezeGun] int NOT NULL,
+        CONSTRAINT [PK_gameStats] PRIMARY KEY ([Id])
+    );
+END;
+
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
 BEGIN
     CREATE TABLE [sights] (
         [id] int NOT NULL IDENTITY,
@@ -39,7 +53,7 @@ END;
 
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181120144209_all')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
 BEGIN
     CREATE TABLE [stats] (
         [Id] int NOT NULL IDENTITY,
@@ -54,7 +68,7 @@ END;
 
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181120144209_all')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
 BEGIN
     CREATE TABLE [users] (
         [Id] int NOT NULL IDENTITY,
@@ -65,25 +79,35 @@ BEGIN
         [PasswordHash] varbinary(max) NULL,
         [PasswordSalt] varbinary(max) NULL,
         [accessLevel] int NOT NULL,
-        [StatsId] int NULL,
+        [skinId] int NOT NULL,
+        [StatsId] int NOT NULL,
+        [gameStatsId] int NOT NULL,
         CONSTRAINT [PK_users] PRIMARY KEY ([Id]),
-        CONSTRAINT [FK_users_stats_StatsId] FOREIGN KEY ([StatsId]) REFERENCES [stats] ([Id]) ON DELETE NO ACTION
+        CONSTRAINT [FK_users_stats_StatsId] FOREIGN KEY ([StatsId]) REFERENCES [stats] ([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_users_gameStats_gameStatsId] FOREIGN KEY ([gameStatsId]) REFERENCES [gameStats] ([Id]) ON DELETE CASCADE
     );
 END;
 
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181120144209_all')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
 BEGIN
     CREATE INDEX [IX_users_StatsId] ON [users] ([StatsId]);
 END;
 
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181120144209_all')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
+BEGIN
+    CREATE INDEX [IX_users_gameStatsId] ON [users] ([gameStatsId]);
+END;
+
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181127200242_skinId')
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20181120144209_all', N'2.1.4-rtm-31024');
+    VALUES (N'20181127200242_skinId', N'2.1.4-rtm-31024');
 END;
 
 GO
