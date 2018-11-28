@@ -48,7 +48,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     }
 
     private void parseJSON() {
-        final String url = "http://192.168.1.51:56898/sights";
+        final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
         JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {

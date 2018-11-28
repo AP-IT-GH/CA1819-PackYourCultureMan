@@ -200,7 +200,7 @@ public class ApiHelper {
             public void run() {
                 try {
                     //final String url = "https://api.myjson.com/bins/iilka";
-                    final String url = "http://192.168.1.51:56898/Sights";
+                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -249,7 +249,7 @@ public class ApiHelper {
             @Override
             public void run() {
                 try{
-                    final String url = "http://192.168.1.51:56898/Sights";
+                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
                 }catch (Exception e){  e.printStackTrace();
                 }
             }
@@ -281,7 +281,7 @@ public class ApiHelper {
             @Override
             public void run() {
                 try {
-                    final String url = "http://192.168.1.51:56898/Dot";
+                    final String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
                     JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
