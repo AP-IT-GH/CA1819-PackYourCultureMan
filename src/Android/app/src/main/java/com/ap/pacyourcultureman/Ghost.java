@@ -53,6 +53,10 @@ public class Ghost {
                 .icon(BitmapDescriptorFactory.fromBitmap(smallerblinky)));
     }
 
+    public void goToLocation(LatLng destination){
+
+    }
+
     public void FollowPath(LatLng origin, LatLng dest){
         handler = new Handler();
         final long start = SystemClock.uptimeMillis();

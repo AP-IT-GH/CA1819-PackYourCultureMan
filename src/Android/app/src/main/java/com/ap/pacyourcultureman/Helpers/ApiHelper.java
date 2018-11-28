@@ -11,6 +11,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ap.pacyourcultureman.Assignment;
+import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 
 import org.json.JSONArray;
@@ -32,6 +33,7 @@ public class ApiHelper {
     public String responseMessage;
     public Boolean run;
     static public List<Assignment> assignments;
+    static public List<Dot> dots;
     static public Player player;
     int userId;
     String jwt;
@@ -141,6 +143,29 @@ public class ApiHelper {
         });
         thread.start();
     }
+    public void getUser(int userId){
+        run = true;
+        int _userId = userId;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
+                }catch (Exception e){  e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+
+    public void getStats() {
+
+    }
+    public HttpURLConnection getConn() {
+        return this.conn;
+    }
+
     public String getResponse() {
         return resp;
     }
@@ -175,8 +200,7 @@ public class ApiHelper {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.d("Error.Response", error.toString());
-                                run = false;
-                            }
+                                run = false; }
                         }
                 )
                 {

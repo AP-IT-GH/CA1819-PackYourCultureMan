@@ -1,7 +1,9 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -51,12 +53,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
-    //dots
-    List<Dot> dots = new ArrayList<>();
-    //List<Dot> dots = Login.dots;
-    //dots
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
+    List<Dot> dots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -77,6 +76,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Bundle b;
     int userId;
     String jwt;
+    static LatLng currentPos;
+    static Boolean ghostCollide = false;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         collisionDetection = new CollisionDetection();
         iin = getIntent();
         b = iin.getExtras();
+        currentPos = PERTH;
         if(b!=null){
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");
@@ -126,15 +128,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.e("jwt", ApiHelper.player.jwt);
                         startActivity(intent);
                         break;
+                    case R.id.nav_sights:
+                        intent = new Intent(getBaseContext(),Sights.class);
+                        startActivity(intent);
+                        break;
                 }
                 return false;
             }
         });
-        //dots
-        for (int i = 0; i < 10; i++) {
-            dots.add( new Dot( 51.232356 -(i * 0.001) , 4.409553 + (i * 0.001)));
-        }
-        //dots
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -169,13 +170,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.227076, 4.417227), 15));
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(2000); // 2 second interval
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(500); // 0.5 second interval
+        mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
-        //dots
         Blinky.Draw(mMap, getApplicationContext());
         Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
         List<LatLng> latLngs = new ArrayList<>();
@@ -228,6 +228,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 Log.d("Draggable Marker loc: ", "latitude : "+ marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
+                currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.latLng, 10)){
                     Log.d("assigmentHit", "assigmentHit");
@@ -292,7 +293,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 10);
 
                 }
-
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
@@ -303,6 +303,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 //dots collision
                 for(int i = 0; i < dots.size(); i++) {
                     collisionDetection.collisionDetect(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5);
+                }
+                if(ghostCollide) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
+                    alertDialog.setTitle("Game over");
+                    alertDialog.setMessage("Press OK to start over");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ghostCollide = false;
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
                 }
             }
         }

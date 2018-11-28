@@ -36,7 +36,7 @@ public class Register extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_form);
-        targetURL = "http://192.168.0.198:56898/Users/register";
+        targetURL = "https://aspcoreapipycm.azurewebsites.net/register";
         resp = "";
         reply = "";
         apiHelper = new ApiHelper();
