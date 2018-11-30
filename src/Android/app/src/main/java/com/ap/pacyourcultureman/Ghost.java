@@ -70,7 +70,7 @@ public class Ghost {
                 Move(steps.get(iter), marker);
                 iter++;
                 if (iter < steps.size()){
-                    handler.postDelayed(this, 2000);
+                    handler.postDelayed(this, 3000);
                 }
             }
         });
