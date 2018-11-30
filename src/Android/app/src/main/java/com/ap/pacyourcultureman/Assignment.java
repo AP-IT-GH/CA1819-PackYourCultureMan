@@ -2,6 +2,8 @@ package com.ap.pacyourcultureman;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 public class Assignment {
     String name,website, shortDescr, longDescr, imgUrl;
     Double lat, lon;

@@ -20,4 +20,20 @@ public class PlayerGameStats {
     public int getPushBackGun(){
         return pushBackGun;
     }
+
+    public void setFreezeGun(int freezeGun) {
+        this.freezeGun = freezeGun;
+    }
+
+    public void setLifePoints(int lifePoints) {
+        this.lifePoints = lifePoints;
+    }
+
+    public void setPushBackGun(int pushBackGun) {
+        this.pushBackGun = pushBackGun;
+    }
+
+    public void setRifle(int rifle) {
+        this.rifle = rifle;
+    }
 }

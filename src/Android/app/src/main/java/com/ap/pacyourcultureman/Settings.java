@@ -33,9 +33,9 @@ public class Settings extends Activity {
         edit_email = findViewById(R.id.edit_email);
         btn_apply = findViewById(R.id.btn_apply);
         player = ApiHelper.player;
-        edit_email.setText(player.email);
-        edit_firstname.setText(player.firstName);
-        edit_lastname.setText(player.lastName);
+        edit_email.setText(player.getEmail());
+        edit_firstname.setText(player.getFirstName());
+        edit_lastname.setText(player.getLastName());
         edit_password.setText("");
         apiHelper = new ApiHelper();
         skinId = 1;
@@ -54,17 +54,17 @@ public class Settings extends Activity {
                 Log.d("xxx",password);
                 JSONSerializer jsonSerializer = new JSONSerializer();
                 JSONObject jsonObject = jsonSerializer.jsonPutUserData(skinId, firstName, lastName, email, password);
-                apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(ApiHelper.player.id), jsonObject);
+                apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             while (apiHelper.run) {}
                             if(apiHelper.getmStatusCode() == 200) {
-                                ApiHelper.player.email = email;
-                                ApiHelper.player.lastName = lastName;
-                                ApiHelper.player.firstName = firstName;
-                                ApiHelper.player.id = skinId;
+                                ApiHelper.player.setEmail(email);
+                                ApiHelper.player.setLastName(lastName);
+                                ApiHelper.player.setFirstName(firstName);
+                                ApiHelper.player.setId(skinId);
                                 Log.d("Test", "Test");
                             }
                             Intent i = new Intent(getBaseContext(), GameActivity.class);

@@ -33,11 +33,11 @@ public class StatsPage extends AppCompatActivity {
 
         player = ApiHelper.player;
 
-        txt_highscore.setText(Integer.toString(player.playerStats.highestScore));
-        txt_totalfailed.setText(Integer.toString(player.playerStats.totalFailed));
-        txt_totallost.setText(Integer.toString(player.playerStats.totalLost));
-        txt_totalscore.setText(Integer.toString(player.playerStats.totalScore));
-        txt_totalsucces.setText(Integer.toString(player.playerStats.totalSuccess));
+        txt_highscore.setText(Integer.toString(player.getPlayerStats().getHighestScore()));
+        txt_totalfailed.setText(Integer.toString(player.getPlayerStats().getTotalFailed()));
+        txt_totallost.setText(Integer.toString(player.getPlayerStats().getTotalLost()));
+        txt_totalscore.setText(Integer.toString(player.getPlayerStats().getTotalScore()));
+        txt_totalsucces.setText(Integer.toString(player.getPlayerStats().getTotalSuccess()));
 
 
 

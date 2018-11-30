@@ -25,10 +25,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
+import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -76,6 +78,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Marker selectedMarker;
     Location location;
     Circle Circle;
+    List<Circle> circles;
     Marker perth;
     Player player = ApiHelper.player;
     int currentScore, userId;
@@ -113,12 +116,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     case R.id.nav_stats:
                         intent = new Intent(getBaseContext(),StatsPage.class);
                         intent.putExtra("userid",userId);
-                        Log.e("jwt", ApiHelper.player.jwt);
+                        Log.e("jwt", ApiHelper.player.getJwt());
                         startActivity(intent);
                         break;
                     case R.id.nav_settings:
                         intent = new Intent(getBaseContext(),Settings.class);
-                        Log.e("jwt", ApiHelper.player.jwt);
+                        Log.e("jwt", ApiHelper.player.getJwt());
                         startActivity(intent);
                         break;
                     case R.id.nav_sights:
@@ -313,27 +316,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5);
                 }
                 if(ghostCollide) {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject jsonParam = new JSONObject();
-                    try {
-                        jsonParam.put("totalFailed", player.playerStats.totalFailed);
-                        jsonObject.put("stats", jsonParam);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.id), jsonObject);
-                    AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
-                    alertDialog.setTitle("Game over");
-                    alertDialog.setMessage("Press OK to start over");
+                    getRandomAssignment();
                     ghostCollide = false;
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getRandomAssignment();
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
+                    CollisionHandler collisionHandler = new CollisionHandler(GameActivity.this);
+                    collisionHandler.ghostCollision();
+                    if(player.getPlayerGameStats().getLifePoints() == 0) {
+                                        getRandomAssignment();
+                    }
+                    txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
                 }
             }
         }
@@ -342,19 +332,39 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if(Circle != null) {
             Circle.remove();
         }
+
         Random rand = new Random();
         int n = rand.nextInt(assignments.size());
         if(assignments.get(n) == currentAssigment) {
             n = rand.nextInt(assignments.size());
         }
         txtCurrentAssignment.setText(assignments.get(n).name);
-        CircleOptions circleOptions = new CircleOptions();
-        circleOptions.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
-                circleOptions.radius(10);
-                circleOptions.strokeColor(Color.YELLOW);
-                circleOptions.fillColor(0x30ff0000);
-                circleOptions.strokeWidth(2);
-                Circle = mMap.addCircle(circleOptions);
+        CircleOptions circleOptionsCurrentAssignment = new CircleOptions();
+        circleOptionsCurrentAssignment.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
+                circleOptionsCurrentAssignment.radius(10);
+                circleOptionsCurrentAssignment.strokeColor(Color.YELLOW);
+                circleOptionsCurrentAssignment.fillColor(0x30ff0000);
+                circleOptionsCurrentAssignment.strokeWidth(2);
+                Circle = mMap.addCircle(circleOptionsCurrentAssignment);
+
+        for(int i = 0; i < assignments.size() - 1; i++) {
+            if (circles != null) {
+                circles.get(i).remove();
+            }
+        }
+        circles = new ArrayList<>();
+        for(int i = 0; i < assignments.size(); i++) {
+            if(i != n) {
+                CircleOptions circleOptionsSafeZone = new CircleOptions();
+                circleOptionsSafeZone.center(new LatLng(assignments.get(i).lat, assignments.get(i).lon));
+                circleOptionsSafeZone.radius(10);
+                circleOptionsSafeZone.strokeColor(Color.GREEN);
+                circleOptionsSafeZone.fillColor(0x30ff0000);
+                circleOptionsSafeZone.strokeWidth(2);
+                Circle circle = mMap.addCircle(circleOptionsSafeZone);
+                circles.add(circle);
+            }
+        }
         return assignments.get(n);
     }
 
@@ -431,7 +441,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
         txtCurrentScore.setText("x " + currentScore);
         txtCurrentLifePoints = findViewById(R.id.game_txt_currentLifePoints);
-        txtCurrentLifePoints.setText("x " + ApiHelper.player.playerGameStats.getLifePoints());
+        txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
         txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
         collisionDetection = new CollisionDetection();
