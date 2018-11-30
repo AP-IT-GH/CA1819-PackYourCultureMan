@@ -43,26 +43,31 @@
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:src="@mipmap/blinky_round" />
+                android:src="@drawable/heart" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="20dp"
+                android:id="@+id/game_txt_currentLifePoints"
+                android:layout_width="35dp"
                 android:layout_height="match_parent"
-                android:text="5" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:src="@mipmap/ic_launcher" />
+                android:gravity="center"
+                android:text="x 0"
+                android:textColor="@android:color/holo_orange_light" />
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="20dp"
+                android:id="@+id/game_txt_currentAssginment"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:text="4" />
+                android:gravity="center"
+                android:text="Assignment"
+                android:textColor="@android:color/holo_orange_light" />
+
+            <TextView
+                android:id="@+id/game_txt_currentHeading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="N"
+                android:textColor="@android:color/holo_orange_light" />
 
 
         </LinearLayout>

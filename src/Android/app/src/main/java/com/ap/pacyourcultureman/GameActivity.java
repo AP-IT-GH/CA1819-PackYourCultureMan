@@ -25,9 +25,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
+import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -70,22 +73,25 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
-    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore;
+    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading;
     ImageView imgSight;
     Marker selectedMarker;
     Location location;
     Circle Circle;
+    List<Circle> circles;
     Marker perth;
     Player player = ApiHelper.player;
-    int currentScore;
+    int userId;
+    NavigationView navigationView;
     ApiHelper apiHelper;
     CollisionDetection collisionDetection;
     Intent iin;
     Bundle b;
-    int userId;
-    String jwt;
+    String jwt, bearingStr;
     static LatLng currentPos;
     static Boolean ghostCollide = false;
+    BearingCalc bearingCalc;
+    CollisionHandler collisionHandler;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
 
     Handler handler;
@@ -94,27 +100,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        currentScore = 0;
-        apiHelper = new ApiHelper();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.menu);
-        bottomPanel = findViewById(R.id.sliding_layout);
-        bottomPanel.setPanelHeight(0);
-        txtName = findViewById(R.id.txtName);
-        imgSight = findViewById(R.id.imgSight);
-        txtWebsite = findViewById(R.id.txtWebsite);
-        txtShortDesc = findViewById(R.id.txtShortDesc);
-        txtLongDesc = findViewById(R.id.txtLongDesc);
-        txtCurrentScore = findViewById(R.id.game_txt_currentscore);
-        txtCurrentScore.setText("x " + currentScore);
-        collisionDetection = new CollisionDetection();
-        iin = getIntent();
-        b = iin.getExtras();
-        currentPos = PERTH;
-        if(b!=null){
-            userId = (int) b.get("userid");
-            jwt = (String) b.get("jwt");
-        }
-
+        initializer();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -132,12 +118,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     case R.id.nav_stats:
                         intent = new Intent(getBaseContext(),StatsPage.class);
                         intent.putExtra("userid",userId);
-                        Log.e("jwt", ApiHelper.player.jwt);
+                        Log.e("jwt", ApiHelper.player.getJwt());
                         startActivity(intent);
                         break;
                     case R.id.nav_settings:
                         intent = new Intent(getBaseContext(),Settings.class);
-                        Log.e("jwt", ApiHelper.player.jwt);
+                        Log.e("jwt", ApiHelper.player.getJwt());
                         startActivity(intent);
                         break;
                     case R.id.nav_sights:
@@ -188,6 +174,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
         Blinky.Draw(mMap, getApplicationContext());
@@ -237,7 +224,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
-
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            public void onMapClick(LatLng point){
+                Toast.makeText(GameActivity.this,
+                        point.latitude + ", " + point.longitude,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -252,15 +245,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.latLng, 10)){
-                    Log.d("assigmentHit", "assigmentHit");
+                    collisionHandler.currentAssigmentCollision();
+                    currentAssigment = getRandomAssignment();
+                    txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
                 for(int i = 0; i < dots.size(); i++) {
-                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5)) {
-                        Log.v("Dot", "dot hit");
-                        currentScore++;
-                        txtCurrentScore.setText("x " + currentScore);
+                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 8)) {
+                        player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
+                        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                     }
                 }
+                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
             }
 
             @Override
@@ -298,6 +293,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -310,10 +306,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
+
                 for(int i = 0; i < assignments.size(); i++) {
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 10);
 
                 }
+
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
@@ -326,47 +324,21 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5);
                 }
                 if(ghostCollide) {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject jsonParam = new JSONObject();
-                    try {
-                        jsonParam.put("totalFailed", player.playerStats.totalFailed);
-                        jsonObject.put("stats", jsonParam);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    currentAssigment = getRandomAssignment();
+                    ghostCollide = false;
+                    collisionHandler.ghostCollision();
+                    if(player.getPlayerGameStats().getLifePoints() == 0) {
+                                        getRandomAssignment();
                     }
-                    apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.id), jsonObject);
-                    AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
-                    alertDialog.setTitle("Game over");
-                    alertDialog.setMessage("Press OK to start over");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ghostCollide = false;
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
+                    txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
                 }
             }
         }
     };
     private Assignment getRandomAssignment() {
-        if(Circle != null) {
-            Circle.remove();
-        }
-        Random rand = new Random();
-        int n = rand.nextInt(assignments.size());
-        if(assignments.get(n) == currentAssigment) {
-            n = rand.nextInt(assignments.size());
-        }
-        CircleOptions circleOptions = new CircleOptions();
-        circleOptions.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
-                circleOptions.radius(10);
-                circleOptions.strokeColor(Color.YELLOW);
-                circleOptions.fillColor(0x30ff0000);
-                circleOptions.strokeWidth(2);
-                Circle = mMap.addCircle(circleOptions);
-        return assignments.get(n);
+        currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
+        txtCurrentAssignment.setText(currentAssigment.name);
+        return currentAssigment;
     }
 
 
@@ -427,5 +399,34 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 selectedMarker.hideInfoWindow();
         } else super.onBackPressed();
 
+    }
+    private void initializer() {
+        apiHelper = new ApiHelper();
+        navigationView = (NavigationView) findViewById(R.id.menu);
+        bottomPanel = findViewById(R.id.sliding_layout);
+        bottomPanel.setPanelHeight(0);
+        txtName = findViewById(R.id.txtName);
+        imgSight = findViewById(R.id.imgSight);
+        txtWebsite = findViewById(R.id.txtWebsite);
+        txtShortDesc = findViewById(R.id.txtShortDesc);
+        txtLongDesc = findViewById(R.id.txtLongDesc);
+        txtCurrentScore = findViewById(R.id.game_txt_currentscore);
+        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
+        txtCurrentLifePoints = findViewById(R.id.game_txt_currentLifePoints);
+        txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
+        txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
+        txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
+        collisionDetection = new CollisionDetection();
+        bearingCalc = new BearingCalc();
+        collisionHandler = new CollisionHandler(GameActivity.this);
+        currentAssigment = assignments.get(0);
+        circles = new ArrayList<>();
+        iin = getIntent();
+        b = iin.getExtras();
+        currentPos = PERTH;
+        if(b!=null){
+            userId = (int) b.get("userid");
+            jwt = (String) b.get("jwt");
+        }
     }
 }

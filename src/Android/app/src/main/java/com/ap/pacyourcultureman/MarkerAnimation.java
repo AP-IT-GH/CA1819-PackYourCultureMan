@@ -35,7 +35,6 @@ public class MarkerAnimation {
                 if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
                     GameActivity.ghostCollide = true;
                     Log.d("Ghost hit", "Ghost hit");
-                    ApiHelper.player.playerStats.totalFailed++;
                 }
                 // Repeat till progress is complete.
                 if (t < 1) {
