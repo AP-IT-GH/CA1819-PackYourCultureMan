@@ -81,7 +81,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     List<Circle> circles;
     Marker perth;
     Player player = ApiHelper.player;
-    int currentScore, userId;
+    int userId;
     NavigationView navigationView;
     ApiHelper apiHelper;
     CollisionDetection collisionDetection;
@@ -90,6 +90,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     String jwt, bearingStr;
     static LatLng currentPos;
     static Boolean ghostCollide = false;
+    BearingCalc bearingCalc;
+    CollisionHandler collisionHandler;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
 
     Handler handler;
@@ -172,6 +174,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
         Blinky.Draw(mMap, getApplicationContext());
@@ -221,7 +224,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
-
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            public void onMapClick(LatLng point){
+                Toast.makeText(GameActivity.this,
+                        point.latitude + ", " + point.longitude,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -236,18 +245,16 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.latLng, 10)){
-                    Log.d("assigmentHit", "assigmentHit");
+                    collisionHandler.currentAssigmentCollision();
+                    currentAssigment = getRandomAssignment();
+                    txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
                 for(int i = 0; i < dots.size(); i++) {
-                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5)) {
-                        Log.v("Dot", "dot hit");
-                        currentScore++;
-                        txtCurrentScore.setText("x " + currentScore);
+                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 8)) {
+                        player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
+                        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                     }
                 }
-                BearingCalc bearingCalc = new BearingCalc();
-              //  txtCurrentHeading.setText(bearingCalc.getBearingInString(bearingCalc.bearing(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon)));
-               // Log.d("Bearing", Double.toString(bearingCalc.bearing(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon)));
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
             }
 
@@ -286,6 +293,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -316,9 +324,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markable, new LatLng(dots.get(i).getLat(), dots.get(i).getLon()), 5);
                 }
                 if(ghostCollide) {
-                    getRandomAssignment();
+                    currentAssigment = getRandomAssignment();
                     ghostCollide = false;
-                    CollisionHandler collisionHandler = new CollisionHandler(GameActivity.this);
                     collisionHandler.ghostCollision();
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
@@ -329,43 +336,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
     };
     private Assignment getRandomAssignment() {
-        if(Circle != null) {
-            Circle.remove();
-        }
-
-        Random rand = new Random();
-        int n = rand.nextInt(assignments.size());
-        if(assignments.get(n) == currentAssigment) {
-            n = rand.nextInt(assignments.size());
-        }
-        txtCurrentAssignment.setText(assignments.get(n).name);
-        CircleOptions circleOptionsCurrentAssignment = new CircleOptions();
-        circleOptionsCurrentAssignment.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
-                circleOptionsCurrentAssignment.radius(10);
-                circleOptionsCurrentAssignment.strokeColor(Color.YELLOW);
-                circleOptionsCurrentAssignment.fillColor(0x30ff0000);
-                circleOptionsCurrentAssignment.strokeWidth(2);
-                Circle = mMap.addCircle(circleOptionsCurrentAssignment);
-
-        for(int i = 0; i < assignments.size() - 1; i++) {
-            if (circles != null) {
-                circles.get(i).remove();
-            }
-        }
-        circles = new ArrayList<>();
-        for(int i = 0; i < assignments.size(); i++) {
-            if(i != n) {
-                CircleOptions circleOptionsSafeZone = new CircleOptions();
-                circleOptionsSafeZone.center(new LatLng(assignments.get(i).lat, assignments.get(i).lon));
-                circleOptionsSafeZone.radius(10);
-                circleOptionsSafeZone.strokeColor(Color.GREEN);
-                circleOptionsSafeZone.fillColor(0x30ff0000);
-                circleOptionsSafeZone.strokeWidth(2);
-                Circle circle = mMap.addCircle(circleOptionsSafeZone);
-                circles.add(circle);
-            }
-        }
-        return assignments.get(n);
+        currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
+        txtCurrentAssignment.setText(currentAssigment.name);
+        return currentAssigment;
     }
 
 
@@ -428,7 +401,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     private void initializer() {
-        currentScore = 0;
         apiHelper = new ApiHelper();
         navigationView = (NavigationView) findViewById(R.id.menu);
         bottomPanel = findViewById(R.id.sliding_layout);
@@ -439,12 +411,16 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtShortDesc = findViewById(R.id.txtShortDesc);
         txtLongDesc = findViewById(R.id.txtLongDesc);
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
-        txtCurrentScore.setText("x " + currentScore);
+        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
         txtCurrentLifePoints = findViewById(R.id.game_txt_currentLifePoints);
         txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
         txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
         collisionDetection = new CollisionDetection();
+        bearingCalc = new BearingCalc();
+        collisionHandler = new CollisionHandler(GameActivity.this);
+        currentAssigment = assignments.get(0);
+        circles = new ArrayList<>();
         iin = getIntent();
         b = iin.getExtras();
         currentPos = PERTH;

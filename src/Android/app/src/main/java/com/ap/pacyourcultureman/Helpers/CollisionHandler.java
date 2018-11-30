@@ -58,4 +58,27 @@ public class CollisionHandler {
             //TODO Reset ghost
         }
     }
+    public void currentAssigmentCollision() {
+        Boolean newhighscore = false;
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonParam = new JSONObject();
+        player.getPlayerStats().setTotalScore(player.getPlayerStats().getTotalScore() + player.getPlayerStats().getCurrentScore());
+        player.getPlayerStats().setTotalSuccess(player.getPlayerStats().getTotalSuccess() + 1);
+        if(player.getPlayerStats().getCurrentScore() > player.getPlayerStats().getHighestScore()) {
+            player.getPlayerStats().setHighestScore(player.getPlayerStats().getCurrentScore());
+            Toast.makeText(context, "New highscore!", Toast.LENGTH_SHORT).show();
+            newhighscore = true;
+        }
+        try {
+            jsonParam.put("totalScore", player.getPlayerStats().getTotalScore());
+            jsonParam.put("totalSucces", player.getPlayerStats().getTotalSuccess());
+            if(newhighscore) {jsonParam.put("highestScore", player.getPlayerStats().getHighestScore());
+            Log.d("Json", "High");}
+            jsonObject.put("stats", jsonParam);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+        player.getPlayerStats().setCurrentScore(0);
+    }
 }

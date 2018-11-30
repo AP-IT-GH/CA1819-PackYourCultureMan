@@ -90,6 +90,7 @@ public class ApiHelper {
                         } finally {
                             in.close();
                         }
+                        Log.d("LOGIN", reply);
                         run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
