@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.google.android.gms.common.api.Api;
@@ -70,20 +71,20 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
-    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore;
+    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading;
     ImageView imgSight;
     Marker selectedMarker;
     Location location;
     Circle Circle;
     Marker perth;
     Player player = ApiHelper.player;
-    int currentScore;
+    int currentScore, userId;
+    NavigationView navigationView;
     ApiHelper apiHelper;
     CollisionDetection collisionDetection;
     Intent iin;
     Bundle b;
-    int userId;
-    String jwt;
+    String jwt, bearingStr;
     static LatLng currentPos;
     static Boolean ghostCollide = false;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
@@ -94,27 +95,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        currentScore = 0;
-        apiHelper = new ApiHelper();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.menu);
-        bottomPanel = findViewById(R.id.sliding_layout);
-        bottomPanel.setPanelHeight(0);
-        txtName = findViewById(R.id.txtName);
-        imgSight = findViewById(R.id.imgSight);
-        txtWebsite = findViewById(R.id.txtWebsite);
-        txtShortDesc = findViewById(R.id.txtShortDesc);
-        txtLongDesc = findViewById(R.id.txtLongDesc);
-        txtCurrentScore = findViewById(R.id.game_txt_currentscore);
-        txtCurrentScore.setText("x " + currentScore);
-        collisionDetection = new CollisionDetection();
-        iin = getIntent();
-        b = iin.getExtras();
-        currentPos = PERTH;
-        if(b!=null){
-            userId = (int) b.get("userid");
-            jwt = (String) b.get("jwt");
-        }
-
+        initializer();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -261,6 +242,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         txtCurrentScore.setText("x " + currentScore);
                     }
                 }
+                BearingCalc bearingCalc = new BearingCalc();
+              //  txtCurrentHeading.setText(bearingCalc.getBearingInString(bearingCalc.bearing(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon)));
+               // Log.d("Bearing", Double.toString(bearingCalc.bearing(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon)));
+                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
             }
 
             @Override
@@ -310,10 +295,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
+
                 for(int i = 0; i < assignments.size(); i++) {
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 10);
 
                 }
+
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
@@ -338,10 +325,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
                     alertDialog.setTitle("Game over");
                     alertDialog.setMessage("Press OK to start over");
+                    ghostCollide = false;
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ghostCollide = false;
+                                    getRandomAssignment();
                                     dialog.dismiss();
                                 }
                             });
@@ -359,6 +347,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if(assignments.get(n) == currentAssigment) {
             n = rand.nextInt(assignments.size());
         }
+        txtCurrentAssignment.setText(assignments.get(n).name);
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
                 circleOptions.radius(10);
@@ -427,5 +416,31 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 selectedMarker.hideInfoWindow();
         } else super.onBackPressed();
 
+    }
+    private void initializer() {
+        currentScore = 0;
+        apiHelper = new ApiHelper();
+        navigationView = (NavigationView) findViewById(R.id.menu);
+        bottomPanel = findViewById(R.id.sliding_layout);
+        bottomPanel.setPanelHeight(0);
+        txtName = findViewById(R.id.txtName);
+        imgSight = findViewById(R.id.imgSight);
+        txtWebsite = findViewById(R.id.txtWebsite);
+        txtShortDesc = findViewById(R.id.txtShortDesc);
+        txtLongDesc = findViewById(R.id.txtLongDesc);
+        txtCurrentScore = findViewById(R.id.game_txt_currentscore);
+        txtCurrentScore.setText("x " + currentScore);
+        txtCurrentLifePoints = findViewById(R.id.game_txt_currentLifePoints);
+        txtCurrentLifePoints.setText("x " + ApiHelper.player.playerGameStats.getLifePoints());
+        txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
+        txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
+        collisionDetection = new CollisionDetection();
+        iin = getIntent();
+        b = iin.getExtras();
+        currentPos = PERTH;
+        if(b!=null){
+            userId = (int) b.get("userid");
+            jwt = (String) b.get("jwt");
+        }
     }
 }
