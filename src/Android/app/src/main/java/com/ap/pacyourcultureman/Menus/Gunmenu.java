@@ -48,10 +48,12 @@ public class Gunmenu {
             public void onClick(View view) {
                 if(!isMenuDropped) {
                     dropdownLayout.setVisibility(View.VISIBLE);
+                    dropdownMenu.setRotation(180);
                     isMenuDropped = true;
                 }
                 else {
                     dropdownLayout.setVisibility(View.GONE);
+                    dropdownMenu.setRotation(0);
                     isMenuDropped = false;
                 }
             }

@@ -27,7 +27,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/pacman_dot" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/heart" />
 
             <TextView
@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/game_txt_currentAssginment"
-                android:layout_width="140dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Assignment"
@@ -65,9 +65,20 @@
                 android:textSize="11sp" />
 
             <TextView
-                android:id="@+id/game_txt_currentHeading"
+                android:id="@+id/game_txt_currentDistance"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="1100.55m"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/game_txt_currentHeading"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="N"
                 android:textColor="@android:color/holo_orange_light"
@@ -75,9 +86,11 @@
 
             <ImageView
                 android:id="@+id/game_img_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/heart" />
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:src="@android:drawable/arrow_down_float" />
 
         </LinearLayout>
 

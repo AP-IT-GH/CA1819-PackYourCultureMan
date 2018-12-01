@@ -1,5 +1,11 @@
 package com.ap.pacyourcultureman.Helpers;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.text.DecimalFormat;
+
 public class BearingCalc {
     public BearingCalc() {}
 
@@ -20,5 +26,17 @@ public class BearingCalc {
         String compasLoc=coordNames[(int) directionid];
 
         return compasLoc;
+    }
+    public String getDistance(LatLng latLng1, LatLng latLng2) {
+        String distanceInM;
+        Location loc1 = new Location("");
+        loc1.setLatitude(latLng1.latitude);
+        loc1.setLongitude(latLng1.longitude);
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(latLng2.latitude);
+        loc2.setLongitude(latLng2.longitude);
+        distanceInM = new DecimalFormat("##.##").format(loc1.distanceTo(loc2));
+        return distanceInM + "m";
     }
 }

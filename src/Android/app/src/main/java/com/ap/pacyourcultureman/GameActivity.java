@@ -62,7 +62,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
-    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading;
+    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
     ImageView imgSight;
     Marker selectedMarker;
     Location location;
@@ -203,6 +203,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
+                txtCurrentAssignment.setText(currentAssigment.name);
+                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon)));
             }
 
             @Override
@@ -368,6 +370,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
         txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
+        txtCurrentDistance = findViewById(R.id.game_txt_currentDistance);
         NavigationMenu navigationMenu = new NavigationMenu(this);
         gunmenu = new Gunmenu(this);
         collisionDetection = new CollisionDetection();
