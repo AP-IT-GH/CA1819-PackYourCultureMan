@@ -88,7 +88,8 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/game_lay_rifle"
@@ -118,8 +119,7 @@
                 android:id="@+id/game_lay_freeze"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/imgFreeze"
@@ -142,8 +142,7 @@
                 android:id="@+id/game_lay_pushback"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/imgPushback"
@@ -170,7 +169,8 @@
                 android:layout_marginLeft="100dp"
                 android:background="@android:color/holo_red_dark"
                 android:text="Cancel"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"

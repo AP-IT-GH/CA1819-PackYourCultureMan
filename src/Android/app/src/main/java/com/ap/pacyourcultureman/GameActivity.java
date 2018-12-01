@@ -24,6 +24,7 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.CollisionHandler;
+import com.ap.pacyourcultureman.Helpers.GunHandler;
 import com.ap.pacyourcultureman.Menus.Gunmenu;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -78,6 +79,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     static Boolean ghostCollide = false;
     BearingCalc bearingCalc;
     CollisionHandler collisionHandler;
+    Gunmenu gunmenu;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
     Handler handler;
 
@@ -176,13 +178,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
-            public void onMapClick(LatLng point){
-                Toast.makeText(GameActivity.this,
-                        point.latitude + ", " + point.longitude,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -334,6 +329,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         }*/
+        if(marker.equals(Blinky.marker)) {
+                GunHandler gunHandler = new GunHandler(Blinky, this);
+                gunHandler.gunHandler();
+                gunmenu.gunUpdater();
+            return true;
+        }
         selectedMarker = marker;
         return false;
     }
@@ -368,7 +369,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
         txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
         NavigationMenu navigationMenu = new NavigationMenu(this);
-        Gunmenu gunmenu = new Gunmenu(this);
+        gunmenu = new Gunmenu(this);
         collisionDetection = new CollisionDetection();
         bearingCalc = new BearingCalc();
         collisionHandler = new CollisionHandler(GameActivity.this);

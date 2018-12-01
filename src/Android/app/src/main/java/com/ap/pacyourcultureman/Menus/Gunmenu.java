@@ -2,6 +2,7 @@ package com.ap.pacyourcultureman.Menus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,7 +23,8 @@ public class Gunmenu {
     Button switchGun;
     LinearLayout layout_rifle, layout_freeze, layout_pushback, dropdownLayout;
     Boolean isMenuDropped = false;
-    Boolean gunSelected = false;
+    public static Boolean gunSelected = false;
+    public static String selectedGun;
     int rifleammo, freezeammo, pushbackammo;
     public Gunmenu(final Activity activity) {
         dropdownMenu = activity.findViewById(R.id.game_img_dropdown);
@@ -34,13 +36,13 @@ public class Gunmenu {
         txtFreezeAmmo = activity.findViewById(R.id.game_txt_freeze);
         txtRifleAmmo = activity.findViewById(R.id.game_txt_rifle);
         txtPushbackAmmo = activity.findViewById(R.id.game_txt_pushback);
+        ApiHelper.player.getPlayerGameStats().setRifle(5);
         rifleammo = ApiHelper.player.getPlayerGameStats().getRifle();
         freezeammo = ApiHelper.player.getPlayerGameStats().getFreezeGun();
         pushbackammo = ApiHelper.player.getPlayerGameStats().getPushBackGun();
-        txtFreezeAmmo.setText(Integer.toString(freezeammo));
-        txtRifleAmmo.setText(Integer.toString(rifleammo));
-        txtPushbackAmmo.setText(Integer.toString(pushbackammo));
-        final CollisionHandler collisionHandler = new CollisionHandler(activity.getApplicationContext());
+        txtFreezeAmmo.setText("x: " + Integer.toString(freezeammo));
+        txtRifleAmmo.setText("x: " + Integer.toString(rifleammo));
+        txtPushbackAmmo.setText("x: " + Integer.toString(pushbackammo));
         dropdownMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,16 +61,9 @@ public class Gunmenu {
             public void onClick(View view) {
                 if(!gunSelected) {
                     layoutHandler(layout_rifle);
+                    Toast.makeText(activity.getApplicationContext(), "Select Target!", Toast.LENGTH_SHORT).show();
+                    selectedGun = "Rifle";
                     gunSelected = true;
-                }
-                else {
-                    if(rifleammo != 0) {
-                        Toast.makeText(activity.getApplicationContext(), "Select Target!", Toast.LENGTH_SHORT).show();
-                        collisionHandler.gunCollision();
-                    }
-                    else {
-                        Toast.makeText(activity.getApplicationContext(), "No ammo!", Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
         });
@@ -76,12 +71,18 @@ public class Gunmenu {
             @Override
             public void onClick(View view) {
                 layoutHandler(layout_freeze);
+                Toast.makeText(activity.getApplicationContext(), "Select Target!", Toast.LENGTH_SHORT).show();
+                selectedGun = "Freeze";
+                gunSelected = true;
             }
         });
         layout_pushback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 layoutHandler(layout_pushback);
+                Toast.makeText(activity.getApplicationContext(), "Select Target!", Toast.LENGTH_SHORT).show();
+                selectedGun = "Pushback";
+                gunSelected = true;
             }
         });
         switchGun.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +102,14 @@ public class Gunmenu {
             layout_rifle.setVisibility(View.GONE);
             switchGun.setVisibility(View.VISIBLE);
             layout.setVisibility(View.VISIBLE);
+    }
+    public void gunUpdater() {
+        rifleammo = ApiHelper.player.getPlayerGameStats().getRifle();
+        freezeammo = ApiHelper.player.getPlayerGameStats().getFreezeGun();
+        pushbackammo = ApiHelper.player.getPlayerGameStats().getPushBackGun();
+        txtFreezeAmmo.setText("x: " + Integer.toString(freezeammo));
+        txtRifleAmmo.setText("x: " + Integer.toString(rifleammo));
+        txtPushbackAmmo.setText("x: " + Integer.toString(pushbackammo));
     }
 
 }
