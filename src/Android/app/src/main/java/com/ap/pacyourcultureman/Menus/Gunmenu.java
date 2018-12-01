@@ -1,8 +1,6 @@
 package com.ap.pacyourcultureman.Menus;
 
 import android.app.Activity;
-import android.content.Context;
-import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,11 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
-import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.R;
-import com.google.android.gms.common.api.Api;
-
-import org.w3c.dom.Text;
 
 public class Gunmenu {
     ImageView dropdownMenu;

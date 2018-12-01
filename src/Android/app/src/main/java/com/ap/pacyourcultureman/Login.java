@@ -94,7 +94,7 @@ public class Login extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                errorChecker.setVisibility(View.GONE);
+                errorSetter("Logging in");
                 String user = edit_email.getText().toString();
                 String pass = edit_password.getText().toString();
                 JSONSerializer jsonSerializer = new JSONSerializer();
@@ -105,27 +105,15 @@ public class Login extends Activity {
                 if(apiHelper.getResponse() == "Success") {
                     errorSetter("Logging in");
                     apiHelper.setPlayer(apiHelper.getReply());
-
                     apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights");
-
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                while (apiHelper.run) {
-                                }
                                 Thread thread = new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
                                             apiHelper2.getArray("https://aspcoreapipycm.azurewebsites.net/Dot");
+                                            errorSetter("Fetching data");
                                             while (apiHelper2.run) {
                                             }
-                                            Thread thread = new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    try {
-                                                        while (apiHelper.run) {}
                                                         JSONDeserializer jsonDeserializer = new JSONDeserializer();
                                                         ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
                                                         ApiHelper.dots = jsonDeserializer.getDots(apiHelper2.getJsonArray());                                if(chb_rememberme.isChecked()) {
@@ -143,24 +131,12 @@ public class Login extends Activity {
                                                 }
                                             });
                                             thread.start();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
                                     }
-                                });
-                                thread.start();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
 
                 }
-            }
-        });
+            });
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

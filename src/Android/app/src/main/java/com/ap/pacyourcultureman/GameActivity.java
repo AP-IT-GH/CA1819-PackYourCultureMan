@@ -110,7 +110,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onPause(){
         super.onPause();
-
         // Stops Location Updates if activity is paused
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -178,6 +177,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -323,14 +323,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
-       /*
-        dots klikken moet uitstaan
-
-       for(int i = 0; i < dots.size(); i++) {
-            if (dots.get(i).equals(marker)){
-                return false;
-            }
-        }*/
         if(marker.equals(Blinky.marker)) {
                 GunHandler gunHandler = new GunHandler(Blinky, this);
                 gunHandler.gunHandler();
