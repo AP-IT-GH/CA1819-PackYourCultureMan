@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import org.json.JSONObject;
 
@@ -26,7 +27,7 @@ public class Settings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_menu);
-
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         edit_password = findViewById(R.id.edit_password);
         edit_firstname = findViewById(R.id.edit_firstName);
         edit_lastname = findViewById(R.id.edit_lastName);

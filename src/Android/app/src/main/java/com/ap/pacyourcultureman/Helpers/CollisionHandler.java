@@ -81,4 +81,7 @@ public class CollisionHandler {
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
         player.getPlayerStats().setCurrentScore(0);
     }
+    public void gunCollision() {
+
+    }
 }
