@@ -54,8 +54,8 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    ApiHelper apiHelper;
-    ApiHelper apiHelper2;
+    List<String> steps = new ArrayList<>();
+    ApiHelper apiHelper, apiHelper2, apiHelper3;
     Boolean running;
     Handler handler;
     int userId;
@@ -66,6 +66,7 @@ public class Login extends Activity {
         setContentView(R.layout.login_form);
         apiHelper = new ApiHelper();
         apiHelper2 = new ApiHelper();
+        apiHelper3 = new ApiHelper();
         targetURL = "https://aspcoreapipycm.azurewebsites.net/Users/authenticate";
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
@@ -143,6 +144,24 @@ public class Login extends Activity {
                                                      }
                                                  });
                                                  thread2.start();
+                                                 Thread thread3 = new Thread(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         try {
+                                                             apiHelper3.getDirectionsApi("https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU&fbclid=IwAR3KBusU_zvFk_F4-6K9bhHoT6B2thi_nceJHXLXdMdtCzeuB0k-1m1tMzE");
+                                                             while (apiHelper3.run) {
+                                                             }
+                                                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                             steps = jsonDeserializer.getSteps(apiHelper3.getJsonObject());
+                                                             startGame();
+
+                                                         }
+                                                         catch (Exception e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
+                                                 });
+                                                 thread3.start();
                                                  userId = apiHelper.getUserId();
                                                  jwt = apiHelper.getJwt();
                                              }
@@ -225,7 +244,7 @@ public class Login extends Activity {
         }
     }
     private void startGame() {
-        if(!apiHelper.run && !apiHelper2.run) {
+        if(!apiHelper.run && !apiHelper2.run && !apiHelper3.run) {
                   Intent intent = new Intent(getBaseContext(), GameActivity.class);
                                                          intent.putExtra("userid", userId);
                                                          intent.putExtra("jwt", jwt);

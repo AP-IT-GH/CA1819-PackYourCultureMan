@@ -15,6 +15,7 @@ import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -40,6 +41,7 @@ public class ApiHelper {
     String reply;
     int mStatusCode;
     JSONArray jsonArray;
+    JSONObject jsonObject;
     public ApiHelper() {
     }
     public void sendPost(final String urlstring, final JSONObject jsonObject) {
@@ -159,6 +161,35 @@ public class ApiHelper {
         });
         thread.start();
     }
+    public void getDirectionsApi(final String url) {
+        run = true;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        Log.v("Data from the web: ", response.toString());
+                        Log.d("Finish", "end");
+                        try {
+                            jsonObject = new JSONObject(response.toString());
+                            run = false;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Failure Callback
+                        run = false;
+                    }
+                });
+// Adding the request to the queue along with a unique string tag
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
 
 
     public void getStats() {
@@ -176,6 +207,7 @@ public class ApiHelper {
     }
     public String getReply() {return reply;}
     public JSONArray getJsonArray() {return jsonArray;}
+    public JSONObject getJsonObject() {return jsonObject;}
     public int getmStatusCode() {return mStatusCode;}
     public void setPlayer(String reply) {
         JSONDeserializer jsonDeserializer = new JSONDeserializer();
