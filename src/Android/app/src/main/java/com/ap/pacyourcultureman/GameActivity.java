@@ -1,27 +1,20 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,8 +24,9 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.CollisionHandler;
-import com.ap.pacyourcultureman.Helpers.JSONSerializer;
-import com.google.android.gms.common.api.Api;
+import com.ap.pacyourcultureman.Helpers.GunHandler;
+import com.ap.pacyourcultureman.Menus.Gunmenu;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -50,13 +44,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -73,27 +62,25 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
-    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading;
+    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
     ImageView imgSight;
     Marker selectedMarker;
     Location location;
-    Circle Circle;
     List<Circle> circles;
     Marker perth;
     Player player = ApiHelper.player;
     int userId;
-    NavigationView navigationView;
     ApiHelper apiHelper;
     CollisionDetection collisionDetection;
     Intent iin;
     Bundle b;
-    String jwt, bearingStr;
+    String jwt;
     static LatLng currentPos;
     static Boolean ghostCollide = false;
     BearingCalc bearingCalc;
     CollisionHandler collisionHandler;
+    Gunmenu gunmenu;
     static final LatLng PERTH = new LatLng(51.230663, 4.407146);
-
     Handler handler;
 
     @Override
@@ -101,39 +88,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         initializer();
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.nav_logout:
-                        SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putBoolean("chbremember", false);
-                        editor.putBoolean("chbloginauto", false);
-                        editor.apply();
-                        intent = new Intent(getBaseContext(), Login.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_stats:
-                        intent = new Intent(getBaseContext(),StatsPage.class);
-                        intent.putExtra("userid",userId);
-                        Log.e("jwt", ApiHelper.player.getJwt());
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_settings:
-                        intent = new Intent(getBaseContext(),Settings.class);
-                        Log.e("jwt", ApiHelper.player.getJwt());
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_sights:
-                        intent = new Intent(getBaseContext(),Sights.class);
-                        startActivity(intent);
-                        break;
-                }
-                return false;
-            }
-        });
         Blinky = new Ghost();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -156,7 +110,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onPause(){
         super.onPause();
-
         // Stops Location Updates if activity is paused
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -224,13 +177,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
-            public void onMapClick(LatLng point){
-                Toast.makeText(GameActivity.this,
-                        point.latitude + ", " + point.longitude,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -256,6 +203,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
+                txtCurrentAssignment.setText(currentAssigment.name);
+                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon)));
             }
 
             @Override
@@ -374,14 +323,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
-       /*
-        dots klikken moet uitstaan
-
-       for(int i = 0; i < dots.size(); i++) {
-            if (dots.get(i).equals(marker)){
-                return false;
-            }
-        }*/
+        if(marker.equals(Blinky.marker)) {
+                GunHandler gunHandler = new GunHandler(Blinky, this);
+                gunHandler.gunHandler();
+                gunmenu.gunUpdater();
+            return true;
+        }
         selectedMarker = marker;
         return false;
     }
@@ -402,7 +349,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void initializer() {
         apiHelper = new ApiHelper();
-        navigationView = (NavigationView) findViewById(R.id.menu);
         bottomPanel = findViewById(R.id.sliding_layout);
         bottomPanel.setPanelHeight(0);
         txtName = findViewById(R.id.txtName);
@@ -416,6 +362,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
         txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
+        txtCurrentDistance = findViewById(R.id.game_txt_currentDistance);
+        NavigationMenu navigationMenu = new NavigationMenu(this);
+        gunmenu = new Gunmenu(this);
         collisionDetection = new CollisionDetection();
         bearingCalc = new BearingCalc();
         collisionHandler = new CollisionHandler(GameActivity.this);
@@ -429,4 +378,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             jwt = (String) b.get("jwt");
         }
     }
+
+
+
 }

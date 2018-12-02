@@ -8,6 +8,7 @@ import android.view.animation.Interpolator;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
+import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.Helpers.LatLngInterpolator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -32,6 +33,7 @@ public class MarkerAnimation {
                 v = interpolator.getInterpolation(t);
                 marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
                 CollisionDetection collisionDetection = new CollisionDetection();
+                CollisionHandler.ghostLatLng = marker.getPosition();
                 if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
                     GameActivity.ghostCollide = true;
                     Log.d("Ghost hit", "Ghost hit");

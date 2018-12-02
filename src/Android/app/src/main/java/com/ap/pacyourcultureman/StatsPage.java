@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 public class StatsPage extends AppCompatActivity {
     TextView txt_highscore;
@@ -24,7 +25,7 @@ public class StatsPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats_page);
-
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         txt_highscore = findViewById(R.id.txt_highscore);
         txt_totalfailed = findViewById(R.id.txt_totalfailed);
         txt_totallost = findViewById(R.id.txt_totallost);

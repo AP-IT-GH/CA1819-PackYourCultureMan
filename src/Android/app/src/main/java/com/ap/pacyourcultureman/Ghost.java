@@ -54,6 +54,7 @@ public class Ghost {
         marker = mMap.addMarker(new MarkerOptions()
                 .position(spookyloc)
                 .icon(BitmapDescriptorFactory.fromBitmap(smallerblinky)));
+
     }
 
     public void goToLocation(LatLng destination){

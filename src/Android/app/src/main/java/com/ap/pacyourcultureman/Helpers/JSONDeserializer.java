@@ -88,5 +88,28 @@ public class JSONDeserializer {
         }
         return dots;
     }
+    public List<String> getSteps(JSONObject reply)  {
+        List<String> stepsString = new ArrayList<>();
+        try {
+            JSONArray
+                    array = reply.getJSONArray("routes");
+            for(int i = 0; i < array.length(); i++) {
+                JSONObject route = array.getJSONObject(i);
+                  JSONArray jsonArray = route.getJSONArray("legs");
+                    for(int j = 0; j < jsonArray.length(); j++) {
+                        JSONObject legsObject = jsonArray.getJSONObject(j);
+                        JSONArray legsArray = legsObject.getJSONArray("steps");
+                        for(int k = 0; k < legsArray.length(); k++) {
+                            JSONObject endObject = legsArray.getJSONObject(k);
+                            Log.d("Steps", endObject.toString());
+                        }
+                    }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return stepsString;
+    }
 
 }

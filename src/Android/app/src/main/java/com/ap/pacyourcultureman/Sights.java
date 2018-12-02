@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.ap.pacyourcultureman.Helpers.SightsAdapter;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         mRecyclerview = findViewById(R.id.recycler_view);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         mSightList = new ArrayList<>();
 
         mRequestQueue = Volley.newRequestQueue(this);

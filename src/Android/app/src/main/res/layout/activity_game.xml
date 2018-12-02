@@ -27,52 +27,166 @@
                 android:id="@+id/imageView"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/pacman_dot" />
 
             <TextView
                 android:id="@+id/game_txt_currentscore"
-                android:layout_width="35dp"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="x 0"
-                android:textColor="@android:color/holo_orange_light" />
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="11sp" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="5dp"
                 android:src="@drawable/heart" />
 
             <TextView
                 android:id="@+id/game_txt_currentLifePoints"
-                android:layout_width="35dp"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="x 0"
-                android:textColor="@android:color/holo_orange_light" />
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/game_txt_currentAssginment"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Assignment"
-                android:textColor="@android:color/holo_orange_light" />
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/game_txt_currentDistance"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="1100.55m"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/game_txt_currentHeading"
-                android:layout_width="match_parent"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="N"
-                android:textColor="@android:color/holo_orange_light" />
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="11sp" />
 
+            <ImageView
+                android:id="@+id/game_img_dropdown"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:src="@android:drawable/arrow_down_float" />
 
         </LinearLayout>
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <LinearLayout
+            android:id="@+id/game_lay_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/game_lay_rifle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imgRifle"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/rifle" />
+
+                <TextView
+                    android:id="@+id/game_txt_rifle"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="x 0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/game_lay_freeze"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imgFreeze"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/freezeray" />
+
+                <TextView
+                    android:id="@+id/game_txt_freeze"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="x 0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/game_lay_pushback"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imgPushback"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/pushback" />
+
+                <TextView
+                    android:id="@+id/game_txt_pushback"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="x 0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/game_btn_guncancel"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="100dp"
+                android:background="@android:color/holo_red_dark"
+                android:text="Cancel"
+                android:textSize="12sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"

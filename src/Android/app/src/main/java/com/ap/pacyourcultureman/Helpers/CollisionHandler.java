@@ -7,7 +7,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ap.pacyourcultureman.GameActivity;
+import com.ap.pacyourcultureman.Ghost;
 import com.ap.pacyourcultureman.Player;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,9 @@ public class CollisionHandler {
     Context context;
     Player player = ApiHelper.player;
     ApiHelper apiHelper;
+    public static LatLng playerLatLng;
+    public static LatLng ghostLatLng;
+    CollisionDetection collisionDetection = new CollisionDetection();
     public CollisionHandler(Context context) {
         this.context = context;
         apiHelper = new ApiHelper();
@@ -80,5 +85,8 @@ public class CollisionHandler {
         }
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
         player.getPlayerStats().setCurrentScore(0);
+    }
+    public void gunCollision(Ghost ghost) {
+
     }
 }

@@ -54,8 +54,8 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    ApiHelper apiHelper;
-    ApiHelper apiHelper2;
+    List<String> steps = new ArrayList<>();
+    ApiHelper apiHelper, apiHelper2, apiHelper3;
     Boolean running;
     Handler handler;
     int userId;
@@ -66,6 +66,7 @@ public class Login extends Activity {
         setContentView(R.layout.login_form);
         apiHelper = new ApiHelper();
         apiHelper2 = new ApiHelper();
+        apiHelper3 = new ApiHelper();
         targetURL = "https://aspcoreapipycm.azurewebsites.net/Users/authenticate";
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
@@ -89,78 +90,88 @@ public class Login extends Activity {
         if (chb_loginauto.isChecked()) {
             email = edit_email.getText().toString();
             password = edit_password.getText().toString();
-          //  sendPost();
         }
         btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                errorChecker.setVisibility(View.GONE);
-                String user = edit_email.getText().toString();
-                String pass = edit_password.getText().toString();
-                JSONSerializer jsonSerializer = new JSONSerializer();
-                JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
-                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate",jsonObject);
-                while (apiHelper.run) {}
-                errorSetter(apiHelper.getResponse());
-                if(apiHelper.getResponse() == "Success") {
-                    errorSetter("Logging in");
-                    apiHelper.setPlayer(apiHelper.getReply());
+                                         @Override
+                                         public void onClick(View view) {
+                                             errorSetter("Logging in");
+                                             String user = edit_email.getText().toString();
+                                             String pass = edit_password.getText().toString();
+                                             JSONSerializer jsonSerializer = new JSONSerializer();
+                                             JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
+                                             apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject);
+                                             while (apiHelper.run) {
+                                             }
+                                             if (apiHelper.getResponse() == "Success") {
+                                                 errorSetter("Logging in");
+                                                 apiHelper.setPlayer(apiHelper.getReply());
+                                                 Thread thread = new Thread(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         try {
+                                                             apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights");
+                                                             while (apiHelper.run) {
+                                                             }
+                                                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                             ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
+                                                             startGame();
+                                                         } catch (Exception e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
+                                                 });
+                                                 thread.start();
+                                                 Thread thread2 = new Thread(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         try {
+                                                             apiHelper2.getArray("https://aspcoreapipycm.azurewebsites.net/Dot");
+                                                             errorSetter("Fetching data");
+                                                             while (apiHelper2.run) {
+                                                             }
+                                                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                             ApiHelper.dots = jsonDeserializer.getDots(apiHelper2.getJsonArray());
+                                                             if (chb_rememberme.isChecked()) {
+                                                                 Save();
+                                                             }
+                                                             startGame();
 
-                    apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights");
+                                                             Log.d("Nailed", "it");
 
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                while (apiHelper.run) {
-                                }
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            apiHelper2.getArray("https://aspcoreapipycm.azurewebsites.net/Dot");
-                                            while (apiHelper2.run) {
-                                            }
-                                            Thread thread = new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    try {
-                                                        while (apiHelper.run) {}
-                                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                                        ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
-                                                        ApiHelper.dots = jsonDeserializer.getDots(apiHelper2.getJsonArray());                                if(chb_rememberme.isChecked()) {
-                                                            Save();
-                                                        }
-                                                        Intent intent = new Intent(getBaseContext(), GameActivity.class);
-                                                        intent.putExtra("userid",userId);
-                                                        intent.putExtra("jwt",jwt);
-                                                        startActivity(intent);
-                                                        Log.d("Nailed", "it");
+                                                         } catch (Exception e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
+                                                 });
+                                                 thread2.start();
+                                                 Thread thread3 = new Thread(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         try {
+                                                             apiHelper3.getDirectionsApi("https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU&fbclid=IwAR3KBusU_zvFk_F4-6K9bhHoT6B2thi_nceJHXLXdMdtCzeuB0k-1m1tMzE");
+                                                             while (apiHelper3.run) {
+                                                             }
+                                                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                             steps = jsonDeserializer.getSteps(apiHelper3.getJsonObject());
+                                                             startGame();
 
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            });
-                                            thread.start();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                                thread.start();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
-                    userId = apiHelper.getUserId();
-                    jwt = apiHelper.getJwt();
+                                                         }
+                                                         catch (Exception e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
+                                                 });
+                                                 thread3.start();
+                                                 userId = apiHelper.getUserId();
+                                                 jwt = apiHelper.getJwt();
+                                             }
+                                             else {
+                                                 errorSetter(apiHelper.getResponse());
+                                             }
+                                         }
 
-                }
-            }
-        });
+                                         });
+
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -231,6 +242,15 @@ public class Login extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+    private void startGame() {
+        if(!apiHelper.run && !apiHelper2.run && !apiHelper3.run) {
+                  Intent intent = new Intent(getBaseContext(), GameActivity.class);
+                                                         intent.putExtra("userid", userId);
+                                                         intent.putExtra("jwt", jwt);
+                                                         startActivity(intent);
+        }
+
     }
 
 }

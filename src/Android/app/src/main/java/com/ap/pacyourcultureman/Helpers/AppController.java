@@ -14,7 +14,6 @@ public class AppController extends Application {
     private ImageLoader mImageLoader;
     RequestQueue mRequestQueue;
     private static AppController mInstance;
-    @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
