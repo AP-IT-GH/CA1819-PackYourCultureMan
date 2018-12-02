@@ -7,6 +7,7 @@ import android.os.SystemClock;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
+import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.LatLngInterpolator;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -25,8 +26,10 @@ public class Ghost {
     private ArrayList<LatLng> steps = new ArrayList<LatLng>(){};
     private int iter;
     Handler handler;
+    ApiHelper apiHelper;
 
     public Ghost(){
+        apiHelper = new ApiHelper();
         steps.add(new LatLng(51.2298337, 4.4208078));
         steps.add(new LatLng(51.227979, 4.418715));
         steps.add(new LatLng(51.227706, 4.416001));
@@ -57,28 +60,34 @@ public class Ghost {
 
     }
 
+    public void getSteps(){
+        steps = new ArrayList<LatLng>(){};
+    }
+
+
     public void FollowPath(LatLng origin, LatLng dest){
         handler = new Handler();
         final long start = SystemClock.uptimeMillis();
 
         handler.post(new Runnable() {
             long elapsed;
+            long time = 3000;
             @Override
             public void run() {
                 elapsed = SystemClock.uptimeMillis() - start;
                 Log.d("Movement", "Moving to point: " + iter);
-                Move(steps.get(iter), marker);
+                Move(steps.get(iter), marker, time);
                 iter++;
                 if (iter < steps.size()){
-                    handler.postDelayed(this, 3000);
+                    handler.postDelayed(this, time);
                 }
             }
         });
     }
 
-    public void Move(LatLng dest, Marker mrkr){
+    public void Move(LatLng dest, Marker mrkr, long time){
         Log.d("Movement", "MarkerLocation: " + mrkr.getPosition());
-        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), 2000);
+        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
 
     }
 

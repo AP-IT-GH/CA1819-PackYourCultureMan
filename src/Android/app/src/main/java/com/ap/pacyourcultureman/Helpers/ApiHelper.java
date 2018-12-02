@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -144,6 +145,7 @@ public class ApiHelper {
         });
         thread.start();
     }
+
     public void getUser(int userId){
         run = true;
         int _userId = userId;
