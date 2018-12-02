@@ -89,54 +89,70 @@ public class Login extends Activity {
         if (chb_loginauto.isChecked()) {
             email = edit_email.getText().toString();
             password = edit_password.getText().toString();
-          //  sendPost();
         }
         btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                errorSetter("Logging in");
-                String user = edit_email.getText().toString();
-                String pass = edit_password.getText().toString();
-                JSONSerializer jsonSerializer = new JSONSerializer();
-                JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
-                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate",jsonObject);
-                while (apiHelper.run) {}
-                errorSetter(apiHelper.getResponse());
-                if(apiHelper.getResponse() == "Success") {
-                    errorSetter("Logging in");
-                    apiHelper.setPlayer(apiHelper.getReply());
-                    apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights");
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            apiHelper2.getArray("https://aspcoreapipycm.azurewebsites.net/Dot");
-                                            errorSetter("Fetching data");
-                                            while (apiHelper2.run) {
-                                            }
-                                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                                        ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
-                                                        ApiHelper.dots = jsonDeserializer.getDots(apiHelper2.getJsonArray());                                if(chb_rememberme.isChecked()) {
-                                                            Save();
-                                                        }
-                                                        Intent intent = new Intent(getBaseContext(), GameActivity.class);
-                                                        intent.putExtra("userid",userId);
-                                                        intent.putExtra("jwt",jwt);
-                                                        startActivity(intent);
-                                                        Log.d("Nailed", "it");
+                                         @Override
+                                         public void onClick(View view) {
+                                             errorSetter("Logging in");
+                                             String user = edit_email.getText().toString();
+                                             String pass = edit_password.getText().toString();
+                                             JSONSerializer jsonSerializer = new JSONSerializer();
+                                             JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
+                                             apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject);
+                                             while (apiHelper.run) {
+                                             }
+                                             if (apiHelper.getResponse() == "Success") {
+                                                 errorSetter("Logging in");
+                                                 apiHelper.setPlayer(apiHelper.getReply());
+                                                 Thread thread = new Thread(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         try {
+                                                             apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights");
+                                                             while (apiHelper.run) {
+                                                             }
+                                                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                             ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
+                                                             startGame();
+                                                         } catch (Exception e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
+                                                 });
+                                                 thread.start();
+                                                 Thread thread2 = new Thread(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         try {
+                                                             apiHelper2.getArray("https://aspcoreapipycm.azurewebsites.net/Dot");
+                                                             errorSetter("Fetching data");
+                                                             while (apiHelper2.run) {
+                                                             }
+                                                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                             ApiHelper.dots = jsonDeserializer.getDots(apiHelper2.getJsonArray());
+                                                             if (chb_rememberme.isChecked()) {
+                                                                 Save();
+                                                             }
+                                                             startGame();
 
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            });
-                                            thread.start();
-                                    }
-                    userId = apiHelper.getUserId();
-                    jwt = apiHelper.getJwt();
+                                                             Log.d("Nailed", "it");
 
-                }
-            });
+                                                         } catch (Exception e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
+                                                 });
+                                                 thread2.start();
+                                                 userId = apiHelper.getUserId();
+                                                 jwt = apiHelper.getJwt();
+                                             }
+                                             else {
+                                                 errorSetter(apiHelper.getResponse());
+                                             }
+                                         }
+
+                                         });
+
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,6 +223,15 @@ public class Login extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+    private void startGame() {
+        if(!apiHelper.run && !apiHelper2.run) {
+                  Intent intent = new Intent(getBaseContext(), GameActivity.class);
+                                                         intent.putExtra("userid", userId);
+                                                         intent.putExtra("jwt", jwt);
+                                                         startActivity(intent);
+        }
+
     }
 
 }

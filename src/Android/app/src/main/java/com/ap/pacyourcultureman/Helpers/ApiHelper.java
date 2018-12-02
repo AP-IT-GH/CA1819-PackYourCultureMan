@@ -78,6 +78,7 @@ public class ApiHelper {
                         run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
                         resp = "Success";
                         InputStream in = conn.getInputStream();
                         StringBuffer sb = new StringBuffer();
@@ -89,9 +90,9 @@ public class ApiHelper {
                             reply = sb.toString();
                         } finally {
                             in.close();
+                            run = false;
                         }
                         Log.d("LOGIN", reply);
-                        run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         resp = "Unauthorized";
