@@ -56,6 +56,7 @@ public class Login extends Activity {
     Boolean run1 = false;
     Boolean run2 = false;
     Boolean run3 = false;
+    Boolean run4 = false;
     int userId;
     String jwt;
 
@@ -132,7 +133,7 @@ public class Login extends Activity {
                                     @Override
                                     public void onSuccess() {
                                         JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                        ApiHelper.dots = jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                        ApiHelper.dots2 = jsonDeserializer2.getDots(apiHelper.getJsonArray());
                                         run2 = true;
                                         startGame();
                                     }
@@ -162,6 +163,30 @@ public class Login extends Activity {
                         }
                     });
                     thread3.start();
+                    Double latA = 51.229656;
+                    Double lngA = 4.402030;
+                    Double latB= 51.227970;
+                    Double lngB = 4.401912;
+                    final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+latA+","+lngA+"|"+latB+","+lngB+"&interpolate=true&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+                    Thread thread4 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                apiHelper.getDirectionsApi(URL, new VolleyCallBack() {
+                                    @Override
+                                    public void onSuccess() {
+                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                        ApiHelper.dots = jsonDeserializer.getDots2(apiHelper.getJsonObject());
+                                        run4 = true;
+                                        startGame();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread4.start();
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
                 }
@@ -242,7 +267,7 @@ public class Login extends Activity {
     }
 
     private void startGame() {
-        if (run1 && run2 && run3) {
+        if (run1 && run2 && run3 && run4) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
             intent.putExtra("userid", userId);
             intent.putExtra("jwt", jwt);

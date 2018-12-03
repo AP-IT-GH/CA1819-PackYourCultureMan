@@ -38,6 +38,7 @@ public class ApiHelper {
     public Boolean run;
     static public List<Assignment> assignments;
     static public List<Dot> dots;
+    static public List<Dot> dots2;
     static public Player player;
     int userId;
     String jwt;

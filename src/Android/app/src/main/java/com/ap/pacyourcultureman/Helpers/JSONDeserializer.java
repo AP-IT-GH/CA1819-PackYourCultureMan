@@ -88,6 +88,28 @@ public class JSONDeserializer {
         }
         return dots;
     }
+    public List<Dot> getDots2(JSONObject response){
+        Log.d("GoogleRoadsApi", "1 object");
+        Log.d("GoogleRoadsApi", response.toString());
+        List<Dot> dotstest = new ArrayList<>();
+        try {
+            JSONArray snappedPoints = response.getJSONArray("snappedPoints");
+            for (int i = 0; i < snappedPoints.length(); i++) {
+                JSONObject location = snappedPoints.getJSONObject(i);
+                JSONObject loc = location.getJSONObject("location");
+                Double lat = loc.getDouble("latitude");
+                Double lng = loc.getDouble("longitude");
+                Log.d("GoogleRoadsApi", lat + "," + lng);
+                dotstest.add(new Dot(lat,lng));
+                dotstest.add(new Dot(Double.valueOf(52.232212), Double.valueOf(5.409960)));
+                for (int j = 0; j < dotstest.size(); j++) {  Log.d("roadscheck3", dotstest.get(i).getLat()+","+dotstest.get(i).getLon());}
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return dotstest;
+    }
+
     public List<String> getSteps(JSONObject reply)  {
         List<String> stepsString = new ArrayList<>();
         try {
