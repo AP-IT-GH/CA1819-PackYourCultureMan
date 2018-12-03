@@ -25,6 +25,8 @@ namespace ASPCoreApi.Models
         [ForeignKey("gameStatsId")]
         public GameStats gameStats { get; set; }
 
-        
+        public ICollection<VisitedSights> visitedSights { get; set; }
+
+
     }
 }
