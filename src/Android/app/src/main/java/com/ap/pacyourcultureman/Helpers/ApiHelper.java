@@ -47,9 +47,11 @@ public class ApiHelper {
     JSONArray jsonArray;
     JSONObject jsonObject;
     Thread thread;
+
     public ApiHelper() {
     }
     public void sendPost(final String urlstring, final JSONObject jsonObject) {
+        run = true;
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -77,12 +79,13 @@ public class ApiHelper {
                         resp = stringBuilder.toString();
                         resp = resp.substring(resp.indexOf(':') + 2, resp.lastIndexOf('"'));
                         Log.d("TAG", stringBuilder.toString());
+                        run = false;
                     }
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         resp = "Server down";
+                        run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
                         resp = "Success";
                         InputStream in = conn.getInputStream();
                         StringBuffer sb = new StringBuffer();
@@ -96,9 +99,11 @@ public class ApiHelper {
                             in.close();
                         }
                         Log.d("LOGIN", reply);
+                        run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         resp = "Unauthorized";
+                        run = false;
                     }
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                     Log.i("MSG", conn.getResponseMessage());
