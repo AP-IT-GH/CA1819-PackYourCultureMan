@@ -20,11 +20,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.AppController;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.Helpers.GunHandler;
+import com.ap.pacyourcultureman.Helpers.SightsAdapter;
 import com.ap.pacyourcultureman.Menus.Gunmenu;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,8 +51,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +66,16 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
+    //
+    private RequestQueue mRequestQueue;
+    private Double latA,lngA,latB,lngB;
+    //
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
     List<Dot> dots = ApiHelper.dots;
+    //
+    List<Dot> dotstest = new ArrayList<>();
+    //
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -89,12 +111,54 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_game);
         initializer();
         Blinky = new Ghost();
+        //
+        mRequestQueue = Volley.newRequestQueue(this);
+        latA = 51.229656;
+        lngA = 4.402030;
+        latB = 51.227970;
+        lngB = 4.401912;
+        parseRoadsApi(latA,lngA,latB,lngB);
+        dotstest.add(new Dot(51.232212, 4.409960));
+        //
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
+
+    private void parseRoadsApi(Double latA,Double lngA,Double latB, Double lngB) {
+        final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+latA+","+lngA+"|"+latB+","+lngB+"&interpolate=true&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,URL,null,new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("GoogleRoadsApi", "1 object");
+                Log.d("GoogleRoadsApi", response.toString());
+                try {
+                    JSONArray snappedPoints = response.getJSONArray("snappedPoints");
+                    for (int i = 0; i < snappedPoints.length(); i++) {
+                        JSONObject location = snappedPoints.getJSONObject(i);
+                        JSONObject loc = location.getJSONObject("location");
+                        Double lat = loc.getDouble("latitude");
+                        Double lng = loc.getDouble("longitude");
+                        Log.d("GoogleRoadsApi", lat + "," + lng);
+                        dotstest.add(new Dot(lat,lng));
+                        //dotstest.add(new Dot(Double.valueOf(51.232212), Double.valueOf(4.409960)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mRequestQueue.add(request);
+    }
+
 
 
     /**
@@ -127,6 +191,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //dots
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < dotstest.size(); i++) {dotstest.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
