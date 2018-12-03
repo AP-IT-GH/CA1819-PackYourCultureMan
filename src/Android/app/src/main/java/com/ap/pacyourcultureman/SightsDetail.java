@@ -54,6 +54,13 @@ public class SightsDetail extends Activity implements View.OnClickListener {
         buttonMaps = findViewById(R.id.buttonGoogle_detail);
         buttonweb = findViewById(R.id.buttonWeb_detail);
 
+        if (web.equals("N/A")){
+            buttonweb.setVisibility(View.INVISIBLE);
+        } else {
+            buttonweb.setVisibility(View.VISIBLE);
+        }
+
+
         Picasso.get().load(imageUrl).fit().centerInside().into(imageView);
         textViewName.setText(name);
         textViewShort.setText(shortD);
