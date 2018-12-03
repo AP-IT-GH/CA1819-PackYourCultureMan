@@ -135,6 +135,7 @@ public class Login extends Activity {
                                         JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
                                         ApiHelper.dots2 = jsonDeserializer2.getDots(apiHelper.getJsonArray());
                                         run2 = true;
+                                        GetDots();
                                         startGame();
                                     }
                                 });
@@ -163,30 +164,12 @@ public class Login extends Activity {
                         }
                     });
                     thread3.start();
-                    Double latA = 51.229656;
-                    Double lngA = 4.402030;
-                    Double latB= 51.227970;
-                    Double lngB = 4.401912;
-                    final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+latA+","+lngA+"|"+latB+","+lngB+"&interpolate=true&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
-                    Thread thread4 = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                apiHelper.getDirectionsApi(URL, new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                        ApiHelper.dots = jsonDeserializer.getDots2(apiHelper.getJsonObject());
-                                        run4 = true;
-                                        startGame();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread4.start();
+//                    Double latA = 51.229656;
+//                    Double lngA = 4.402030;
+//                    Double latB= 51.227970;
+//                    Double lngB = 4.401912;
+
+
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
                 }
@@ -266,6 +249,30 @@ public class Login extends Activity {
         }
     }
 
+    private  void GetDots(){
+        for(int j = 0; j < ApiHelper.dots2.size() ; j++) {
+            final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+ ApiHelper.dots2.get(j).getLat()+","+ApiHelper.dots2.get(j).getLon()+"|"+51.229948+","+4.408320+"&interpolate=true&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+            Thread thread4 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        apiHelper.getDirectionsApi(URL, new VolleyCallBack() {
+                            @Override
+                            public void onSuccess() {
+                                JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                ApiHelper.dots = jsonDeserializer.getDots2(apiHelper.getJsonObject());
+                                run4 = true;
+                                startGame();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread4.start();
+        }
+    }
     private void startGame() {
         if (run1 && run2 && run3 && run4) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
@@ -273,6 +280,7 @@ public class Login extends Activity {
             intent.putExtra("jwt", jwt);
             startActivity(intent);
         }
+
 
     }
 }
