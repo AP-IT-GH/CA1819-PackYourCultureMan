@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
 
 public class Login extends Activity {
@@ -42,6 +43,7 @@ public class Login extends Activity {
     Boolean run4 = false;
     int userId;
     int counter  = 0;
+    int urlCounter = 0;
     String jwt;
 
     @Override
@@ -229,13 +231,8 @@ public class Login extends Activity {
     }
 
     private  void correctDots(){
-        //for(int j = 0; j < ApiHelper.dots2.size()  ; j+=2) {
-        //ApiHelper.correctedDots.get(0).getLat()+","+ApiHelper.correctedDots.get(0).getLon()+"|"+ApiHelper.correctedDots.get(1).getLat()+","+ApiHelper.correctedDots.get(1).getLon()
-        double lat1 = 51.231311;
-        double lng1 = 4.402926;
-        double lat2 = 51.231277;
-        double lng2 = 4.407625;
-            final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+lat1+","+lng1+"|"+lat2+","+lng2+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+
+            final String URL = linkGenerator();
             Thread thread4 = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -248,8 +245,9 @@ public class Login extends Activity {
                                 //run4 = true;
                                 //startGame();
                                 counter++;
-                                //ApiHelper.correctedDots.size()/90 per 90 correctedDots
-                                if (counter <= 50){
+                                //ApiHelper.generatedDots.size()/90 per 90 correctedDots
+                                if (counter <= 2-1){
+                                    Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/90 ));
                                     correctDots();
                                 } else  {
                                     run4 = true;
@@ -270,6 +268,23 @@ public class Login extends Activity {
     private  void streetsGenerate(){
         for (int i = 0; i < ApiHelper.streets.size(); i+=2) {
             GetDotsBetweenAanB(ApiHelper.streets.get(i).getLat(),ApiHelper.streets.get(i).getLon(),ApiHelper.streets.get(i+1).getLat(),ApiHelper.streets.get(i+1).getLon(),ApiHelper.generatedDots);}
+    }
+
+    private String linkGenerator(){
+        String getItem = "";
+        int size = 22;
+        for(int i = 0; i < size  ; i++) {
+            getItem += ApiHelper.generatedDots.get(urlCounter).getLat()+","+ApiHelper.generatedDots.get(urlCounter).getLon();
+           if (i < size -1){
+               getItem += "|";
+           }
+            urlCounter ++;
+        }
+
+        String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+
+        Log.d("link", URL);
+        return URL;
     }
     private void startGame() {
         if (run1 && run2 && run3 && run4 ) {

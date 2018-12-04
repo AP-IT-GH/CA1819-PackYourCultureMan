@@ -132,12 +132,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
         //snap to road
-        //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
         // generatedDots with getDotsBetween2Points
-        for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
+        //for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
