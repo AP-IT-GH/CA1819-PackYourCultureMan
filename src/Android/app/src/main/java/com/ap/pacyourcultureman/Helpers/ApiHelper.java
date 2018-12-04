@@ -39,7 +39,7 @@ public class ApiHelper {
     public Boolean run;
     static public List<Assignment> assignments;
     static public List<Dot> streets;
-    static public List<Dot> correctedDots;
+    static public List<Dot> correctedDots = new ArrayList<>();
     static public List<Dot> generatedDots = new ArrayList<>();
     static public Player player;
     int userId;

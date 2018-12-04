@@ -24,7 +24,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
 
 public class Login extends Activity {
@@ -231,7 +230,6 @@ public class Login extends Activity {
     }
 
     private  void correctDots(){
-
             final String URL = linkGenerator();
             Thread thread4 = new Thread(new Runnable() {
                 @Override
@@ -241,12 +239,11 @@ public class Login extends Activity {
                             @Override
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                ApiHelper.correctedDots = jsonDeserializer.Correct(apiHelper.getJsonObject());
-                                //run4 = true;
-                                //startGame();
+                                ApiHelper.correctedDots.addAll(jsonDeserializer.corrected(apiHelper.getJsonObject()));
                                 counter++;
                                 //ApiHelper.generatedDots.size()/90 per 90 correctedDots
-                                if (counter <= 2-1){
+                                if (counter <= 2){
+                                    Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
                                     Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/90 ));
                                     correctDots();
                                 } else  {
@@ -272,7 +269,7 @@ public class Login extends Activity {
 
     private String linkGenerator(){
         String getItem = "";
-        int size = 22;
+        int size = 11;
         for(int i = 0; i < size  ; i++) {
             getItem += ApiHelper.generatedDots.get(urlCounter).getLat()+","+ApiHelper.generatedDots.get(urlCounter).getLon();
            if (i < size -1){
