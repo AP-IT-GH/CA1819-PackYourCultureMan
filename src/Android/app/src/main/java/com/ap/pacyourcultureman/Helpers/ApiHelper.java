@@ -37,8 +37,8 @@ public class ApiHelper {
     public String responseMessage;
     public Boolean run;
     static public List<Assignment> assignments;
-    static public List<Dot> dots;
-    static public List<Dot> dots2;
+    static public List<Dot> streets;
+    static public List<Dot> correctedDots;
     static public Player player;
     int userId;
     String jwt;

@@ -3,45 +3,26 @@ package com.ap.pacyourcultureman;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 
-import org.apache.commons.validator.routines.EmailValidator;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class Login extends Activity {
     private String email, password;
@@ -58,6 +39,7 @@ public class Login extends Activity {
     Boolean run3 = false;
     Boolean run4 = false;
     int userId;
+    int counter  = 0;
     String jwt;
 
     @Override
@@ -133,9 +115,9 @@ public class Login extends Activity {
                                     @Override
                                     public void onSuccess() {
                                         JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                        ApiHelper.dots2 = jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                        ApiHelper.streets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
                                         run2 = true;
-                                        GetDots();
+                                        CorrectDots();
                                         startGame();
                                     }
                                 });
@@ -243,9 +225,14 @@ public class Login extends Activity {
         }
     }
 
-    private  void GetDots(){
-        for(int j = 0; j < ApiHelper.dots2.size()  ; j+=2) {
-            final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+ ApiHelper.dots2.get(j).getLat()+","+ApiHelper.dots2.get(j).getLon()+"|"+ApiHelper.dots2.get(j+1).getLat()+","+ApiHelper.dots2.get(j+1).getLon()+"&interpolate=true&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+    private  void CorrectDots(){
+        //for(int j = 0; j < ApiHelper.dots2.size()  ; j+=2) {
+        //ApiHelper.correctedDots.get(0).getLat()+","+ApiHelper.correctedDots.get(0).getLon()+"|"+ApiHelper.correctedDots.get(1).getLat()+","+ApiHelper.correctedDots.get(1).getLon()
+        double lat1 = 51.231311;
+        double lng1 = 4.402926;
+        double lat2 = 51.231277;
+        double lng2 = 4.407625;
+            final String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+lat1+","+lng1+"|"+lat2+","+lng2+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
             Thread thread4 = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -254,9 +241,11 @@ public class Login extends Activity {
                             @Override
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                ApiHelper.dots = jsonDeserializer.getDots2(apiHelper.getJsonObject());
+                                ApiHelper.correctedDots = jsonDeserializer.Correct(apiHelper.getJsonObject());
                                 run4 = true;
                                 startGame();
+                                //if (counter <= ApiHelper.correctedDots.size())
+
                             }
                         });
                     } catch (Exception e) {
@@ -265,7 +254,7 @@ public class Login extends Activity {
                 }
             });
             thread4.start();
-        }
+       // }
     }
     private void startGame() {
         if (run1 && run2 && run3 && run4 ) {

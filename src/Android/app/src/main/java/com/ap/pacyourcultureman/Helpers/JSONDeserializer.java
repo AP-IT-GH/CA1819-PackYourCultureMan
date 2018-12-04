@@ -88,7 +88,7 @@ public class JSONDeserializer {
         }
         return dots;
     }
-    public List<Dot> getDots2(JSONObject response){
+    public List<Dot> Correct(JSONObject response){
         Log.d("GoogleRoadsApi", "1 object");
         Log.d("GoogleRoadsApi", response.toString());
         List<Dot> dotsRoad = new ArrayList<>();

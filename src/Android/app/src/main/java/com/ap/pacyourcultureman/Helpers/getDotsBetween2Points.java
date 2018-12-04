@@ -1,13 +1,34 @@
 package com.ap.pacyourcultureman.Helpers;
 
+import com.ap.pacyourcultureman.Dot;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class GetCordinations  {
+public class getDotsBetween2Points {
 
     private static final long RADIUS_OF_EARTH = 6371000; // radius of earth in m
 
-    public static class MockLocation {
+
+    public static void GetDotsBetweenAanB(Double latA, Double lngA, Double latB, Double lngB, List<Dot> list){
+        // point interval in meters
+        ArrayList<Dot> temp = new ArrayList<>();
+        int interval = 20;
+        getDotsBetween2Points.MockLocation start = new getDotsBetween2Points.MockLocation(latA, lngA);
+        getDotsBetween2Points.MockLocation end = new getDotsBetween2Points.MockLocation(latB, lngB);
+        double azimuth = calculateBearing(start, end);
+        ArrayList<getDotsBetween2Points.MockLocation> coords = getLocations(azimuth, start, end);
+        for (getDotsBetween2Points.MockLocation mockLocation : coords) {
+            temp.add(new Dot(mockLocation.lat , mockLocation.lng));
+        }
+        for(int i = 0; i < temp.size()  ; i+=interval) {
+            list.add(new Dot(temp.get(i).getLat() , temp.get(i).getLon()));
+        }
+    }
+
+
+    private static class MockLocation {
         public double lat;
         public double lng;
 
@@ -25,18 +46,14 @@ public class GetCordinations  {
 
     /**
      * returns every coordinate pair in between two coordinate pairs given the desired interval
-     * @param interval
      * @param azimuth
      * @param start
      * @param end
      * @return
      */
-    public static ArrayList<MockLocation> getLocations(int interval, double azimuth, MockLocation start, MockLocation end) {
-        System.out.println("getLocations: " +
-                "\ninterval: " + interval +
-                "\n azimuth: " + azimuth +
-                "\n start: " + start.toString());
+    private static ArrayList<MockLocation> getLocations( double azimuth, MockLocation start, MockLocation end) {
 
+        int interval = 1;
         double d = getPathLength(start, end);
         int dist = (int) d / interval;
         int coveredDist = interval;
@@ -100,7 +117,7 @@ public class GetCordinations  {
      * @param end
      * @return
      */
-    public static double calculateBearing(MockLocation start, MockLocation end) {
+    private static double calculateBearing(MockLocation start, MockLocation end) {
         double startLat = Math.toRadians(start.lat);
         double startLong = Math.toRadians(start.lng);
         double endLat = Math.toRadians(end.lat);
