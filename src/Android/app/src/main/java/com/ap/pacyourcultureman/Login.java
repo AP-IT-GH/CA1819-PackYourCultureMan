@@ -24,6 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
+
 public class Login extends Activity {
     private String email, password;
     Button btn_login, btn_register, btn_dev;
@@ -117,7 +119,8 @@ public class Login extends Activity {
                                         JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
                                         ApiHelper.streets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
                                         run2 = true;
-                                        CorrectDots();
+                                        streetsGenerate();
+                                        correctDots();
                                         startGame();
                                     }
                                 });
@@ -225,7 +228,7 @@ public class Login extends Activity {
         }
     }
 
-    private  void CorrectDots(){
+    private  void correctDots(){
         //for(int j = 0; j < ApiHelper.dots2.size()  ; j+=2) {
         //ApiHelper.correctedDots.get(0).getLat()+","+ApiHelper.correctedDots.get(0).getLon()+"|"+ApiHelper.correctedDots.get(1).getLat()+","+ApiHelper.correctedDots.get(1).getLon()
         double lat1 = 51.231311;
@@ -242,9 +245,16 @@ public class Login extends Activity {
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
                                 ApiHelper.correctedDots = jsonDeserializer.Correct(apiHelper.getJsonObject());
-                                run4 = true;
-                                startGame();
-                                //if (counter <= ApiHelper.correctedDots.size())
+                                //run4 = true;
+                                //startGame();
+                                counter++;
+                                //ApiHelper.correctedDots.size()/90 per 90 correctedDots
+                                if (counter <= 50){
+                                    correctDots();
+                                } else  {
+                                    run4 = true;
+                                    startGame();
+                                }
 
                             }
                         });
@@ -255,6 +265,11 @@ public class Login extends Activity {
             });
             thread4.start();
        // }
+    }
+
+    private  void streetsGenerate(){
+        for (int i = 0; i < ApiHelper.streets.size(); i+=2) {
+            GetDotsBetweenAanB(ApiHelper.streets.get(i).getLat(),ApiHelper.streets.get(i).getLon(),ApiHelper.streets.get(i+1).getLat(),ApiHelper.streets.get(i+1).getLon(),ApiHelper.generatedDots);}
     }
     private void startGame() {
         if (run1 && run2 && run3 && run4 ) {

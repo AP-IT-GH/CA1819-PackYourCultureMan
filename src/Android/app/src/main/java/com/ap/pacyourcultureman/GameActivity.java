@@ -58,7 +58,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     List<Assignment> assignments = ApiHelper.assignments;
     List<Dot> streets = ApiHelper.streets;
     List<Dot> correctedDots = ApiHelper.correctedDots;
-    List<Dot> generatedDots = new ArrayList<>();
+    List<Dot> generatedDots = ApiHelper.generatedDots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -134,7 +134,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //snap to road
         //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
-        //mvsApi
+        //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
         // generatedDots with getDotsBetween2Points
         for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
@@ -359,11 +359,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     private void initializer() {
-        double lat1 = 51.231311;
-        double lng1 = 4.402926;
-        double lat2 = 51.231277;
-        double lng2 = 4.407625;
-        GetDotsBetweenAanB(lat1,lng1,lat2,lng2,generatedDots);
         apiHelper = new ApiHelper();
         bottomPanel = findViewById(R.id.sliding_layout);
         bottomPanel.setPanelHeight(0);

@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class ApiHelper {
     static public List<Assignment> assignments;
     static public List<Dot> streets;
     static public List<Dot> correctedDots;
+    static public List<Dot> generatedDots = new ArrayList<>();
     static public Player player;
     int userId;
     String jwt;
