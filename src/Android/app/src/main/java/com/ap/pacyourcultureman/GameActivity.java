@@ -137,7 +137,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < dots.size(); i++) {dots.get(i).Draw(mMap, getApplicationContext());}
         for (int i = 0; i < dots.size(); i++) {  Log.d("DotsCheck",dots.get(i).getLat()+","+ dots.get(i).getLon());}
         //mvsApi
-        for (int i = 0; i < dots2.size(); i++) {dots2.get(i).Draw(mMap, getApplicationContext());}
+        //for (int i = 0; i < dots2.size(); i++) {dots2.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
