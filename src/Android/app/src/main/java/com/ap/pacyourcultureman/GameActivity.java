@@ -132,6 +132,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
         //snap to road
+        Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api

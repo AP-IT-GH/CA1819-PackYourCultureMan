@@ -44,6 +44,7 @@ public class Login extends Activity {
     int counter  = 0;
     int urlCounter = 0;
     String jwt;
+    int size = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class Login extends Activity {
                                         run2 = true;
                                         streetsGenerate();
                                         correctDots();
+                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/size ));
                                         startGame();
                                     }
                                 });
@@ -241,15 +243,14 @@ public class Login extends Activity {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
                                 ApiHelper.correctedDots.addAll(jsonDeserializer.corrected(apiHelper.getJsonObject()));
                                 counter++;
-                                //ApiHelper.generatedDots.size()/90 per 90 correctedDots
-                                if (counter <= 2){
+                                if (counter < ApiHelper.generatedDots.size()/size ){
                                     Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-                                    Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/90 ));
                                     correctDots();
                                 } else  {
                                     run4 = true;
                                     startGame();
                                 }
+
 
                             }
                         });
@@ -269,13 +270,12 @@ public class Login extends Activity {
 
     private String linkGenerator(){
         String getItem = "";
-        int size = 11;
         for(int i = 0; i < size  ; i++) {
             getItem += ApiHelper.generatedDots.get(urlCounter).getLat()+","+ApiHelper.generatedDots.get(urlCounter).getLon();
            if (i < size -1){
                getItem += "|";
            }
-            urlCounter ++;
+           urlCounter ++;
         }
 
         String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
