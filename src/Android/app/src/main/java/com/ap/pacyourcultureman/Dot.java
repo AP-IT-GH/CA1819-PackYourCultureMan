@@ -16,8 +16,18 @@ import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
 public class Dot {
 
     private LatLng location;
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }
+
     private Marker marker;
     private  int height;
+
     private  int width;
     private int id;
     private boolean taken;
@@ -30,6 +40,7 @@ public class Dot {
         height = 50;
         width = 50;
         taken = false;
+
     }
 
 

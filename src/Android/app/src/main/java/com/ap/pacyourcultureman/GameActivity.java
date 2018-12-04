@@ -212,6 +212,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 8)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
+                        Log.d("testRemoverMarker", String.valueOf(generatedDots.get(i).getMarker()));
+                        generatedDots.remove(i);
+                        //removermarker
+
                     }
                 }
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
