@@ -25,6 +25,7 @@ import com.ap.pacyourcultureman.Helpers.AppController;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.CollisionHandler;
+import com.ap.pacyourcultureman.Helpers.GetCordinations;
 import com.ap.pacyourcultureman.Helpers.GunHandler;
 import com.ap.pacyourcultureman.Helpers.SightsAdapter;
 import com.ap.pacyourcultureman.Menus.Gunmenu;
@@ -52,6 +53,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ap.pacyourcultureman.Helpers.GetCordinations.calculateBearing;
+import static com.ap.pacyourcultureman.Helpers.GetCordinations.getLocations;
+
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
@@ -60,6 +64,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     List<Assignment> assignments = ApiHelper.assignments;
     List<Dot> dots = ApiHelper.dots;
     List<Dot> dots2 = ApiHelper.dots2;
+    List<Dot> dots3 = new ArrayList<>();
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -95,6 +100,31 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_game);
         initializer();
         Blinky = new Ghost();
+        //
+        // point interval in meters
+        int interval = 1;
+        // direction of line in degrees
+        //start point
+        double lat1 = 51.231311;
+        double lng1 = 4.402926;
+        // end point
+        double lat2 = 51.231277;
+        double lng2 = 4.407625;
+
+
+        GetCordinations.MockLocation start = new GetCordinations.MockLocation(lat1, lng1);
+        GetCordinations.MockLocation end = new GetCordinations.MockLocation(lat2, lng2);
+        double azimuth = calculateBearing(start, end);
+        System.out.println(azimuth);
+        ArrayList<GetCordinations.MockLocation> coords = getLocations(interval, azimuth, start, end);
+
+        for (GetCordinations.MockLocation mockLocation : coords) {
+            dots3.add(new Dot(mockLocation.lat , mockLocation.lng));
+        }
+
+
+
+        //
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -138,6 +168,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < dots.size(); i++) {  Log.d("DotsCheck",dots.get(i).getLat()+","+ dots.get(i).getLon());}
         //mvsApi
         //for (int i = 0; i < dots2.size(); i++) {dots2.get(i).Draw(mMap, getApplicationContext());}
+        // dots3
+        for (int i = 0; i < dots3.size(); i++) {dots3.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
