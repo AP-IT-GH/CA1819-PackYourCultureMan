@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181205101658_init")]
+    [Migration("20181205131514_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,8 +99,6 @@ namespace ASPCoreApi.Migrations
                     b.Property<string>("LongitudeA");
 
                     b.Property<string>("LongitudeB");
-
-                    b.Property<bool>("Taken");
 
                     b.HasKey("id");
 

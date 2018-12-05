@@ -12,6 +12,5 @@ namespace ASPCoreApi.Models
         public string LongitudeA { get; set; }
         public string LatitudeB { get; set; }
         public string LongitudeB { get; set; }
-        public Boolean Taken { get; set; }
     }
 }

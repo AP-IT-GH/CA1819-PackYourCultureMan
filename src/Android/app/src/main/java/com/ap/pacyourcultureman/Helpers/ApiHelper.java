@@ -14,6 +14,7 @@ import com.android.volley.toolbox.RequestFuture;
 import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
+import com.ap.pacyourcultureman.Street;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -39,6 +40,7 @@ public class ApiHelper {
     public Boolean run;
     static public List<Assignment> assignments;
     static public List<Dot> streets;
+    static public List<Street> streets2;
     static public List<Dot> correctedDots = new ArrayList<>();
     static public List<Dot> generatedDots = new ArrayList<>();
     static public Player player;

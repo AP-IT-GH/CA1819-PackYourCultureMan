@@ -7,6 +7,7 @@ import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
+import com.ap.pacyourcultureman.Street;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,6 +89,25 @@ public class JSONDeserializer {
         }
         return dots;
     }
+
+    public List<Street> getSreets (JSONArray reply) {
+        List<Street> streets = new ArrayList<>();
+        for (int i = 0; i < reply.length(); i++) {
+            try {
+                JSONObject jsonObject = reply.getJSONObject(i);
+                Integer id = jsonObject.getInt("id");
+                Double latA = jsonObject.getDouble("latitudeA");
+                Double lonA = jsonObject.getDouble("longitudeA");
+                Double latB = jsonObject.getDouble("latitudeB");
+                Double lonB = jsonObject.getDouble("longitudeB");
+                streets.add(new Street(id,latA,lonA,latB,lonB));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return streets;
+    }
+
     public List<Dot> corrected(JSONObject response){
         Log.d("GoogleRoadsApi", "1 object");
         Log.d("GoogleRoadsApi", response.toString());
