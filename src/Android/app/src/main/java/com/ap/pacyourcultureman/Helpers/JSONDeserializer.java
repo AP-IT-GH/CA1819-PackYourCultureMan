@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman.Helpers;
 
+import android.util.JsonReader;
 import android.util.Log;
 
 import com.ap.pacyourcultureman.Assignment;
@@ -8,6 +9,9 @@ import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
 import com.ap.pacyourcultureman.Street;
+import com.ap.pacyourcultureman.Step;
+import com.google.android.gms.maps.model.LatLng;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +24,12 @@ public class JSONDeserializer {
     Player player;
     private PlayerStats playerStats;
     private PlayerGameStats playerGameStats;
-    public  JSONDeserializer() {};
+
+    public JSONDeserializer() {
+    }
+
+    ;
+
     public Player setPlayer(String reply) {
         JSONObject jsObject;
         try {
@@ -45,17 +54,18 @@ public class JSONDeserializer {
             int rifle = gameStats.getInt("rifle");
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
-            Log.d("totalScore",gameStats.toString());
-            PlayerStats playerStats = new PlayerStats(highestScore,totalScore,totalFailed,totalSucces,totalLost);
-            PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints,rifle,freezeGun,pushBackGun);
-            player = new Player(userId,username,firstName,lastName,email,playerStats,playerGameStats,jwt,skinId);
+            Log.d("totalScore", gameStats.toString());
+            PlayerStats playerStats = new PlayerStats(highestScore, totalScore, totalFailed, totalSucces, totalLost);
+            PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun);
+            player = new Player(userId, username, firstName, lastName, email, playerStats, playerGameStats, jwt, skinId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return player;
     }
+
     public List<Assignment> getAssignnments(JSONArray reply) {
-       List<Assignment> assignments = new ArrayList<>();
+        List<Assignment> assignments = new ArrayList<>();
         for (int i = 0; i < reply.length(); i++) {
             try {
                 JSONObject jsonObject = reply.getJSONObject(i);
@@ -73,6 +83,7 @@ public class JSONDeserializer {
         }
         return assignments;
     }
+
     public List<Dot> getDots(JSONArray reply) {
         List<Dot> dots = new ArrayList<>();
         for (int i = 0; i < reply.length(); i++) {
@@ -82,7 +93,7 @@ public class JSONDeserializer {
                 Double lat = jsonObject.getDouble("latitude");
                 Double lng = jsonObject.getDouble("longitude");
                 Boolean taken = jsonObject.getBoolean("taken");
-                dots.add(new Dot(id,lat,lng,taken ));
+                dots.add(new Dot(id, lat, lng, taken));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -129,28 +140,37 @@ public class JSONDeserializer {
         return dotsRoad;
     }
 
-    public List<String> getSteps(JSONObject reply)  {
-        List<String> stepsString = new ArrayList<>();
+    public List<Step> getSteps(JSONObject reply)  {
+        List<Step> steps = new ArrayList<>();
         try {
-            JSONArray
-                    array = reply.getJSONArray("routes");
-            for(int i = 0; i < array.length(); i++) {
-                JSONObject route = array.getJSONObject(i);
-                  JSONArray jsonArray = route.getJSONArray("legs");
-                    for(int j = 0; j < jsonArray.length(); j++) {
-                        JSONObject legsObject = jsonArray.getJSONObject(j);
-                        JSONArray legsArray = legsObject.getJSONArray("steps");
-                        for(int k = 0; k < legsArray.length(); k++) {
-                            JSONObject endObject = legsArray.getJSONObject(k);
-                            Log.d("Steps", endObject.toString());
-                        }
-                    }
+            JSONArray array = reply.getJSONArray("routes");
+            JSONObject route = array.getJSONObject(0);
+            JSONArray jsonArray = route.getJSONArray("legs");
+            JSONObject legObject = jsonArray.getJSONObject(0);
+            JSONArray stepssArray = legObject.getJSONArray("steps");
+            Log.d("Steps", stepssArray.toString());
+
+            Step step;
+            Log.d("Steps", Integer.toString(stepssArray.length()));
+            for (int i = 0; i < stepssArray.length(); i++) {
+                JSONObject endObject = stepssArray.getJSONObject(i);
+                JSONObject distanceJSON = endObject.getJSONObject("distance");
+                JSONObject startJSON = endObject.getJSONObject("start_location");
+                JSONObject endJSON = endObject.getJSONObject("end_location");
+
+                int distance = distanceJSON.getInt("value");
+                LatLng start = new LatLng(startJSON.getDouble("lat"), startJSON.getDouble("lng"));
+                LatLng end = new LatLng(endJSON.getDouble("lat"), startJSON.getDouble("lng"));
+
+                step = new Step(start, end, distance);
+                steps.add(step);
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return stepsString;
+        Log.d("Steps", steps.toString());
+        return steps;
     }
 
 }

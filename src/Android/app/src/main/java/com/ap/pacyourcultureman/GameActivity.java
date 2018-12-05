@@ -147,7 +147,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Blinky.FollowPath(new LatLng(1,1), new LatLng(1,1));
+                if (Blinky.steps.size() != 0){
+                    Blinky.FollowPath();
+                }
             }
         });
         Log.d("Movement", "Ik ben non-blocking");
