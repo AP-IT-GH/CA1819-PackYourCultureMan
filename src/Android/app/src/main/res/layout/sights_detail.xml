@@ -55,17 +55,17 @@
         android:textSize="10sp" />
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:id="@+id/buttonWeb_detail"
+                android:id="@+id/buttonGoogle_detail"
                 android:layout_width="200dp"
-                android:text="Go to website"
+                android:text="Open in google maps"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content" />
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:id="@+id/buttonGoogle_detail"
+                android:id="@+id/buttonWeb_detail"
                 android:layout_width="200dp"
-                android:text="Open in google maps"
+                android:text="Go to website"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content" />

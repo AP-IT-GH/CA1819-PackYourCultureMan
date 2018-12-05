@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
@@ -25,9 +26,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class ApiHelper {
     HttpURLConnection conn;
@@ -35,7 +38,9 @@ public class ApiHelper {
     public String responseMessage;
     public Boolean run;
     static public List<Assignment> assignments;
-    static public List<Dot> dots;
+    static public List<Dot> streets;
+    static public List<Dot> correctedDots = new ArrayList<>();
+    static public List<Dot> generatedDots = new ArrayList<>();
     static public Player player;
     int userId;
     String jwt;
@@ -43,11 +48,13 @@ public class ApiHelper {
     int mStatusCode;
     JSONArray jsonArray;
     JSONObject jsonObject;
+    Thread thread;
+
     public ApiHelper() {
     }
     public void sendPost(final String urlstring, final JSONObject jsonObject) {
         run = true;
-        Thread thread = new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -74,14 +81,13 @@ public class ApiHelper {
                         resp = stringBuilder.toString();
                         resp = resp.substring(resp.indexOf(':') + 2, resp.lastIndexOf('"'));
                         Log.d("TAG", stringBuilder.toString());
-                         run = false;
+                        run = false;
                     }
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         resp = "Server down";
                         run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
                         resp = "Success";
                         InputStream in = conn.getInputStream();
                         StringBuffer sb = new StringBuffer();
@@ -93,9 +99,9 @@ public class ApiHelper {
                             reply = sb.toString();
                         } finally {
                             in.close();
-                            run = false;
                         }
                         Log.d("LOGIN", reply);
+                        run = false;
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         resp = "Unauthorized";
@@ -111,11 +117,15 @@ public class ApiHelper {
             }
         });
         thread.start();
-       // run = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // run = false;
     }
-    public void getArray(final String url) {
-        run = true;
-        Thread thread = new Thread(new Runnable() {
+    public void getArray(final String url, final VolleyCallBack callBack) {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -126,7 +136,7 @@ public class ApiHelper {
                             Log.d("Finish", "end");
                             jsonArray = response;
                             responseMessage = "end";
-                            run = false;
+                            callBack.onSuccess();
                         }
                     }, new Response.ErrorListener() {
                         public void onErrorResponse(VolleyError error) {
@@ -147,24 +157,13 @@ public class ApiHelper {
             }
         });
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void getUser(int userId){
-        run = true;
-        int _userId = userId;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    final String url = "https://aspcoreapipycm.azurewebsites.net/Sights";
-                }catch (Exception e){  e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-    }
-    public void getDirectionsApi(final String url) {
-        run = true;
+    public void getDirectionsApi(final String url, final VolleyCallBack callBack) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener() {
@@ -174,7 +173,7 @@ public class ApiHelper {
                         Log.d("Finish", "end");
                         try {
                             jsonObject = new JSONObject(response.toString());
-                            run = false;
+                            callBack.onSuccess();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -186,7 +185,6 @@ public class ApiHelper {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Failure Callback
-                        run = false;
                     }
                 });
 // Adding the request to the queue along with a unique string tag

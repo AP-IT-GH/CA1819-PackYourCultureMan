@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -63,7 +65,10 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                             String imgUrl = jsonObject.getString("sightImage");
                             String lat = jsonObject.getString("latitude");
                             String lng = jsonObject.getString("longitude");
-                            mSightList.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
+                            // if (taken = true)
+                            if (name.equals("Saint Paul’s Church")){
+                                Log.d("Sightstaken", name+ "is taken");
+                            mSightList.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));}
                         }
                         mSighsAdapter = new SightsAdapter(Sights.this,mSightList);
                         mRecyclerview.setAdapter(mSighsAdapter);
