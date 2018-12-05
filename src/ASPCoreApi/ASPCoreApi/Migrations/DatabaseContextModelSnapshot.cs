@@ -98,8 +98,6 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<string>("LongitudeB");
 
-                    b.Property<bool>("Taken");
-
                     b.HasKey("id");
 
                     b.ToTable("streets");

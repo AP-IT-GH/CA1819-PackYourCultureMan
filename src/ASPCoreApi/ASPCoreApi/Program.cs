@@ -20,7 +20,7 @@ namespace ASPCoreApi
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:56898")
+                .UseUrls("http://172.16.211.234:56898")
                 .Build();
     }
 }

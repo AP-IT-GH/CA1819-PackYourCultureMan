@@ -69,8 +69,7 @@ namespace ASPCoreApi.Migrations
                     LatitudeA = table.Column<string>(nullable: true),
                     LongitudeA = table.Column<string>(nullable: true),
                     LatitudeB = table.Column<string>(nullable: true),
-                    LongitudeB = table.Column<string>(nullable: true),
-                    Taken = table.Column<bool>(nullable: false)
+                    LongitudeB = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

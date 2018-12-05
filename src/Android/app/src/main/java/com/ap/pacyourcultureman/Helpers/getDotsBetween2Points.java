@@ -14,7 +14,7 @@ public class getDotsBetween2Points {
     public static void GetDotsBetweenAanB(Double latA, Double lngA, Double latB, Double lngB, List<Dot> list){
         // point interval in meters
         ArrayList<Dot> temp = new ArrayList<>();
-        int interval = 30;
+        int interval = 1;
         getDotsBetween2Points.MockLocation start = new getDotsBetween2Points.MockLocation(latA, lngA);
         getDotsBetween2Points.MockLocation end = new getDotsBetween2Points.MockLocation(latB, lngB);
         double azimuth = calculateBearing(start, end);
@@ -32,7 +32,7 @@ public class getDotsBetween2Points {
         public double lat;
         public double lng;
 
-        public MockLocation(double lat, double lng) {
+        private MockLocation(double lat, double lng) {
             this.lat = lat;
             this.lng = lng;
         }
