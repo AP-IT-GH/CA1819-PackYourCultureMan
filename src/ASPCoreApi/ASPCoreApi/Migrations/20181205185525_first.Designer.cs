@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181127200242_skinId")]
-    partial class skinId
+    [Migration("20181205185525_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,12 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<int>("rifle");
 
+                    b.Property<int>("userId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("userId")
+                        .IsUnique();
 
                     b.ToTable("gameStats");
                 });
@@ -70,6 +75,8 @@ namespace ASPCoreApi.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Website");
+
+                    b.Property<bool>("isVisible");
 
                     b.Property<string>("longDescription");
 
@@ -98,7 +105,12 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<int>("totalSucces");
 
+                    b.Property<int>("userId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("userId")
+                        .IsUnique();
 
                     b.ToTable("stats");
                 });
@@ -119,35 +131,57 @@ namespace ASPCoreApi.Migrations
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<int>("StatsId");
-
                     b.Property<string>("Username");
 
                     b.Property<int>("accessLevel");
-
-                    b.Property<int>("gameStatsId");
 
                     b.Property<int>("skinId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatsId");
-
-                    b.HasIndex("gameStatsId");
-
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
+            modelBuilder.Entity("ASPCoreApi.Models.VisitedSights", b =>
                 {
-                    b.HasOne("ASPCoreApi.Models.Statistics", "Stats")
-                        .WithMany()
-                        .HasForeignKey("StatsId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasOne("ASPCoreApi.Models.GameStats", "gameStats")
-                        .WithMany()
-                        .HasForeignKey("gameStatsId")
+                    b.Property<int>("buildingId");
+
+                    b.Property<bool>("isChecked");
+
+                    b.Property<int>("userId");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("visitedSights");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.GameStats", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Users", "user")
+                        .WithOne("gameStats")
+                        .HasForeignKey("ASPCoreApi.Models.GameStats", "userId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Statistics", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Users", "user")
+                        .WithOne("Stats")
+                        .HasForeignKey("ASPCoreApi.Models.Statistics", "userId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.VisitedSights", b =>
+                {
+                    b.HasOne("ASPCoreApi.Models.Users", "user")
+                        .WithMany("visitedSights")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

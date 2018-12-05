@@ -18,6 +18,7 @@ namespace ASPCoreApi.Models
         public DbSet<Dot> dots { get; set; }
         public DbSet<Statistics> stats { get; set; }
         public DbSet<GameStats> gameStats { get; set; }
+        public DbSet<VisitedSights> visitedSights { get; set; }
 
     }
 }
