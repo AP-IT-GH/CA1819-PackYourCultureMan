@@ -75,7 +75,7 @@ public class Ghost {
         steps = new ArrayList<>();
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().toString() + "&destination=" + Destination.toString() + "&key=" + R.string.google_maps_key;
         JSONDeserializer jsonDeserializer = new JSONDeserializer();
-        apiHelper.getDirectionsApi(baseUrl);
+        //apiHelper.getDirectionsApi(baseUrl);
         steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());
     }
 

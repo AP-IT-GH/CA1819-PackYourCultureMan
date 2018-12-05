@@ -99,8 +99,7 @@ public class JSONDeserializer {
         return dots;
     }
 
-    public List<Step> getSteps(JSONObject reply) {
-        List<Step> steps = new ArrayList<>();
+
     public List<Dot> corrected(JSONObject response){
         Log.d("GoogleRoadsApi", "1 object");
         Log.d("GoogleRoadsApi", response.toString());
@@ -122,8 +121,8 @@ public class JSONDeserializer {
         return dotsRoad;
     }
 
-    public List<String> getSteps(JSONObject reply)  {
-        List<String> stepsString = new ArrayList<>();
+    public List<Step> getSteps(JSONObject reply)  {
+        List<Step> steps = new ArrayList<>();
         try {
             JSONArray array = reply.getJSONArray("routes");
             JSONObject route = array.getJSONObject(0);
