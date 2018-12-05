@@ -13,56 +13,56 @@ namespace ASPCoreApi.Controllers
 
     [Route("[controller]")]
     [ApiController]
-    public class DotController : ControllerBase
+    public class StreetController : ControllerBase
     {
         private readonly DatabaseContext _context;
 
-        public DotController(DatabaseContext context)
+        public StreetController(DatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: /Dots
+        // GET: /Streets
         [HttpGet]
-        public IEnumerable<Dot> GetDots()
+        public IEnumerable<Streets> GetStreets()
         {
-            return _context.dots;
+            return _context.streets;
         }
 
-        // GET: /Dots/id
+        // GET: /Streets/id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDot([FromRoute] int id)
+        public async Task<IActionResult> GetStreet([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dot = await _context.dots.FindAsync(id);
+            var street = await _context.streets.FindAsync(id);
 
-            if (dot == null)
+            if (street == null)
             {
                 return NotFound();
             }
 
-            return Ok(dot);
+            return Ok(street);
         }
 
-        // PUT: /Dots/5
+        // PUT: /Streets/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDot([FromRoute] int id, [FromBody] Dot dot)
+        public async Task<IActionResult> PutDot([FromRoute] int id, [FromBody] Streets street)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != dot.id)
+            if (id != street.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(dot).State = EntityState.Modified;
+            _context.Entry(street).State = EntityState.Modified;
 
             try
             {
@@ -70,7 +70,7 @@ namespace ASPCoreApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!dotExists(id))
+                if (!streetExists(id))
                 {
                     return NotFound();
                 }
@@ -83,61 +83,61 @@ namespace ASPCoreApi.Controllers
             return NoContent();
         }
 
-        // POST: /Dots
+        // POST: /Streets
         [HttpPost]
-        public async Task<IActionResult> PostDot([FromBody] Dot dot)
+        public async Task<IActionResult> PostStreet([FromBody] Streets street)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.dots.Add(dot);
+            _context.streets.Add(street);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDot", new { id = dot.id }, dot);
+            return CreatedAtAction("GetStreet", new { id = street.id }, street);
         }
-        // POST: /Dots
+        // POST: /Streets
         [HttpPost("postarray")]
-        public async Task<IActionResult> PostDot([FromBody] Dot[] dotlist)
+        public async Task<IActionResult> PostStreet([FromBody] Streets[] streetList)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            foreach (Dot dot in dotlist)
+            foreach (Streets street in streetList)
             {
-                _context.dots.Add(dot);
+                _context.streets.Add(street);
             }
 
             int x = await _context.SaveChangesAsync();
 
             return Created(string.Empty, x);
         }
-        // DELETE: Dots/5
+        // DELETE: /Streets/id
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDot([FromRoute] int id)
+        public async Task<IActionResult> DeleteStreet([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var dot = await _context.dots.FindAsync(id);
-            if (dot == null)
+            var street = await _context.streets.FindAsync(id);
+            if (street == null)
             {
                 return NotFound();
             }
 
-            _context.dots.Remove(dot);
+            _context.streets.Remove(street);
             await _context.SaveChangesAsync();
 
-            return Ok(dot);
+            return Ok(street);
         }
 
-        private bool dotExists(int id)
+        private bool streetExists(int id)
         {
-            return _context.dots.Any(e => e.id == id);
+            return _context.streets.Any(e => e.id == id);
         }
     }
 }

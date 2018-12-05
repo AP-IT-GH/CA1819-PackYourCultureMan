@@ -77,12 +77,10 @@ public class SightsDetail extends Activity implements View.OnClickListener {
         startActivity(intent);
     }
     public void addListenerOnButton() {
-
-
         buttonMaps.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onClick(View v) {
 
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("https://www.google.com/maps/search/?api=1&query="+name));
