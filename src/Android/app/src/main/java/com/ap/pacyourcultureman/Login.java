@@ -51,7 +51,7 @@ public class Login extends Activity {
     int counter  = 0;
     int urlCounter = 0;
     String jwt;
-    int size = 100;
+    int size = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,14 +122,14 @@ public class Login extends Activity {
                         @Override
                         public void run() {
                             try {
-                                String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                //String url = "http://172.16.211.234:56898/Street";
+                                //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
+                                String url = "https://api.myjson.com/bins/80zi6";
                                 apiHelper.getArray(url, new VolleyCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                        ApiHelper.streets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                        //ApiHelper.streets2 = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
+                                        //ApiHelper.streets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                        ApiHelper.streets2 = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
                                         run2 = true;
                                         streetsGenerate();
                                         correctDots();
@@ -274,10 +274,10 @@ public class Login extends Activity {
     }
 
     private  void streetsGenerate(){
-        for (int i = 0; i < ApiHelper.streets.size(); i+=2) {
-        GetDotsBetweenAanB(ApiHelper.streets.get(i).getLat(),ApiHelper.streets.get(i).getLon(),ApiHelper.streets.get(i+1).getLat(),ApiHelper.streets.get(i+1).getLon(),ApiHelper.generatedDots);}
-        //for (int i = 0; i < ApiHelper.streets2.size(); i++) {
-        //GetDotsBetweenAanB(ApiHelper.streets2.get(i).getLatA(),ApiHelper.streets2.get(i).getLonA(),ApiHelper.streets2.get(i).getLatB(),ApiHelper.streets2.get(i).getLonB(),ApiHelper.generatedDots);}
+        //for (int i = 0; i < ApiHelper.streets.size(); i+=2) {
+        //GetDotsBetweenAanB(ApiHelper.streets.get(i).getLat(),ApiHelper.streets.get(i).getLon(),ApiHelper.streets.get(i+1).getLat(),ApiHelper.streets.get(i+1).getLon(),ApiHelper.generatedDots);}
+        for (int i = 0; i < ApiHelper.streets2.size(); i++) {
+        GetDotsBetweenAanB(ApiHelper.streets2.get(i).getLatA(),ApiHelper.streets2.get(i).getLonA(),ApiHelper.streets2.get(i).getLatB(),ApiHelper.streets2.get(i).getLonB(),ApiHelper.generatedDots);}
     }
 
     private String linkGenerator(){

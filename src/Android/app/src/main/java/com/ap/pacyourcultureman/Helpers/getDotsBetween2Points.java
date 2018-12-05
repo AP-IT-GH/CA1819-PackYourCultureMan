@@ -1,6 +1,7 @@
 package com.ap.pacyourcultureman.Helpers;
 
 import com.ap.pacyourcultureman.Dot;
+import com.ap.pacyourcultureman.Street;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class getDotsBetween2Points {
     public static void GetDotsBetweenAanB(Double latA, Double lngA, Double latB, Double lngB, List<Dot> list){
         // point interval in meters
         ArrayList<Dot> temp = new ArrayList<>();
-        int interval = 1;
+        int interval = 30;
         getDotsBetween2Points.MockLocation start = new getDotsBetween2Points.MockLocation(latA, lngA);
         getDotsBetween2Points.MockLocation end = new getDotsBetween2Points.MockLocation(latB, lngB);
         double azimuth = calculateBearing(start, end);
@@ -53,7 +54,8 @@ public class getDotsBetween2Points {
      */
     private static ArrayList<MockLocation> getLocations( double azimuth, MockLocation start, MockLocation end) {
 
-        int interval = 1;
+        //niet wijzigen
+        final int interval = 1;
         double d = getPathLength(start, end);
         int dist = (int) d / interval;
         int coveredDist = interval;
