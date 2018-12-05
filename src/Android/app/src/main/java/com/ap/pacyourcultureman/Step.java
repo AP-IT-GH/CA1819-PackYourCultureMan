@@ -12,4 +12,9 @@ public class Step {
         this.end = end;
         this.distance = distance;
     }
+
+    public String toString(){
+        String string = "Distance: " + distance + "/start: " + start + "/end: " + end;
+        return string;
+    }
 }

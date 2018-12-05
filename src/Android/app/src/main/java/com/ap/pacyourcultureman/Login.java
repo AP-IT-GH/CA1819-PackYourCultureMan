@@ -54,7 +54,7 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    List<String> steps = new ArrayList<>();
+    List<Step> steps = new ArrayList<>();
     ApiHelper apiHelper, apiHelper2, apiHelper3;
     Boolean running;
     Handler handler;
