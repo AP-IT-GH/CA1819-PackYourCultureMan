@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +14,9 @@ namespace ASPCoreApi.Models
         public int totalFailed { get; set; }
         public int totalSucces { get; set; }
         public int totalLost { get; set; }
+        public int userId { get; set; }
+        [ForeignKey("userId")]
+        public virtual Users user { get; set; }
         
     }
 }

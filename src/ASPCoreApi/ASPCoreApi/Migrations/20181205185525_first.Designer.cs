@@ -4,20 +4,39 @@ using ASPCoreApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181205185525_first")]
+    partial class first
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ASPCoreApi.Models.Dot", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longitude");
+
+                    b.Property<bool>("Taken");
+
+                    b.HasKey("id");
+
+                    b.ToTable("dots");
+                });
 
             modelBuilder.Entity("ASPCoreApi.Models.GameStats", b =>
                 {
@@ -94,25 +113,6 @@ namespace ASPCoreApi.Migrations
                         .IsUnique();
 
                     b.ToTable("stats");
-                });
-
-            modelBuilder.Entity("ASPCoreApi.Models.Streets", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("LatitudeA");
-
-                    b.Property<string>("LatitudeB");
-
-                    b.Property<string>("LongitudeA");
-
-                    b.Property<string>("LongitudeB");
-
-                    b.HasKey("id");
-
-                    b.ToTable("streets");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>

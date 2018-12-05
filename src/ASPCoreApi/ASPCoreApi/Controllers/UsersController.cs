@@ -13,6 +13,10 @@ using ASP.Services;
 using ASP.Dtos;
 using ASPCoreApi.Models;
 using System.Threading.Tasks;
+using ASPCoreApi.Services;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using ASPCoreApi.Helpers;
 
 namespace ASP.Dtos
 {
@@ -22,14 +26,19 @@ namespace ASP.Dtos
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
-        
+        private IStatsService _statsService;
+        private IVisitedSightsService _visitedSightsService;
+        private IGameStatsService _gameStatsService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
         private readonly DatabaseContext _context;
 
         public UsersController(
-            
+
             IUserService userService,
+            IVisitedSightsService visitedSightsService,
+            IStatsService statsService,
+            IGameStatsService gameStatsService,
             IMapper mapper,
             IOptions<AppSettings> appSettings, DatabaseContext context)
         {
@@ -38,6 +47,9 @@ namespace ASP.Dtos
             _mapper = mapper;
             _appSettings = appSettings.Value;
             _context = context;
+            _visitedSightsService = visitedSightsService;
+            _statsService = statsService;
+            _gameStatsService = gameStatsService;
         }
 
         [AllowAnonymous]
@@ -48,8 +60,8 @@ namespace ASP.Dtos
             
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
-            var stats = _context.stats.Find(user.StatsId);
-            var gameStats = _context.gameStats.Find(user.gameStatsId);
+                       
+            //.........................................................
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -62,30 +74,30 @@ namespace ASP.Dtos
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-            // return basic user info (without password) and token to store client side
+            var tokenString = tokenHandler.WriteToken(token);           
+            user.Stats = _statsService.getByUserId(user.Id);
+            user.gameStats =  _gameStatsService.getByUserId(user.Id);
+            user.visitedSights = _visitedSightsService.getByUserId(user.Id);
+            user.PasswordHash = null;
+            user.PasswordSalt = null;
 
-
-            return Ok(new
+            string _json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
             {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Token = tokenString,
-                Email = user.Email,
-                stats = user.Stats,
-                StatsId = user.StatsId,
-                gameStats = user.gameStats,
-                skinId = user.skinId
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
+            JObject jsonUser = JObject.Parse(_json);
+
+            var authObj = new AuthenticationObject();
+            authObj.user = jsonUser;
+            authObj.token = tokenString;
+            return Ok(authObj);
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]UserDto userDto)
         {
-            // map dto to entity
+           
             var user = _mapper.Map<Users>(userDto);
             var stats = new Statistics
             {
@@ -106,19 +118,28 @@ namespace ASP.Dtos
             };
             user.skinId = 1;
             user.gameStats = gameStats;
+
+            var _visitedSights = new List<VisitedSights>();
+            for (int i = 0; i < 23; i++)
+            {
+                var visitedSight = new VisitedSights
+                {
+                    buildingId = i + 1,
+                    isChecked = false,
+                };
+                _visitedSights.Add(visitedSight);
+            }
+            user.visitedSights = _visitedSights;
+
             try
             {
-                // save 
-              
-
-                _userService.Create(user, userDto.Password);
-                
+                             
+                _userService.Create(user, userDto.Password);                
                 await _context.SaveChangesAsync();
                 return Ok();
             }
             catch (AppException ex)
-            {
-                // return error message if there was an exception
+            {               
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -127,16 +148,48 @@ namespace ASP.Dtos
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
-            var userDtos = _mapper.Map<IList<UserDto>>(users);
-            return Ok(userDtos);
+            IList<JObject> jsonUserList = new List<JObject>();
+
+            foreach (var user in users)
+            {
+                user.Stats = _statsService.getByUserId(user.Id);
+                user.gameStats = _gameStatsService.getByUserId(user.Id);
+                user.visitedSights = _visitedSightsService.getByUserId(user.Id);
+                user.PasswordHash = null;
+                user.PasswordSalt = null;
+            }
+            
+            foreach (var user in users)
+            {
+                string _json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                JObject jsonUser = JObject.Parse(_json);
+                jsonUserList.Add(jsonUser);
+            }                     
+            return Ok(jsonUserList);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var user = _userService.GetById(id);
-            var userDto = _mapper.Map<UserDto>(user);
-            return Ok(userDto);
+
+            user.Stats = _statsService.getByUserId(user.Id);
+            user.gameStats = _gameStatsService.getByUserId(user.Id);
+            user.visitedSights = _visitedSightsService.getByUserId(user.Id);
+            user.PasswordHash = null;
+            user.PasswordSalt = null;
+
+            
+            string _json = JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            JObject jsonUser = JObject.Parse(_json);
+
+            return Ok(jsonUser);
         }
 
         [HttpPut("updateuser/{id}")]
@@ -158,8 +211,9 @@ namespace ASP.Dtos
                 return BadRequest(new { message = ex.Message });
             }
         }
+
         [HttpPut("updatestats/{id}")]
-        public IActionResult UpdateStats(int id, [FromBody]UserDto userDto)
+        public async Task<IActionResult> UpdateStats(int id, [FromBody]UserDto userDto)
         {
             // map dto to entity and set id
             var user = _mapper.Map<Users>(userDto);
@@ -168,7 +222,48 @@ namespace ASP.Dtos
             try
             {
                 // save 
-                _userService.UpdateStats(user);
+                _statsService.UpdateStats(user);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPut("updategamestats/{id}")]
+        public IActionResult UpdateGameStats(int id, [FromBody]UserDto userDto)
+        {
+            // map dto to entity and set id
+            var user = _mapper.Map<Users>(userDto);
+            user.Id = id;
+
+            try
+            {
+                // save 
+                _gameStatsService.UpdateGameStats(user);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPut("updatevisitedsights/{id}")]
+        public IActionResult UpdateVisitedSights(int id, [FromBody]UserDto userDto)
+        {
+            // map dto to entity and set id
+            var user = _mapper.Map<Users>(userDto);
+            user.Id = id;
+
+            try
+            {
+                // save 
+                _visitedSightsService.UpdateVisitedSights(user);
                 return Ok();
             }
             catch (AppException ex)

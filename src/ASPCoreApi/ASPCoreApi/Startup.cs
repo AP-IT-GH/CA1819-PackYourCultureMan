@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using ASPCoreApi.Models;
 using Model;
 using Swashbuckle.AspNetCore.Swagger;
+using ASPCoreApi.Services;
 
 namespace ASPCoreApi
 {
@@ -76,6 +77,9 @@ namespace ASPCoreApi
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IVisitedSightsService, VisitedSightsService>();
+            services.AddScoped<IGameStatsService, GameStatsService>();
+            services.AddScoped<IStatsService, StatsService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
