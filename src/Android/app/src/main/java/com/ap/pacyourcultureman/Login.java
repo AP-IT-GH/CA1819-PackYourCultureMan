@@ -123,13 +123,13 @@ public class Login extends Activity {
                         public void run() {
                             try {
                                 //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                String url = "https://api.myjson.com/bins/80zi6";
+                                String url = "https://aspcoreapipycm.azurewebsites.net/street";
                                 apiHelper.getArray(url, new VolleyCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                        //ApiHelper.streets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                        ApiHelper.streets2 = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
+                                        //ApiHelper.dotStreets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                        ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
                                         run2 = true;
                                         streetsGenerate();
                                         correctDots();
@@ -147,7 +147,9 @@ public class Login extends Activity {
                         @Override
                         public void run() {
                             try {
-                                apiHelper3.getDirectionsApi("https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU&fbclid=IwAR3KBusU_zvFk_F4-6K9bhHoT6B2thi_nceJHXLXdMdtCzeuB0k-1m1tMzE", new VolleyCallBack() {
+                                String key = BuildConfig.GoogleSecAPIKEYDIR;;
+                                String url = "https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key="+key;
+                                apiHelper3.getDirectionsApi(url, new VolleyCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         JSONDeserializer jsonDeserializer = new JSONDeserializer();
@@ -274,10 +276,10 @@ public class Login extends Activity {
     }
 
     private  void streetsGenerate(){
-        //for (int i = 0; i < ApiHelper.streets.size(); i+=2) {
-        //GetDotsBetweenAanB(ApiHelper.streets.get(i).getLat(),ApiHelper.streets.get(i).getLon(),ApiHelper.streets.get(i+1).getLat(),ApiHelper.streets.get(i+1).getLon(),ApiHelper.generatedDots);}
-        for (int i = 0; i < ApiHelper.streets2.size(); i++) {
-        GetDotsBetweenAanB(ApiHelper.streets2.get(i).getLatA(),ApiHelper.streets2.get(i).getLonA(),ApiHelper.streets2.get(i).getLatB(),ApiHelper.streets2.get(i).getLonB(),ApiHelper.generatedDots);}
+        //for (int i = 0; i < ApiHelper.dotStreets.size(); i+=2) {
+        //GetDotsBetweenAanB(ApiHelper.dotStreets.get(i).getLat(),ApiHelper.dotStreets.get(i).getLon(),ApiHelper.dotStreets.get(i+1).getLat(),ApiHelper.dotStreets.get(i+1).getLon(),ApiHelper.generatedDots);}
+        for (int i = 0; i < ApiHelper.streets.size(); i++) {
+        GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
     }
 
     private String linkGenerator(){
@@ -289,9 +291,10 @@ public class Login extends Activity {
            }
            urlCounter ++;
         }
+        String key = BuildConfig.GoogleSecAPIKEY;
 
-        String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
-
+        //String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
+        String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key="+key;
         Log.d("link", URL);
         return URL;
     }

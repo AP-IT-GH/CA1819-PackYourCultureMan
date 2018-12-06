@@ -17,7 +17,7 @@ export class UserService {
     }
 
     register(user: User) {
-        return this.http.post(`http://192.168.1.51:56898/Users/register`, user);
+        return this.http.post(`https://aspcoreapipycm.azurewebsites.net/Users/register`, user);
     }
 
     update(user: User) {

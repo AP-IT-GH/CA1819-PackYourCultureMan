@@ -34,30 +34,38 @@ public class JSONDeserializer {
         JSONObject jsObject;
         try {
             jsObject = new JSONObject(reply);
-            int userId = jsObject.getInt("id");
             String jwt = jsObject.getString("token");
-            String username = jsObject.getString("username");
-            String firstName = jsObject.getString("firstName");
-            String lastName = jsObject.getString("lastName");
-            String email = jsObject.getString("email");
-            int skinId = jsObject.getInt("skinId");
-
-            JSONObject stats = jsObject.getJSONObject("stats");
+            JSONObject jsUser = jsObject.getJSONObject("user");
+            int userId = jsUser.getInt("Id");
+            String username = jsUser.getString("Username");
+            String firstName = jsUser.getString("FirstName");
+            String lastName = jsUser.getString("LastName");
+            String email = jsUser.getString("Email");
+            int skinId = jsUser.getInt("skinId");
+            JSONObject stats = jsUser.getJSONObject("Stats");
             int totalScore = stats.getInt("totalScore");
             int totalSucces = stats.getInt("totalSucces");
             int totalFailed = stats.getInt("totalFailed");
             int totalLost = stats.getInt("totalLost");
             int highestScore = stats.getInt("highestScore");
-
-            JSONObject gameStats = jsObject.getJSONObject("gameStats");
+            JSONObject gameStats = jsUser.getJSONObject("gameStats");
             int lifePoints = gameStats.getInt("lifePoints");
             int rifle = gameStats.getInt("rifle");
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
-            Log.d("totalScore", gameStats.toString());
+            JSONArray jsUserSights = jsUser.getJSONArray("visitedSights");
+            //List<VisitedSight> visitedsights = new Arraylist<>();
+            for(int i = 0; i < jsUserSights.length(); i++) {
+                JSONObject visitedSight = jsUserSights.getJSONObject(i);
+                int userIdSight = visitedSight.getInt("userId");
+                int buildingId = visitedSight.getInt("buildingId");
+                Boolean isChecked = visitedSight.getBoolean("isChecked");
+                //visitedsights.add(userIdSight, buildingId, isChecked);
+            }
             PlayerStats playerStats = new PlayerStats(highestScore, totalScore, totalFailed, totalSucces, totalLost);
             PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun);
             player = new Player(userId, username, firstName, lastName, email, playerStats, playerGameStats, jwt, skinId);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

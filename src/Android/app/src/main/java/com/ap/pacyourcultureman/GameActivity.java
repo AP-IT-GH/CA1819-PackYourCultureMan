@@ -56,7 +56,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
-    List<Dot> streets = ApiHelper.streets;
+    //List<Dot> streets = ApiHelper.dotStreets;
     List<Dot> correctedDots = ApiHelper.correctedDots;
     List<Dot> generatedDots = ApiHelper.generatedDots;
     Location mLastLocation;
