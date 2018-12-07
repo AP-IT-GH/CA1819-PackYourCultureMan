@@ -10,6 +10,7 @@ import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
 import com.ap.pacyourcultureman.Street;
 import com.ap.pacyourcultureman.Step;
+import com.ap.pacyourcultureman.VisitedSight;
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -24,11 +25,11 @@ public class JSONDeserializer {
     Player player;
     private PlayerStats playerStats;
     private PlayerGameStats playerGameStats;
-
+    ApiHelper apiHelper;
     public JSONDeserializer() {
     }
 
-    ;
+
 
     public Player setPlayer(String reply) {
         JSONObject jsObject;
@@ -54,13 +55,13 @@ public class JSONDeserializer {
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
             JSONArray jsUserSights = jsUser.getJSONArray("visitedSights");
-            //List<VisitedSight> visitedsights = new Arraylist<>();
+            apiHelper = new ApiHelper();
             for(int i = 0; i < jsUserSights.length(); i++) {
                 JSONObject visitedSight = jsUserSights.getJSONObject(i);
-                int userIdSight = visitedSight.getInt("userId");
+                int id = visitedSight.getInt("id");
                 int buildingId = visitedSight.getInt("buildingId");
                 Boolean isChecked = visitedSight.getBoolean("isChecked");
-                //visitedsights.add(userIdSight, buildingId, isChecked);
+                apiHelper.visitedSights.add(new VisitedSight(id,buildingId,userId,isChecked));
             }
             PlayerStats playerStats = new PlayerStats(highestScore, totalScore, totalFailed, totalSucces, totalLost);
             PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun);
@@ -77,6 +78,7 @@ public class JSONDeserializer {
         for (int i = 0; i < reply.length(); i++) {
             try {
                 JSONObject jsonObject = reply.getJSONObject(i);
+                int id = jsonObject.getInt("id");
                 String name = jsonObject.getString("name");
                 String website = jsonObject.getString("website");
                 String shortDesc = jsonObject.getString("shortDescription");
@@ -84,7 +86,7 @@ public class JSONDeserializer {
                 String imgUrl = jsonObject.getString("sightImage");
                 String lat = jsonObject.getString("latitude");
                 String lng = jsonObject.getString("longitude");
-                assignments.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
+                assignments.add(new Assignment(id,name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

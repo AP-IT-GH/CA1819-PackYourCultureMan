@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.SightsAdapter;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
@@ -27,6 +28,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     private SightsAdapter mSighsAdapter;
     private ArrayList<Assignment> mSightList;
     private RequestQueue mRequestQueue;
+    private ApiHelper apiHelper;
     public static final String DETAIL_IMAGE = "sightImage";
     public static final String DETAIL_NAME = "name";
     public static final String DETAIL_SHORTD = "shortDescription";
@@ -40,6 +42,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sights_menu);
+        apiHelper = new ApiHelper();
         mRecyclerview = findViewById(R.id.recycler_view);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -58,6 +61,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                     try {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject jsonObject = response.getJSONObject(i);
+                            int id = jsonObject.getInt("id");
                             String name = jsonObject.getString("name");
                             String website = jsonObject.getString("website");
                             String shortDesc = jsonObject.getString("shortDescription");
@@ -65,10 +69,16 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                             String imgUrl = jsonObject.getString("sightImage");
                             String lat = jsonObject.getString("latitude");
                             String lng = jsonObject.getString("longitude");
-                            // if (taken = true)
-                            if (name.equals("Saint Paul’s Church")){
-                                Log.d("Sightstaken", name+ "is taken");
-                            mSightList.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));}
+                            apiHelper.visitedSights.get(5).setChecked(true);
+                            apiHelper.visitedSights.get(6).setChecked(true);
+                            apiHelper.visitedSights.get(7).setChecked(true);
+                            for (int j = 0; j <  apiHelper.assignments.size(); j++) {
+                                if(apiHelper.visitedSights.get(j).getBuildingId() == apiHelper.assignments.get(i).getId() && apiHelper.visitedSights.get(j).isChecked() == true){
+                                    mSightList.add(new Assignment(id,name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
+                                }
+                            }
+
+
                         }
                         mSighsAdapter = new SightsAdapter(Sights.this,mSightList);
                         mRecyclerview.setAdapter(mSighsAdapter);

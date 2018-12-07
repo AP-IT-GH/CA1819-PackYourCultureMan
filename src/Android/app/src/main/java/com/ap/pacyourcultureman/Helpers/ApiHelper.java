@@ -15,6 +15,7 @@ import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.Street;
+import com.ap.pacyourcultureman.VisitedSight;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -38,11 +39,12 @@ public class ApiHelper {
     String resp = "";
     public String responseMessage;
     public Boolean run;
-    static public List<Assignment> assignments;
-    static public List<Dot> dotStreets;
+    static public List<Assignment> assignments = new ArrayList<>(); ;
+    //static public List<Dot> dotStreets;
     static public List<Street> streets;
     static public List<Dot> correctedDots = new ArrayList<>();
     static public List<Dot> generatedDots = new ArrayList<>();
+    static public List<VisitedSight>  visitedSights = new ArrayList<>();
     static public Player player;
     int userId;
     String jwt;
