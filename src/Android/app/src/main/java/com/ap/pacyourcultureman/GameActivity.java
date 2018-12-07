@@ -209,6 +209,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
+                    //ApiHelper.visitedSights.get(currentAssigment.getId()).setChecked(true);
+                    Log.d("testje", String.valueOf(currentAssigment.getId()));
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }

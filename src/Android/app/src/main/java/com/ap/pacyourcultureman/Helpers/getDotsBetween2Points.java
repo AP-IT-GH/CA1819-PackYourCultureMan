@@ -13,18 +13,20 @@ public class getDotsBetween2Points {
 
 
     public static void GetDotsBetweenAanB(Double latA, Double lngA, Double latB, Double lngB, List<Dot> list){
-        // point interval in meters
-        ArrayList<Dot> temp = new ArrayList<>();
-        int interval = 30;
+        ArrayList<Dot> tempList = new ArrayList<>();
+        // distance between points
+        int meters = 30;
+        // start and end position
         getDotsBetween2Points.MockLocation start = new getDotsBetween2Points.MockLocation(latA, lngA);
         getDotsBetween2Points.MockLocation end = new getDotsBetween2Points.MockLocation(latB, lngB);
+        //azimuth
         double azimuth = calculateBearing(start, end);
         ArrayList<getDotsBetween2Points.MockLocation> coords = getLocations(azimuth, start, end);
         for (getDotsBetween2Points.MockLocation mockLocation : coords) {
-            temp.add(new Dot(mockLocation.lat , mockLocation.lng));
+            tempList.add(new Dot(mockLocation.lat , mockLocation.lng));
         }
-        for(int i = 0; i < temp.size()  ; i+=interval) {
-            list.add(new Dot(temp.get(i).getLat() , temp.get(i).getLon()));
+        for(int i = 0; i < tempList.size()  ; i+=meters) {
+            list.add(new Dot(tempList.get(i).getLat() , tempList.get(i).getLon()));
         }
     }
 
@@ -45,25 +47,19 @@ public class getDotsBetween2Points {
     }
 
 
-    /**
-     * returns every coordinate pair in between two coordinate pairs given the desired interval
-     * @param azimuth
-     * @param start
-     * @param end
-     * @return
-     */
+
+      /*returns every coordinate pair in between two coordinate pairs given the desired interval*/
+
     private static ArrayList<MockLocation> getLocations( double azimuth, MockLocation start, MockLocation end) {
 
-        //niet wijzigen
-        final int interval = 1;
         double d = getPathLength(start, end);
-        int dist = (int) d / interval;
-        int coveredDist = interval;
+        int dist = (int) d;
+        int coveredDist = 1;
         ArrayList<MockLocation> coords = new ArrayList<>();
         coords.add(new MockLocation(start.lat, start.lng));
-        for(int distance = 0; distance < dist; distance += interval) {
+        for(int distance = 0; distance < dist; distance += 1) {
             MockLocation coord = getDestinationLatLng(start.lat, start.lng, azimuth, coveredDist);
-            coveredDist += interval;
+            coveredDist += 1;
             coords.add(coord);
         }
         coords.add(new MockLocation(end.lat, end.lng));
@@ -72,12 +68,9 @@ public class getDotsBetween2Points {
 
     }
 
-    /**
-     * calculates the distance between two lat, long coordinate pairs
-     * @param start
-     * @param end
-     * @return
-     */
+
+   /*  calculates the distance between two lat, long coordinate pairs*/
+
     private static double getPathLength(MockLocation start, MockLocation end) {
         double lat1Rads = Math.toRadians(start.lat);
         double lat2Rads = Math.toRadians(end.lat);
@@ -90,14 +83,9 @@ public class getDotsBetween2Points {
         return d;
     }
 
-    /**
-     * returns the lat an long of destination point given the start lat, long, aziuth, and distance
-     * @param lat
-     * @param lng
-     * @param azimuth
-     * @param distance
-     * @return
-     */
+
+   /*   returns the lat and long of destination point given the start lat, long, azimuth, and distance*/
+
     private static MockLocation getDestinationLatLng(double lat, double lng, double azimuth, double distance) {
         double radiusKm = RADIUS_OF_EARTH / 1000; //Radius of the Earth in km
         double brng = Math.toRadians(azimuth); //Bearing is degrees converted to radians.
@@ -112,13 +100,9 @@ public class getDotsBetween2Points {
         return new MockLocation(lat2, lon2);
     }
 
-    /**
-     * calculates the azimuth in degrees from start point to end point");
-     double startLat = Math.toRadians(start.lat);
-     * @param start
-     * @param end
-     * @return
-     */
+
+/*     calculates the azimuth in degrees from start point to end point */
+
     private static double calculateBearing(MockLocation start, MockLocation end) {
         double startLat = Math.toRadians(start.lat);
         double startLong = Math.toRadians(start.lng);

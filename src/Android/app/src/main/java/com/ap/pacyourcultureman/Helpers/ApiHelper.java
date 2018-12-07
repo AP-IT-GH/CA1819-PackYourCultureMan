@@ -29,22 +29,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import static java.util.Collections.*;
 
 public class ApiHelper {
     HttpURLConnection conn;
     String resp = "";
     public String responseMessage;
     public Boolean run;
-    static public List<Assignment> assignments = new ArrayList<>(); ;
-    //static public List<Dot> dotStreets;
-    static public List<Street> streets;
+    //static public List<Dot> dotStreets = new ArrayList<>();
+    static public List<Street> streets = new ArrayList<>();
+    static public List<Assignment> assignments = new ArrayList<>();
     static public List<Dot> correctedDots = new ArrayList<>();
     static public List<Dot> generatedDots = new ArrayList<>();
-    static public List<VisitedSight>  visitedSights = new ArrayList<>();
+    static public List<VisitedSight> visitedSights = new ArrayList<>();
     static public Player player;
     int userId;
     String jwt;
@@ -267,5 +270,6 @@ public class ApiHelper {
         });
         thread.start();
     }
+
 }
 

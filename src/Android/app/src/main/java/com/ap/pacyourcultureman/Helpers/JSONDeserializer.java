@@ -19,13 +19,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class JSONDeserializer {
     Player player;
     private PlayerStats playerStats;
     private PlayerGameStats playerGameStats;
-    ApiHelper apiHelper;
     public JSONDeserializer() {
     }
 
@@ -55,13 +55,12 @@ public class JSONDeserializer {
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
             JSONArray jsUserSights = jsUser.getJSONArray("visitedSights");
-            apiHelper = new ApiHelper();
             for(int i = 0; i < jsUserSights.length(); i++) {
                 JSONObject visitedSight = jsUserSights.getJSONObject(i);
                 int id = visitedSight.getInt("id");
                 int buildingId = visitedSight.getInt("buildingId");
                 Boolean isChecked = visitedSight.getBoolean("isChecked");
-                apiHelper.visitedSights.add(new VisitedSight(id,buildingId,userId,isChecked));
+                ApiHelper.visitedSights.add(new VisitedSight(id,buildingId,userId,isChecked));
             }
             PlayerStats playerStats = new PlayerStats(highestScore, totalScore, totalFailed, totalSucces, totalLost);
             PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun);
@@ -129,7 +128,7 @@ public class JSONDeserializer {
         return streets;
     }
 
-    public List<Dot> corrected(JSONObject response){
+    public List<Dot> correctedDots(JSONObject response){
         Log.d("GoogleRoadsApi", "1 object");
         Log.d("GoogleRoadsApi", response.toString());
         List<Dot> dotsRoad = new ArrayList<>();

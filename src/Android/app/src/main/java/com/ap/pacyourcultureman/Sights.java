@@ -22,13 +22,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Sights extends Activity implements SightsAdapter.OnItemClickListener {
     private RecyclerView mRecyclerview;
     private SightsAdapter mSighsAdapter;
     private ArrayList<Assignment> mSightList;
     private RequestQueue mRequestQueue;
-    private ApiHelper apiHelper;
     public static final String DETAIL_IMAGE = "sightImage";
     public static final String DETAIL_NAME = "name";
     public static final String DETAIL_SHORTD = "shortDescription";
@@ -37,18 +38,14 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     public static final String DETAIL_LONG = "longitude";
     public static final String DETAIL_WEBSITE = "website";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sights_menu);
-        apiHelper = new ApiHelper();
         mRecyclerview = findViewById(R.id.recycler_view);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        NavigationMenu navigationMenu = new NavigationMenu(this);
         mSightList = new ArrayList<>();
-
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
     }
@@ -69,11 +66,10 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                             String imgUrl = jsonObject.getString("sightImage");
                             String lat = jsonObject.getString("latitude");
                             String lng = jsonObject.getString("longitude");
-                            apiHelper.visitedSights.get(5).setChecked(true);
-                            apiHelper.visitedSights.get(6).setChecked(true);
-                            apiHelper.visitedSights.get(7).setChecked(true);
-                            for (int j = 0; j <  apiHelper.assignments.size(); j++) {
-                                if(apiHelper.visitedSights.get(j).getBuildingId() == apiHelper.assignments.get(i).getId() && apiHelper.visitedSights.get(j).isChecked() == true){
+                            for (int j = 0; j <  ApiHelper.visitedSights.size(); j++) {
+                                //Log.d("test",ApiHelper.visitedSights.get(j).getBuildingId() +" ,"+  ApiHelper.assignments.get(i).getId());
+                                if(ApiHelper.visitedSights.get(j).getBuildingId() == ApiHelper.assignments.get(i).getId() && ApiHelper.visitedSights.get(j).isChecked()){
+                                    //Log.d("test",ApiHelper.visitedSights.get(j).getBuildingId() +" ,"+  ApiHelper.assignments.get(i).getId());
                                     mSightList.add(new Assignment(id,name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
                                 }
                             }

@@ -253,7 +253,7 @@ public class Login extends Activity {
                             @Override
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                ApiHelper.correctedDots.addAll(jsonDeserializer.corrected(apiHelper.getJsonObject()));
+                                ApiHelper.correctedDots.addAll(jsonDeserializer.correctedDots(apiHelper.getJsonObject()));
                                 counter++;
                                 if (counter < ApiHelper.generatedDots.size()/size ){
                                     Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
