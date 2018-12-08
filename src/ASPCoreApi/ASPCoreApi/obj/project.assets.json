@@ -4820,7 +4820,6 @@
       "type": "package",
       "path": "automapper/8.0.0",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "automapper.8.0.0.nupkg.sha512",
         "automapper.nuspec",
@@ -4837,7 +4836,6 @@
       "type": "package",
       "path": "automapper.extensions.microsoft.dependencyinjection/6.0.0",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "automapper.extensions.microsoft.dependencyinjection.6.0.0.nupkg.sha512",
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
@@ -6263,7 +6261,6 @@
       "type": "package",
       "path": "microsoft.entityframeworkcore/2.1.4",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.xml",
@@ -6276,7 +6273,6 @@
       "type": "package",
       "path": "microsoft.entityframeworkcore.abstractions/2.1.4",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
@@ -6289,7 +6285,6 @@
       "type": "package",
       "path": "microsoft.entityframeworkcore.analyzers/2.1.4",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll",
         "microsoft.entityframeworkcore.analyzers.2.1.4.nupkg.sha512",
@@ -6301,7 +6296,6 @@
       "type": "package",
       "path": "microsoft.entityframeworkcore.design/2.1.4",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "build/net461/Microsoft.EntityFrameworkCore.Design.props",
         "build/netcoreapp2.0/Microsoft.EntityFrameworkCore.Design.props",
@@ -6330,7 +6324,6 @@
       "type": "package",
       "path": "microsoft.entityframeworkcore.relational/2.1.4",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Relational.dll",
         "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Relational.xml",
@@ -6354,9 +6347,7 @@
       "sha512": "+mMAfPku3xFvFgzEYtFYZ6yek8EJz6NJq6AhO/yaqW2RS+6INWS54dfhy3qOddX2EXqE1ZEhkz5L1Zf1F8rAdQ==",
       "type": "package",
       "path": "microsoft.entityframeworkcore.tools/2.1.4",
-      "hasTools": true,
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/_._",
         "microsoft.entityframeworkcore.tools.2.1.4.nupkg.sha512",
@@ -8183,7 +8174,6 @@
       "type": "package",
       "path": "swashbuckle.aspnetcore/4.0.1",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.dll",
         "swashbuckle.aspnetcore.4.0.1.nupkg.sha512",
@@ -8195,7 +8185,6 @@
       "type": "package",
       "path": "swashbuckle.aspnetcore.swagger/4.0.1",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.Swagger.dll",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.Swagger.xml",
@@ -8208,7 +8197,6 @@
       "type": "package",
       "path": "swashbuckle.aspnetcore.swaggergen/4.0.1",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
@@ -8221,7 +8209,6 @@
       "type": "package",
       "path": "swashbuckle.aspnetcore.swaggerui/4.0.1",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerUI.dll",
         "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerUI.xml",
@@ -9089,7 +9076,6 @@
       "type": "package",
       "path": "system.diagnostics.diagnosticsource/4.5.1",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -9243,12 +9229,10 @@
       ]
     },
     "System.Diagnostics.TraceSource/4.3.0": {
-      "sha512": "PXWAEqWXamctxvdYSlHY+HG0e++cVkg0FwiqtiOZ4Ziy31GD9uab2QAgkuDKUARcCdVq3DfruvdMnPfalEJbNw==",
+      "sha512": "VnYp1NxGx8Ww731y2LJ1vpfb/DKVNKEZ8Jsh5SgQTZREL/YpWRArgh9pI8CDLmgHspZmLL697CaLvH85qQpRiw==",
       "type": "package",
       "path": "system.diagnostics.tracesource/4.3.0",
       "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -10068,11 +10052,10 @@
       ]
     },
     "System.Linq.Queryable/4.3.0": {
-      "sha512": "In1Bmmvl/j52yPu3xgakQSI0YIckPUr870w4K5+Lak3JCCa8hl+my65lABOuKfYs4ugmZy25ScFerC4nz8+b6g==",
+      "sha512": "XeuhzDnMp4nqUkeW4c5ILsKQk4+15RVaHm8LQdKWiGqIAgC12y2vuJUkkNhqjqi3K6LNmV9tzEfAZrarwWMsKA==",
       "type": "package",
       "path": "system.linq.queryable/4.3.0",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
@@ -12523,12 +12506,10 @@
       ]
     },
     "System.ValueTuple/4.4.0": {
-      "sha512": "6FvjECwwsvwtdnm2uD91MlFEgId6C2SWsdZk23gFpynHQ9x5ruqjsfEadb0VNzpkEHDQ6cq31CXUv3ouT09EHA==",
+      "sha512": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ==",
       "type": "package",
       "path": "system.valuetuple/4.4.0",
       "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/MonoAndroid10/_._",

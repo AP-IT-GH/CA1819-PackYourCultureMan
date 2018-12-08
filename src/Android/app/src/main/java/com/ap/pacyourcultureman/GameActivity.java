@@ -56,7 +56,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
-    List<Dot> streets = ApiHelper.streets;
+    //List<Dot> streets = ApiHelper.dotStreets;
     List<Dot> correctedDots = ApiHelper.correctedDots;
     List<Dot> generatedDots = ApiHelper.generatedDots;
     Location mLastLocation;
@@ -94,6 +94,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_game);
         initializer();
         Blinky = new Ghost();
+        for(int i = 0; i < apiHelper.visitedSights.size(); i++) {
+        Log.d("testest", String.valueOf(apiHelper.visitedSights.get(i).getBuildingId()));}
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -157,8 +159,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
             Marker mark;
-            LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
-            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
+            LatLng assigmentMarker = new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon());
+            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).getName()));
             assigmentMarkers.add(mark);
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -205,8 +207,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Draggable Marker loc: ", "latitude : "+ marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-                if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.latLng, 10)){
+                if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
+                    //ApiHelper.visitedSights.get(currentAssigment.getId()).setChecked(true);
+                    Log.d("testje", String.valueOf(currentAssigment.getId()));
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
@@ -220,9 +224,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
                 }
-                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
-                txtCurrentAssignment.setText(currentAssigment.name);
-                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon)));
+                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.getLat(), currentAssigment.getLon()));
+                txtCurrentAssignment.setText(currentAssigment.getName());
+                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.getLat(), currentAssigment.getLon())));
             }
 
             @Override
@@ -275,7 +279,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 for(int i = 0; i < assignments.size(); i++) {
-                    collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 10);
+                    collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon()), 10);
 
                 }
 
@@ -283,7 +287,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
                 LatLng markable = perth.getPosition();
-                collisionDetection.collisionDetect(markable, new LatLng(currentAssigment.lat, currentAssigment.lon), 10);
+                collisionDetection.collisionDetect(markable, new LatLng(currentAssigment.getLat(), currentAssigment.getLon()), 10);
                 Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
 
                 //dots collision
@@ -304,7 +308,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     };
     private Assignment getRandomAssignment() {
         currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
-        txtCurrentAssignment.setText(currentAssigment.name);
+        txtCurrentAssignment.setText(currentAssigment.getName());
         return currentAssigment;
     }
 
@@ -325,15 +329,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 bottomPanel.setPanelHeight(400);
-                txtName.setText(assignments.get(i).name);
-                if(assignments.get(i).website != "N/A") {
+                txtName.setText(assignments.get(i).getName());
+                if(assignments.get(i).getWebsite() != "N/A") {
                     txtWebsite.setVisibility(View.VISIBLE);
-                    txtWebsite.setText(assignments.get(i).website);
+                    txtWebsite.setText(assignments.get(i).getWebsite());
                 }
                 else txtWebsite.setVisibility(View.INVISIBLE);
-                Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
-                txtShortDesc.setText(assignments.get(i).shortDescr);
-                txtLongDesc.setText(assignments.get(i).longDescr);
+                Picasso.get().load(assignments.get(i).getImgUrl()).into(imgSight);
+                txtShortDesc.setText(assignments.get(i).getShortDescr());
+                txtLongDesc.setText(assignments.get(i).getLongDescr());
             }
         }
     }

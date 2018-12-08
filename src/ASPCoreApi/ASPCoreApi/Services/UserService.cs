@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ASP.Helpers;
 using ASPCoreApi.Models;
+using ASPCoreApi.Services;
 
 namespace ASP.Services
 {
@@ -12,18 +13,21 @@ namespace ASP.Services
         IEnumerable<Users> GetAll();
         Users GetById(int id);
         Users Create(Users user, string password);
-        Users Update(Users user, string password = null);
-        Users UpdateStats(Users user);
+        Users Update(Users user, string password = null);              
         void Delete(int id);
     }
 
     public class UserService : IUserService
     {
         private DatabaseContext _context;
-
-        public UserService(DatabaseContext context)
+        private IVisitedSightsService _visitedSightsService;
+        private IStatsService _statsService;
+        private IGameStatsService _gameStatsService;
+        public UserService(DatabaseContext context,IVisitedSightsService visitedSightsService,IStatsService statsService)
         {
             _context = context;
+            _visitedSightsService = visitedSightsService;
+            _statsService = statsService;
         }
 
         public Users Authenticate(string username, string password)
@@ -33,15 +37,15 @@ namespace ASP.Services
 
             var user = _context.users.FirstOrDefault(x => x.Username == username);
             
-            // check if username exists
+            
             if (user == null)
                 return null;
 
-            // check if password is correct
+            
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
-            // authentication successful
+            
             
             return user;
         }
@@ -50,24 +54,14 @@ namespace ASP.Services
         {
             
             var users = _context.users;
-
-            foreach (var user in users)
-            {
-                var stats = _context.stats.Find(user.StatsId);
-                var gameStats = _context.gameStats.Find(user.gameStatsId);
-                user.Stats = stats;
-                user.gameStats = gameStats;
-            }
+          
             return users;
         }
 
         public Users GetById(int id)
         {
             var userIn = _context.users.Find(id);
-            var statsIn = _context.stats.Find(userIn.StatsId);
-            var gameStatsIn = _context.gameStats.Find(userIn.gameStatsId);
-            userIn.Stats = statsIn;
-            userIn.gameStats = gameStatsIn;
+                       
             return userIn;
         }
 
@@ -82,7 +76,7 @@ namespace ASP.Services
                 if (var.ToString() == char.ToLower(var).ToString()) hasLower = true;
                 if (Char.IsDigit(var)) hasNumber = true;
             }
-            // validation
+            
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
@@ -99,15 +93,7 @@ namespace ASP.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-
-            if(user.FirstName == "admin")
-            {
-                user.accessLevel = 1;
-            }
-            else
-            {
-                user.accessLevel = 0;
-            }
+            
                             
             _context.users.Add(user);
             _context.SaveChanges();
@@ -117,14 +103,13 @@ namespace ASP.Services
 
         public Users Update(Users userParam, string password = null)
         {
-            var user = _context.users.Find(userParam.Id);
-            var stats = _context.stats.Find(userParam.StatsId);
+            var user = _context.users.Find(userParam.Id);           
             if (user == null)
                 throw new AppException("User not found");
 
             if (userParam.Username != user.Username)
             {
-                // username has changed so check if the new username is already taken
+                
                 if (_context.users.Any(x => x.Username == userParam.Username))
                     throw new AppException("Username " + userParam.Username + " is already taken");
             }
@@ -135,7 +120,7 @@ namespace ASP.Services
             if (userParam.Username != null && userParam.Username != "string" && userParam.Username != "") user.Username = userParam.Username;
             if (userParam.Email != null && userParam.Email != "string" && userParam.Email != "") user.Email = userParam.Email;
 
-            // update password if it was entered
+            
             if (!string.IsNullOrWhiteSpace(password)|| password != "string")
             {
                 Boolean hasUpper = false;
@@ -147,7 +132,7 @@ namespace ASP.Services
                     if (var.ToString() == char.ToLower(var).ToString()) hasLower = true;
                     if (Char.IsDigit(var)) hasNumber = true;
                 }
-                // validation
+                
                 if (string.IsNullOrWhiteSpace(password))
                     throw new AppException("Password is required");
 
@@ -168,47 +153,24 @@ namespace ASP.Services
             
             _context.users.Update(user);
             _context.SaveChanges();
-            user.Stats = stats;
+            
             return user;
         }
-        public Users UpdateStats(Users userParam)
-        {
-            var user = _context.users.Find(userParam.Id);
-            var stats = _context.stats.Find(user.StatsId);
-            if (user == null)
-                throw new AppException("User not found");
-            if (stats == null)
-                throw new AppException("stats not found");   
-            
-            //update stats
-            stats.highestScore = userParam.Stats.highestScore;
-            stats.totalScore = userParam.Stats.totalScore;
-            stats.totalSucces = userParam.Stats.totalSucces;
-            stats.totalFailed = userParam.Stats.totalFailed;
-            stats.totalLost = userParam.Stats.totalLost;
-
-            
-            _context.stats.Update(stats);
-            _context.users.Update(user);
-            _context.SaveChanges();
-            user.Stats = stats;
-            return user;
-        }
-
         public void Delete(int id)
         {
             var user = _context.users.Find(id);
-            var stats = _context.stats.Find(user.StatsId);
+            
             if (user != null)
             {
-                _context.stats.Remove(stats);
+                _visitedSightsService.Delete(user);
+                _statsService.Delete(user);
+                _gameStatsService.Delete(user);
                 _context.users.Remove(user);
                 _context.SaveChanges();
             }
         }
 
-        // private helper methods
-
+        
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");

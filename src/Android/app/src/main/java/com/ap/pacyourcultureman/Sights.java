@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.SightsAdapter;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
@@ -21,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Sights extends Activity implements SightsAdapter.OnItemClickListener {
     private RecyclerView mRecyclerview;
@@ -35,7 +38,6 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     public static final String DETAIL_LONG = "longitude";
     public static final String DETAIL_WEBSITE = "website";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +45,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         mRecyclerview = findViewById(R.id.recycler_view);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        NavigationMenu navigationMenu = new NavigationMenu(this);
         mSightList = new ArrayList<>();
-
         mRequestQueue = Volley.newRequestQueue(this);
         parseJSON();
     }
@@ -58,6 +58,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                     try {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject jsonObject = response.getJSONObject(i);
+                            int id = jsonObject.getInt("id");
                             String name = jsonObject.getString("name");
                             String website = jsonObject.getString("website");
                             String shortDesc = jsonObject.getString("shortDescription");
@@ -65,10 +66,15 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                             String imgUrl = jsonObject.getString("sightImage");
                             String lat = jsonObject.getString("latitude");
                             String lng = jsonObject.getString("longitude");
-                            // if (taken = true)
-                            if (name.equals("Saint Paul’s Church")){
-                                Log.d("Sightstaken", name+ "is taken");
-                            mSightList.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));}
+                            for (int j = 0; j <  ApiHelper.visitedSights.size(); j++) {
+                                //Log.d("test",ApiHelper.visitedSights.get(j).getBuildingId() +" ,"+  ApiHelper.assignments.get(i).getId());
+                                if(ApiHelper.visitedSights.get(j).getBuildingId() == ApiHelper.assignments.get(i).getId() && ApiHelper.visitedSights.get(j).isChecked()){
+                                    //Log.d("test",ApiHelper.visitedSights.get(j).getBuildingId() +" ,"+  ApiHelper.assignments.get(i).getId());
+                                    mSightList.add(new Assignment(id,name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
+                                }
+                            }
+
+
                         }
                         mSighsAdapter = new SightsAdapter(Sights.this,mSightList);
                         mRecyclerview.setAdapter(mSighsAdapter);

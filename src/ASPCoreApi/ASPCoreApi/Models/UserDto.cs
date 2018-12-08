@@ -13,15 +13,10 @@ namespace ASPCoreApi.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
-        public int StatsId { get; set; }
-        public int skinId { get; set; }
-
-        [ForeignKey("StatsId")]
-        public Statistics Stats { get; set; }
-
-        public int gameStatsId { get; set; }
-        [ForeignKey("gameStatsId")]
+        public string Password { get; set; }      
+        public int skinId { get; set; }       
+        public Statistics Stats { get; set; }       
         public GameStats gameStats { get; set; }
+        public ICollection<VisitedSights> visitedSights { get; set; }
     }
 }
