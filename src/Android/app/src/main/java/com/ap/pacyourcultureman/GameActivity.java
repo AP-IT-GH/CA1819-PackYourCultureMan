@@ -93,7 +93,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         initializer();
-        Blinky = new Ghost();
+        Blinky = new Ghost(new LatLng(51.230108, 4.418516));
         for(int i = 0; i < apiHelper.visitedSights.size(); i++) {
         Log.d("testest", String.valueOf(apiHelper.visitedSights.get(i).getBuildingId()));}
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -149,12 +149,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (Blinky.steps.size() != 0){
-                    Blinky.FollowPath();
-                }
+                Log.d("Steps", "Getting steps...");
+                Blinky.getSteps(new LatLng(51.223949, 4.407599));
             }
         });
         Log.d("Movement", "Ik ben non-blocking");
+
+
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {

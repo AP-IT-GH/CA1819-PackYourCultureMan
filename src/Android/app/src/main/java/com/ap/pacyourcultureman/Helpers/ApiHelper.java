@@ -176,7 +176,7 @@ public class ApiHelper {
                 new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {
-                        Log.v("Data from the web: ", response.toString());
+                        Log.v("Steps, Data from the web ", response.toString());
                         Log.d("Finish", "end");
                         try {
                             jsonObject = new JSONObject(response.toString());

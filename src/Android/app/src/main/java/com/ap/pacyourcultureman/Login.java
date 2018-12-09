@@ -41,12 +41,10 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    List<Step> steps = new ArrayList<>();
     ApiHelper apiHelper, apiHelper2, apiHelper3;
     Boolean run1 = false;
     Boolean run2 = false;
     Boolean run3 = false;
-    Boolean run4 = false;
     int userId;
     int counter  = 0;
     int urlCounter = 0;
@@ -143,27 +141,7 @@ public class Login extends Activity {
                         }
                     });
                     thread2.start();
-                    Thread thread3 = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                String key = BuildConfig.GoogleSecAPIKEYDIR;;
-                                String url = "https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key="+key;
-                                apiHelper3.getDirectionsApi(url, new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                        steps = jsonDeserializer.getSteps(apiHelper3.getJsonObject());
-                                        run3 = true;
-                                        startGame();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread3.start();
+
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
                 }
@@ -259,7 +237,7 @@ public class Login extends Activity {
                                     Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
                                     correctDots();
                                 } else  {
-                                    run4 = true;
+                                    run3 = true;
                                     startGame();
                                 }
 
@@ -299,7 +277,7 @@ public class Login extends Activity {
         return URL;
     }
     private void startGame() {
-        if (run1 && run2 && run3 && run4 ) {
+        if (run1 && run2 && run3) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
             intent.putExtra("userid", userId);
             intent.putExtra("jwt", jwt);
