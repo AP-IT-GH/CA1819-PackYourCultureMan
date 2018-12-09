@@ -32,6 +32,7 @@ public class Ghost {
     private int iter;
     Handler handler;
     ApiHelper apiHelper;
+    int speed = 20;
 
     Boolean newDirections = false;
 
@@ -81,18 +82,22 @@ public class Ghost {
 
         handler.post(new Runnable() {
             long elapsed;
-            long time = 3000;
+            long time = 30000;
 
             @Override
             public void run() {
                 elapsed = SystemClock.uptimeMillis() - start;
                 Log.d("Movement", "Moving to point: " + iter);
+                time = (steps.get(0).distance * 1000)/(speed);
+                if (time < 0) time = 4000;
+                Log.d("Movement" ,"Distance: " + steps.get(0).distance);
+                Log.d("Movement", "Time for this step: " + time);
                 Move(steps.get(0).start, marker, time);
                 iter++;
                 steps.remove(0);
                 Log.d("Movement", "Steps to go = " + steps.size());
                 if (0 < steps.size()) {
-                    handler.postDelayed(this, time + 100);
+                    handler.postDelayed(this, time + 500);
                 }
             }
         });
