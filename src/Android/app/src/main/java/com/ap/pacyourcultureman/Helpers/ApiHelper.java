@@ -167,7 +167,7 @@ public class ApiHelper {
             e.printStackTrace();
         }
     }
-    public void getDirectionsApi(final String url, final VolleyCallBack callBack) {
+    public void get(final String url, final VolleyCallBack callBack) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener() {
@@ -191,7 +191,6 @@ public class ApiHelper {
                         //Failure Callback
                     }
                 });
-// Adding the request to the queue along with a unique string tag
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 

@@ -69,16 +69,18 @@ public class JSONSerializer {
     }
     public JSONObject jsonPutGameStats(int lifePoints, int rifle, int freezeGun, int pushBackGun) {
         final JSONObject jsonObject = new JSONObject();
+        JSONObject jsonGroup = new JSONObject();
         try {
             jsonObject.put("lifePoints", lifePoints);
             jsonObject.put("rifle", rifle);
             jsonObject.put("freezeGun", freezeGun);
             jsonObject.put("pushBackGun", pushBackGun);
             Log.d("JSONGameStats",jsonObject.toString());
+            jsonGroup.put("gameStats", jsonObject);
 
         } catch (JSONException e) {
         }
-        return jsonObject;
+        return jsonGroup;
     }
     public JSONObject jsonPutUserData(int skinID, String firstName, String lastName, String email, String password) {
         final JSONObject jsonObject = new JSONObject();

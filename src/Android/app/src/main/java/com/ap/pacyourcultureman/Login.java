@@ -149,7 +149,7 @@ public class Login extends Activity {
                             try {
                                 String key = BuildConfig.GoogleSecAPIKEYDIR;;
                                 String url = "https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key="+key;
-                                apiHelper3.getDirectionsApi(url, new VolleyCallBack() {
+                                apiHelper3.get(url, new VolleyCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         JSONDeserializer jsonDeserializer = new JSONDeserializer();
@@ -200,8 +200,6 @@ public class Login extends Activity {
     private void Save() {
         SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        email = edit_email.getText().toString();
-        password = edit_password.getText().toString();
         if (chb_rememberme.isChecked()) {
             rememberMe = true;
             editor.putString("email", email);
@@ -249,7 +247,7 @@ public class Login extends Activity {
                 @Override
                 public void run() {
                     try {
-                        apiHelper.getDirectionsApi(URL, new VolleyCallBack() {
+                        apiHelper.get(URL, new VolleyCallBack() {
                             @Override
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
