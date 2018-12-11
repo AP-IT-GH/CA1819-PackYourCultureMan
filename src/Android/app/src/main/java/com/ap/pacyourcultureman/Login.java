@@ -49,7 +49,7 @@ public class Login extends Activity {
     int counter  = 0;
     int urlCounter = 0;
     String jwt;
-    int urlSize = 10;
+    int urlSize = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,10 +270,8 @@ public class Login extends Activity {
            urlCounter ++;
         }
         String key = BuildConfig.GoogleSecAPIKEY;
-
-        //String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
         String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key="+key;
-        Log.d("link", URL);
+        Log.d("link",URL);
         return URL;
     }
     private void startGame() {

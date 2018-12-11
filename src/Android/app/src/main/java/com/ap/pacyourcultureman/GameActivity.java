@@ -64,7 +64,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     LocationRequest mLocationRequest;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-    Assignment currentAssigment;
+    static  public Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
@@ -132,7 +132,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-        //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
@@ -207,11 +207,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
-                    for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
-                        if(currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
-                            ApiHelper.visitedSights.get(i).setChecked(true);
-                        }
-                    }
                     collisionHandler.visitedSights();
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
@@ -220,10 +215,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 8)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
-                        Log.d("testRemoverMarker", String.valueOf(generatedDots.get(i).getMarker()));
+                        //removerMarkers On collision
                         generatedDots.get(i).removeMarker();
                         generatedDots.remove(i);
-                        //removermarker
 
                     }
                 }

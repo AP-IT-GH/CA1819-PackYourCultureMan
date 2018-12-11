@@ -89,6 +89,11 @@ public class CollisionHandler {
         player.getPlayerStats().setCurrentScore(0);
     }
     public void visitedSights() {
+        for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
+            if(GameActivity.currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
+                ApiHelper.visitedSights.get(i).setChecked(true);
+            }}
+
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("visitedSights", ApiHelper.visitedSights);
