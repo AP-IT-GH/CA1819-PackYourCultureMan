@@ -29,22 +29,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import static java.util.Collections.*;
 
 public class ApiHelper {
     HttpURLConnection conn;
     String resp = "";
     public String responseMessage;
     public Boolean run;
-    static public List<Assignment> assignments = new ArrayList<>(); ;
-    //static public List<Dot> dotStreets;
-    static public List<Street> streets;
+    //static public List<Dot> dotStreets = new ArrayList<>();
+    static public List<Street> streets = new ArrayList<>();
+    static public List<Assignment> assignments = new ArrayList<>();
     static public List<Dot> correctedDots = new ArrayList<>();
     static public List<Dot> generatedDots = new ArrayList<>();
-    static public List<VisitedSight>  visitedSights = new ArrayList<>();
+    static public List<VisitedSight> visitedSights = new ArrayList<>();
     static public Player player;
     int userId;
     String jwt;
@@ -173,7 +176,7 @@ public class ApiHelper {
                 new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {
-                        Log.v("Data from the web: ", response.toString());
+                        Log.v("Steps, Data from the web ", response.toString());
                         Log.d("Finish", "end");
                         try {
                             jsonObject = new JSONObject(response.toString());
@@ -266,5 +269,53 @@ public class ApiHelper {
         });
         thread.start();
     }
+
+    public void put2(final String url, final JSONObject jsonObject){
+        run = true;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("Response", response.toString());
+                                run = false;
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                                run = false; }
+                        }
+                )
+                {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Accept", "application/json");
+                        params.put("Authorization", "Bearer " + ApiHelper.player.getJwt());
+                        Log.d("xxx", ApiHelper.player.getJwt());
+                        return params;
+                    }
+                    @Override
+                    protected  Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        mStatusCode = response.statusCode;
+                        Log.d("Status", Integer.toString(mStatusCode));
+                        return super.parseNetworkResponse(response);
+                    }
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+                };
+                AppController.getInstance().addToRequestQueue(putRequest);
+            }
+        });
+        thread.start();
+    }
+
 }
 

@@ -41,17 +41,15 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    List<Step> steps = new ArrayList<>();
     ApiHelper apiHelper, apiHelper2, apiHelper3;
     Boolean run1 = false;
     Boolean run2 = false;
     Boolean run3 = false;
-    Boolean run4 = false;
     int userId;
     int counter  = 0;
     int urlCounter = 0;
     String jwt;
-    int size = 10;
+    int urlSize = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +131,7 @@ public class Login extends Activity {
                                         run2 = true;
                                         streetsGenerate();
                                         correctDots();
-                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/size ));
+                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
                                         startGame();
                                     }
                                 });
@@ -143,27 +141,6 @@ public class Login extends Activity {
                         }
                     });
                     thread2.start();
-                    Thread thread3 = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                String key = BuildConfig.GoogleSecAPIKEYDIR;;
-                                String url = "https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key="+key;
-                                apiHelper3.get(url, new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                        steps = jsonDeserializer.getSteps(apiHelper3.getJsonObject());
-                                        run3 = true;
-                                        startGame();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread3.start();
                     userId = apiHelper.getUserId();
                     jwt = apiHelper.getJwt();
                 }
@@ -251,13 +228,13 @@ public class Login extends Activity {
                             @Override
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                ApiHelper.correctedDots.addAll(jsonDeserializer.corrected(apiHelper.getJsonObject()));
+                                ApiHelper.correctedDots.addAll(jsonDeserializer.correctedDots(apiHelper.getJsonObject()));
                                 counter++;
-                                if (counter < ApiHelper.generatedDots.size()/size ){
+                                if (counter < ApiHelper.generatedDots.size()/urlSize ){
                                     Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
                                     correctDots();
                                 } else  {
-                                    run4 = true;
+                                    run3 = true;
                                     startGame();
                                 }
 
@@ -282,22 +259,20 @@ public class Login extends Activity {
 
     private String linkGenerator(){
         String getItem = "";
-        for(int i = 0; i < size  ; i++) {
+        for(int i = 0; i < urlSize  ; i++) {
             getItem += ApiHelper.generatedDots.get(urlCounter).getLat()+","+ApiHelper.generatedDots.get(urlCounter).getLon();
-           if (i < size -1){
+           if (i < urlSize-1){
                getItem += "|";
            }
            urlCounter ++;
         }
         String key = BuildConfig.GoogleSecAPIKEY;
-
-        //String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
         String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key="+key;
-        Log.d("link", URL);
+        Log.d("link",URL);
         return URL;
     }
     private void startGame() {
-        if (run1 && run2 && run3 && run4 ) {
+        if (run1 && run2 && run3) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
             intent.putExtra("userid", userId);
             intent.putExtra("jwt", jwt);

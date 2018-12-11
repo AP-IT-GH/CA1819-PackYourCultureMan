@@ -79,6 +79,7 @@ public class JSONSerializer {
             jsonGroup.put("gameStats", jsonObject);
 
         } catch (JSONException e) {
+            // handle exception
         }
         return jsonGroup;
     }

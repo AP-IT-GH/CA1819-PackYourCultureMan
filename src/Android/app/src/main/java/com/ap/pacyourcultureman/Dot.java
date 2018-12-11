@@ -83,15 +83,17 @@ public class Dot {
     public Double getLat() {
         return lat;
     }
-    public Marker getMarker() {
-        return marker;
-    }
+    public Marker getMarker() { return marker;}
     public Double getLon() {
         return lon;
     }
 
 
     //methods
+    public void removeMarker() {
+        marker.remove();
+    }
+
     public void Draw(GoogleMap mMap, Context context){
         Bitmap dot = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.pacman_dot, null));
         Bitmap scaledDot = Bitmap.createScaledBitmap(dot, width, height, false);

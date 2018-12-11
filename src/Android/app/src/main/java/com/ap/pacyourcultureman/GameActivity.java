@@ -64,7 +64,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     LocationRequest mLocationRequest;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-    Assignment currentAssigment;
+    static  public Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
@@ -93,13 +93,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         initializer();
-        Blinky = new Ghost();
-        for(int i = 0; i < apiHelper.visitedSights.size(); i++) {
-        Log.d("testest", String.valueOf(apiHelper.visitedSights.get(i).getBuildingId()));}
+        Blinky = new Ghost(new LatLng(51.230108, 4.418516));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
     }
@@ -135,7 +132,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-        //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
@@ -149,12 +146,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (Blinky.steps.size() != 0){
-                    Blinky.FollowPath();
-                }
+                Log.d("Steps", "Getting steps...");
+                Blinky.getSteps(new LatLng(51.223949, 4.407599));
             }
         });
         Log.d("Movement", "Ik ben non-blocking");
+
+
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
@@ -209,6 +207,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
+                    collisionHandler.visitedSights();
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
@@ -216,9 +215,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 8)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
-                        Log.d("testRemoverMarker", String.valueOf(generatedDots.get(i).getMarker()));
+                        //removerMarkers On collision
+                        generatedDots.get(i).removeMarker();
                         generatedDots.remove(i);
-                        //removermarker
 
                     }
                 }
