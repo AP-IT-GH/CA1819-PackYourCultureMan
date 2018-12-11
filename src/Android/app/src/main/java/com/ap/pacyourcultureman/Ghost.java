@@ -63,7 +63,7 @@ public class Ghost {
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&mode=walking&key=" + BuildConfig.GoogleSecAPIKEY;
         Log.d("Steps", baseUrl);
         final JSONDeserializer jsonDeserializer = new JSONDeserializer();
-        apiHelper.getDirectionsApi(baseUrl, new VolleyCallBack() {
+        apiHelper.get(baseUrl, new VolleyCallBack() {
             @Override
             public void onSuccess() {
                 steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());

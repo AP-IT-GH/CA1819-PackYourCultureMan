@@ -392,7 +392,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         iin = getIntent();
         b = iin.getExtras();
         currentPos = PERTH;
-        ApiHelper.player.getPlayerGameStats().setRifle(5);
         if(b!=null){
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");

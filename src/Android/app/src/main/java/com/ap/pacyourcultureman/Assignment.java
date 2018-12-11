@@ -47,7 +47,6 @@ public class Assignment {
         circles.clear();
         if(this.circle != null) {
                 this.circle.remove();
-                Log.d("RemoveMain", "fff");
         }
         for(int i = 0; i < assignments.size(); i++) {
                 if(n == i) {
@@ -58,7 +57,6 @@ public class Assignment {
                     circleOptionsCurrentAssignment.fillColor(0x30ff0000);
                     circleOptionsCurrentAssignment.strokeWidth(2);
                     this.circle = mMap.addCircle(circleOptionsCurrentAssignment);
-                    Log.d("CurrentAssignmentWriter", "ff");
                 }
                 else {
                     CircleOptions circleOptionsSafeZone = new CircleOptions();
@@ -69,7 +67,6 @@ public class Assignment {
                     circleOptionsSafeZone.strokeWidth(2);
                     Circle circleSafezone = mMap.addCircle(circleOptionsSafeZone);
                     circles.add(circleSafezone);
-                    Log.d("SafeZonerWriter", Integer.toString(i));
                 }
         }
         return assignments.get(n);

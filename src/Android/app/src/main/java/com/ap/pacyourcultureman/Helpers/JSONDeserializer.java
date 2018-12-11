@@ -129,8 +129,6 @@ public class JSONDeserializer {
     }
 
     public List<Dot> correctedDots(JSONObject response){
-        Log.d("GoogleRoadsApi", "1 object");
-        Log.d("GoogleRoadsApi", response.toString());
         List<Dot> dotsRoad = new ArrayList<>();
         try {
             JSONArray snappedPoints = response.getJSONArray("snappedPoints");
@@ -139,7 +137,6 @@ public class JSONDeserializer {
                 JSONObject loc = location.getJSONObject("location");
                 Double lat = loc.getDouble("latitude");
                 Double lng = loc.getDouble("longitude");
-                Log.d("GoogleRoadsApi", lat + "," + lng);
                 dotsRoad.add(new Dot(lat,lng));
                 //for (int j = 0; j < dotsRoad.size(); j++) {  Log.d("roadscheck3", dotsRoad.get(i).getLat()+","+dotsRoad.get(i).getLon());}
             }

@@ -36,6 +36,7 @@ public class Gunmenu {
         txtFreezeAmmo.setText("x: " + Integer.toString(freezeammo));
         txtRifleAmmo.setText("x: " + Integer.toString(rifleammo));
         txtPushbackAmmo.setText("x: " + Integer.toString(pushbackammo));
+        gunUpdater();
         dropdownMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

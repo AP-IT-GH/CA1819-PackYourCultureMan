@@ -132,6 +132,9 @@ public class Login extends Activity {
                                         streetsGenerate();
                                         correctDots();
                                         Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
+                                        if (chb_rememberme.isChecked()) {
+                                            Save();
+                                        }
                                         startGame();
                                     }
                                 });
@@ -175,6 +178,8 @@ public class Login extends Activity {
     }
 
     private void Save() {
+        email = edit_email.getText().toString();
+        password = edit_password.getText().toString();
         SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         if (chb_rememberme.isChecked()) {
