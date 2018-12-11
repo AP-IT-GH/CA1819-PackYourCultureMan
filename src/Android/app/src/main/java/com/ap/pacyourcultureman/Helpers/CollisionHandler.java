@@ -59,7 +59,7 @@ public class CollisionHandler {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //  apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.id), jsonObject);
+              apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
             Toast.makeText(context, "You got hit", Toast.LENGTH_LONG).show();
             Log.d("Toast", "Test");
             //TODO Reset ghost
