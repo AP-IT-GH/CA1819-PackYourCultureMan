@@ -94,12 +94,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_game);
         initializer();
         Blinky = new Ghost(new LatLng(51.230108, 4.418516));
-        for(int i = 0; i < apiHelper.visitedSights.size(); i++) {
-        Log.d("testest", String.valueOf(apiHelper.visitedSights.get(i).getBuildingId()));}
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
     }
@@ -210,8 +207,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
-                    //ApiHelper.visitedSights.get(currentAssigment.getId()).setChecked(true);
-                    Log.d("testje", String.valueOf(currentAssigment.getId()));
+                    for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
+                        if(currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
+                            ApiHelper.visitedSights.get(i).setChecked(true);
+                        }
+                    }
+                    collisionHandler.visitedSights();
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
@@ -220,6 +221,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         Log.d("testRemoverMarker", String.valueOf(generatedDots.get(i).getMarker()));
+                        generatedDots.get(i).removeMarker();
                         generatedDots.remove(i);
                         //removermarker
 

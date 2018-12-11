@@ -9,8 +9,10 @@ import android.widget.Toast;
 import com.ap.pacyourcultureman.GameActivity;
 import com.ap.pacyourcultureman.Ghost;
 import com.ap.pacyourcultureman.Player;
+import com.ap.pacyourcultureman.VisitedSight;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,6 +88,16 @@ public class CollisionHandler {
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
         player.getPlayerStats().setCurrentScore(0);
     }
+    public void visitedSights() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("visitedSights", ApiHelper.visitedSights);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        apiHelper.put2("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+    }
+
     public void gunCollision(Ghost ghost) {
 
     }

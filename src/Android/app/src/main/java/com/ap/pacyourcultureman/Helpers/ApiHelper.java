@@ -271,5 +271,52 @@ public class ApiHelper {
         thread.start();
     }
 
+    public void put2(final String url, final JSONObject jsonObject){
+        run = true;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("Response", response.toString());
+                                run = false;
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                                run = false; }
+                        }
+                )
+                {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Accept", "application/json");
+                        params.put("Authorization", "Bearer " + ApiHelper.player.getJwt());
+                        Log.d("xxx", ApiHelper.player.getJwt());
+                        return params;
+                    }
+                    @Override
+                    protected  Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                        mStatusCode = response.statusCode;
+                        Log.d("Status", Integer.toString(mStatusCode));
+                        return super.parseNetworkResponse(response);
+                    }
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+                };
+                AppController.getInstance().addToRequestQueue(putRequest);
+            }
+        });
+        thread.start();
+    }
+
 }
 

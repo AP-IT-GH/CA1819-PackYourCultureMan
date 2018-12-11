@@ -77,6 +77,7 @@ public class JSONSerializer {
             Log.d("JSONGameStats",jsonObject.toString());
 
         } catch (JSONException e) {
+            // handle exception
         }
         return jsonObject;
     }

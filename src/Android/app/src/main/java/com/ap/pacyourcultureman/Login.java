@@ -49,7 +49,7 @@ public class Login extends Activity {
     int counter  = 0;
     int urlCounter = 0;
     String jwt;
-    int size = 10;
+    int urlSize = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,7 @@ public class Login extends Activity {
                                         run2 = true;
                                         streetsGenerate();
                                         correctDots();
-                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/size ));
+                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
                                         startGame();
                                     }
                                 });
@@ -233,7 +233,7 @@ public class Login extends Activity {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
                                 ApiHelper.correctedDots.addAll(jsonDeserializer.correctedDots(apiHelper.getJsonObject()));
                                 counter++;
-                                if (counter < ApiHelper.generatedDots.size()/size ){
+                                if (counter < ApiHelper.generatedDots.size()/urlSize ){
                                     Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
                                     correctDots();
                                 } else  {
@@ -262,9 +262,9 @@ public class Login extends Activity {
 
     private String linkGenerator(){
         String getItem = "";
-        for(int i = 0; i < size  ; i++) {
+        for(int i = 0; i < urlSize  ; i++) {
             getItem += ApiHelper.generatedDots.get(urlCounter).getLat()+","+ApiHelper.generatedDots.get(urlCounter).getLon();
-           if (i < size -1){
+           if (i < urlSize-1){
                getItem += "|";
            }
            urlCounter ++;

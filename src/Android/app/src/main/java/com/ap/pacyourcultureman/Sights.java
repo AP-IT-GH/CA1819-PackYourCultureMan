@@ -22,8 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+
 
 public class Sights extends Activity implements SightsAdapter.OnItemClickListener {
     private RecyclerView mRecyclerview;
@@ -67,9 +66,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                             String lat = jsonObject.getString("latitude");
                             String lng = jsonObject.getString("longitude");
                             for (int j = 0; j <  ApiHelper.visitedSights.size(); j++) {
-                                //Log.d("test",ApiHelper.visitedSights.get(j).getBuildingId() +" ,"+  ApiHelper.assignments.get(i).getId());
                                 if(ApiHelper.visitedSights.get(j).getBuildingId() == ApiHelper.assignments.get(i).getId() && ApiHelper.visitedSights.get(j).isChecked()){
-                                    //Log.d("test",ApiHelper.visitedSights.get(j).getBuildingId() +" ,"+  ApiHelper.assignments.get(i).getId());
                                     mSightList.add(new Assignment(id,name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
                                 }
                             }
