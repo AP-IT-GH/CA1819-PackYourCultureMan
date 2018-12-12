@@ -59,8 +59,7 @@ public class ApiHelper {
 
     public ApiHelper() {
     }
-    public void sendPost(final String urlstring, final JSONObject jsonObject) {
-        run = true;
+    public void sendPost(final String urlstring, final JSONObject jsonObject, final VolleyCallBack callBack) {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -88,11 +87,13 @@ public class ApiHelper {
                         resp = stringBuilder.toString();
                         resp = resp.substring(resp.indexOf(':') + 2, resp.lastIndexOf('"'));
                         Log.d("TAG", stringBuilder.toString());
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         resp = "Server down";
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                         resp = "Success";
@@ -108,11 +109,13 @@ public class ApiHelper {
                             in.close();
                         }
                         Log.d("LOGIN", reply);
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         resp = "Unauthorized";
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                     Log.i("MSG", conn.getResponseMessage());
@@ -124,11 +127,6 @@ public class ApiHelper {
             }
         });
         thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         // run = false;
     }
     public void getArray(final String url, final VolleyCallBack callBack) {

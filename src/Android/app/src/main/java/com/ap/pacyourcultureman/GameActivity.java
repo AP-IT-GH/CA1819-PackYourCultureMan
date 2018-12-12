@@ -192,6 +192,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("Style failed", "Style parsing failed.");
         }
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {

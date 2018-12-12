@@ -46,6 +46,8 @@ public class GunHandler {
         if(ApiHelper.player.getPlayerGameStats().getFreezeGun() != 0) {
             ApiHelper.player.getPlayerGameStats().setFreezeGun(ApiHelper.player.getPlayerGameStats().getFreezeGun() - 1);
             Log.d("Ghost", "hit with Freeze");
+            apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats());
+
         }
         else {
             Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
@@ -55,6 +57,8 @@ public class GunHandler {
         if(ApiHelper.player.getPlayerGameStats().getPushBackGun() != 0) {
             ApiHelper.player.getPlayerGameStats().setPushBackGun(ApiHelper.player.getPlayerGameStats().getPushBackGun() - 1);
             Log.d("Ghost", "hit with pushback");
+            apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats());
+
         }
         else {
             Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();

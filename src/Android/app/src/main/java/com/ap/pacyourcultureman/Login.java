@@ -89,64 +89,68 @@ public class Login extends Activity {
                 String pass = edit_password.getText().toString();
                 JSONSerializer jsonSerializer = new JSONSerializer();
                 JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
-                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject);
-                if (apiHelper.getResponse() == "Success") {
-                    errorSetter("Fetching data");
-                    apiHelper.setPlayer(apiHelper.getReply());
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights", new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                        ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
-                                        run1 = true;
-                                        startGame();
-                                    }
-                                });
-                                if (chb_rememberme.isChecked()) {
-                                    Save();
-                                }
-                                Log.d("Nailed", "it");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
-                    Thread thread2 = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                String url = "https://aspcoreapipycm.azurewebsites.net/street";
-                                apiHelper.getArray(url, new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                        //ApiHelper.dotStreets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                        ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
-                                        run2 = true;
-                                        streetsGenerate();
-                                        correctDots();
-                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
+                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject, new VolleyCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        if (apiHelper.getResponse() == "Success") {
+                            errorSetter("Fetching data");
+                            apiHelper.setPlayer(apiHelper.getReply());
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights", new VolleyCallBack() {
+                                            @Override
+                                            public void onSuccess() {
+                                                JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
+                                                run1 = true;
+                                                startGame();
+                                            }
+                                        });
                                         if (chb_rememberme.isChecked()) {
                                             Save();
                                         }
-                                        startGame();
+                                        Log.d("Nailed", "it");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                                }
+                            });
+                            thread.start();
+                            Thread thread2 = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
+                                        String url = "https://aspcoreapipycm.azurewebsites.net/street";
+                                        apiHelper.getArray(url, new VolleyCallBack() {
+                                            @Override
+                                            public void onSuccess() {
+                                                JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
+                                                //ApiHelper.dotStreets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                                ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
+                                                run2 = true;
+                                                streetsGenerate();
+                                                correctDots();
+                                                Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
+                                                if (chb_rememberme.isChecked()) {
+                                                    Save();
+                                                }
+                                                startGame();
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            thread2.start();
+                            userId = apiHelper.getUserId();
+                            jwt = apiHelper.getJwt();
                         }
-                    });
-                    thread2.start();
-                    userId = apiHelper.getUserId();
-                    jwt = apiHelper.getJwt();
-                }
+                    }
+                });
             }
         });
 
