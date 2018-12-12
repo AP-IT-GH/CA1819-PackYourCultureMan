@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,8 +27,17 @@ public class Assignment {
     private Circle circle;
     private Marker marker;
     private  int height;
-    private  int width;
 
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }
+
+    private  int width;
+    Bitmap house;
 
 
     public Assignment(int id, String name, String website, Double lat, Double lon, String shortDescr, String longDescr, String imageUrl) {
@@ -85,12 +93,13 @@ public class Assignment {
         return assignments.get(n);
     }
 
-    public void DrawHouses(GoogleMap mMap, Context context){
-        Bitmap house = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.house, null));
+    public void DrawHouses(GoogleMap mMap, Context context,String name ){
+        house  = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.house, null));
         Bitmap scaledHouse = Bitmap.createScaledBitmap(house, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(scaledHouse)));
+                .icon(BitmapDescriptorFactory.fromBitmap(scaledHouse))
+                .title(name));
     }
 
     public String getName() {

@@ -59,7 +59,6 @@ import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetw
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
-    private static Context mContext;
     private Ghost Blinky;
     private Bitmap scaledPacman;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
@@ -73,7 +72,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
     static  public Assignment currentAssigment;
-    List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
     ImageView imgSight;
@@ -100,8 +98,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        mContext = getApplicationContext();
-        initializer(mContext);
+        initializer(getApplicationContext());
         Blinky = new Ghost(new LatLng(51.230108, 4.418516));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -165,7 +162,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("Movement", "Ik ben non-blocking");
 
         for(int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).DrawHouses(mMap, getApplicationContext());
+            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -332,7 +329,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onInfoWindowClick(Marker marker) {
         for(int i = 0; i < assignments.size(); i++) {
-            if (marker.equals(assigmentMarkers.get(i)))
+            if (marker.equals(assignments.get(i).getMarker()))
             {
                 bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 bottomPanel.setPanelHeight(400);
@@ -402,7 +399,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         iin = getIntent();
         b = iin.getExtras();
         currentPos = PERTH;
-        Bitmap pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.man, null));
+        Bitmap pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(getApplicationContext().getResources(),R.drawable.man, null));
         scaledPacman = Bitmap.createScaledBitmap(pacman, 80, 80, false);
         if(b!=null){
             userId = (int) b.get("userid");
