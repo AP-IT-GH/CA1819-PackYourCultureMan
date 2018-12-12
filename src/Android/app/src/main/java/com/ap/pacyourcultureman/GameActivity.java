@@ -1,10 +1,12 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,12 +38,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
@@ -53,7 +59,9 @@ import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetw
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
+    private static Context mContext;
     private Ghost Blinky;
+    private Bitmap scaledPacman;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
     //List<Dot> streets = ApiHelper.dotStreets;
@@ -92,7 +100,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        initializer();
+        mContext = getApplicationContext();
+        initializer(mContext);
         Blinky = new Ghost(new LatLng(51.230108, 4.418516));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -130,6 +139,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
+         mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(0, 0), new LatLng(0, 5), new LatLng(3, 5), new LatLng(0, 0))
+                .strokeColor(Color.RED));
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
@@ -152,15 +164,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         });
         Log.d("Movement", "Ik ben non-blocking");
 
-
-        List<LatLng> latLngs = new ArrayList<>();
-        latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
-            Marker mark;
-            LatLng assigmentMarker = new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon());
-            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).getName()));
-            assigmentMarkers.add(mark);
+            assignments.get(i).DrawHouses(mMap, getApplicationContext());
         }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -235,7 +242,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         });
         perth = mMap.addMarker(new MarkerOptions()
                 .position(PERTH)
-                .draggable(true));
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman)));
 
     }
 
@@ -368,7 +376,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         } else super.onBackPressed();
 
     }
-    private void initializer() {
+    private void initializer(Context context) {
         apiHelper = new ApiHelper();
         bottomPanel = findViewById(R.id.sliding_layout);
         bottomPanel.setPanelHeight(0);
@@ -394,6 +402,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         iin = getIntent();
         b = iin.getExtras();
         currentPos = PERTH;
+        Bitmap pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.man, null));
+        scaledPacman = Bitmap.createScaledBitmap(pacman, 80, 80, false);
         if(b!=null){
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");

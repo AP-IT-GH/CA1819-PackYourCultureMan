@@ -1,17 +1,24 @@
 package com.ap.pacyourcultureman;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
 
 public class Assignment {
     private String name,website, shortDescr, longDescr, imgUrl;
@@ -19,6 +26,11 @@ public class Assignment {
     private Double lat, lon;
     private LatLng latLng;
     private Circle circle;
+    private Marker marker;
+    private  int height;
+    private  int width;
+
+
 
     public Assignment(int id, String name, String website, Double lat, Double lon, String shortDescr, String longDescr, String imageUrl) {
         this.name = name;
@@ -29,8 +41,9 @@ public class Assignment {
         this.shortDescr = shortDescr;
         this.longDescr = longDescr;
         this.imgUrl = imageUrl;
-
         latLng = new LatLng(this.lat, this.lon);
+        this.height = 80;
+        this.width = 80;
     }
 
     public Assignment getRandomAssignment(Context context, GoogleMap mMap, Assignment currentAssigment, List<Assignment> assignments, List<Circle> circles){
@@ -70,6 +83,14 @@ public class Assignment {
                 }
         }
         return assignments.get(n);
+    }
+
+    public void DrawHouses(GoogleMap mMap, Context context){
+        Bitmap house = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.house, null));
+        Bitmap scaledHouse = Bitmap.createScaledBitmap(house, width, height, false);
+        marker = mMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromBitmap(scaledHouse)));
     }
 
     public String getName() {
@@ -151,4 +172,6 @@ public class Assignment {
     public void setCircle(Circle circle) {
         this.circle = circle;
     }
+
+
 }
