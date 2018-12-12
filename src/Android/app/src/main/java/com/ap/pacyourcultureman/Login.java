@@ -41,17 +41,15 @@ public class Login extends Activity {
     private Handler mHandler;
     RequestQueue queue;  // this = context
     static List<Assignment> assignments;
-    List<Step> steps = new ArrayList<>();
     ApiHelper apiHelper, apiHelper2, apiHelper3;
     Boolean run1 = false;
     Boolean run2 = false;
     Boolean run3 = false;
-    Boolean run4 = false;
     int userId;
     int counter  = 0;
     int urlCounter = 0;
     String jwt;
-    int size = 10;
+    int urlSize = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,80 +89,68 @@ public class Login extends Activity {
                 String pass = edit_password.getText().toString();
                 JSONSerializer jsonSerializer = new JSONSerializer();
                 JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
-                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject);
-                if (apiHelper.getResponse() == "Success") {
-                    errorSetter("Fetching data");
-                    apiHelper.setPlayer(apiHelper.getReply());
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights", new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                        ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
-                                        run1 = true;
-                                        startGame();
+                apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject, new VolleyCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        if (apiHelper.getResponse() == "Success") {
+                            errorSetter("Fetching data");
+                            apiHelper.setPlayer(apiHelper.getReply());
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights", new VolleyCallBack() {
+                                            @Override
+                                            public void onSuccess() {
+                                                JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                                ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
+                                                run1 = true;
+                                                startGame();
+                                            }
+                                        });
+                                        if (chb_rememberme.isChecked()) {
+                                            Save();
+                                        }
+                                        Log.d("Nailed", "it");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                                if (chb_rememberme.isChecked()) {
-                                    Save();
                                 }
-                                Log.d("Nailed", "it");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
-                    Thread thread2 = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                String url = "https://api.myjson.com/bins/80zi6";
-                                apiHelper.getArray(url, new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                        //ApiHelper.streets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                        ApiHelper.streets2 = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
-                                        run2 = true;
-                                        streetsGenerate();
-                                        correctDots();
-                                        Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/size ));
-                                        startGame();
+                            });
+                            thread.start();
+                            Thread thread2 = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
+                                        String url = "https://aspcoreapipycm.azurewebsites.net/street";
+                                        apiHelper.getArray(url, new VolleyCallBack() {
+                                            @Override
+                                            public void onSuccess() {
+                                                JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
+                                                //ApiHelper.dotStreets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                                ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
+                                                run2 = true;
+                                                streetsGenerate();
+                                                correctDots();
+                                                Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
+                                                if (chb_rememberme.isChecked()) {
+                                                    Save();
+                                                }
+                                                startGame();
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                                }
+                            });
+                            thread2.start();
+                            userId = apiHelper.getUserId();
+                            jwt = apiHelper.getJwt();
                         }
-                    });
-                    thread2.start();
-                    Thread thread3 = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                apiHelper3.getDirectionsApi("https://maps.googleapis.com/maps/api/directions/json?origin=51.229963%2C%204.420749&destination=51.226304%2C%204.426475&mode=walking&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU&fbclid=IwAR3KBusU_zvFk_F4-6K9bhHoT6B2thi_nceJHXLXdMdtCzeuB0k-1m1tMzE", new VolleyCallBack() {
-                                    @Override
-                                    public void onSuccess() {
-                                        JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                        steps = jsonDeserializer.getSteps(apiHelper3.getJsonObject());
-                                        run3 = true;
-                                        startGame();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread3.start();
-                    userId = apiHelper.getUserId();
-                    jwt = apiHelper.getJwt();
-                }
+                    }
+                });
             }
         });
 
@@ -196,10 +182,10 @@ public class Login extends Activity {
     }
 
     private void Save() {
-        SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
         email = edit_email.getText().toString();
         password = edit_password.getText().toString();
+        SharedPreferences sp = getSharedPreferences("DATA", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
         if (chb_rememberme.isChecked()) {
             rememberMe = true;
             editor.putString("email", email);
@@ -247,17 +233,17 @@ public class Login extends Activity {
                 @Override
                 public void run() {
                     try {
-                        apiHelper.getDirectionsApi(URL, new VolleyCallBack() {
+                        apiHelper.get(URL, new VolleyCallBack() {
                             @Override
                             public void onSuccess() {
                                 JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                ApiHelper.correctedDots.addAll(jsonDeserializer.corrected(apiHelper.getJsonObject()));
+                                ApiHelper.correctedDots.addAll(jsonDeserializer.correctedDots(apiHelper.getJsonObject()));
                                 counter++;
-                                if (counter < ApiHelper.generatedDots.size()/size ){
+                                if (counter < ApiHelper.generatedDots.size()/urlSize ){
                                     Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
                                     correctDots();
                                 } else  {
-                                    run4 = true;
+                                    run3 = true;
                                     startGame();
                                 }
 
@@ -274,29 +260,28 @@ public class Login extends Activity {
     }
 
     private  void streetsGenerate(){
-        //for (int i = 0; i < ApiHelper.streets.size(); i+=2) {
-        //GetDotsBetweenAanB(ApiHelper.streets.get(i).getLat(),ApiHelper.streets.get(i).getLon(),ApiHelper.streets.get(i+1).getLat(),ApiHelper.streets.get(i+1).getLon(),ApiHelper.generatedDots);}
-        for (int i = 0; i < ApiHelper.streets2.size(); i++) {
-        GetDotsBetweenAanB(ApiHelper.streets2.get(i).getLatA(),ApiHelper.streets2.get(i).getLonA(),ApiHelper.streets2.get(i).getLatB(),ApiHelper.streets2.get(i).getLonB(),ApiHelper.generatedDots);}
+        //for (int i = 0; i < ApiHelper.dotStreets.size(); i+=2) {
+        //GetDotsBetweenAanB(ApiHelper.dotStreets.get(i).getLat(),ApiHelper.dotStreets.get(i).getLon(),ApiHelper.dotStreets.get(i+1).getLat(),ApiHelper.dotStreets.get(i+1).getLon(),ApiHelper.generatedDots);}
+        for (int i = 0; i < ApiHelper.streets.size(); i++) {
+        GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
     }
 
     private String linkGenerator(){
         String getItem = "";
-        for(int i = 0; i < size  ; i++) {
+        for(int i = 0; i < urlSize  ; i++) {
             getItem += ApiHelper.generatedDots.get(urlCounter).getLat()+","+ApiHelper.generatedDots.get(urlCounter).getLon();
-           if (i < size -1){
+           if (i < urlSize-1){
                getItem += "|";
            }
            urlCounter ++;
         }
-
-        String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key=AIzaSyB4HgIDhaV6sv3ddo_Xol9r4fDLj7RpOaU";
-
-        Log.d("link", URL);
+        String key = BuildConfig.GoogleSecAPIKEY;
+        String URL = "https://roads.googleapis.com/v1/snapToRoads?path="+getItem+"&interpolate=false&key="+key;
+        Log.d("link",URL);
         return URL;
     }
     private void startGame() {
-        if (run1 && run2 && run3 && run4 ) {
+        if (run1 && run2 && run3) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
             intent.putExtra("userid", userId);
             intent.putExtra("jwt", jwt);

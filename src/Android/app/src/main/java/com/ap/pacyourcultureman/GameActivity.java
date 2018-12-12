@@ -56,7 +56,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Ghost Blinky;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
-    List<Dot> streets = ApiHelper.streets;
+    //List<Dot> streets = ApiHelper.dotStreets;
     List<Dot> correctedDots = ApiHelper.correctedDots;
     List<Dot> generatedDots = ApiHelper.generatedDots;
     Location mLastLocation;
@@ -64,7 +64,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     LocationRequest mLocationRequest;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
-    Assignment currentAssigment;
+    static  public Assignment currentAssigment;
     List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
@@ -93,11 +93,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         initializer();
-        Blinky = new Ghost();
+        Blinky = new Ghost(new LatLng(51.230108, 4.418516));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
     }
@@ -133,7 +132,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-        //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
@@ -147,18 +146,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (Blinky.steps.size() != 0){
-                    Blinky.FollowPath();
-                }
+                Log.d("Steps", "Getting steps...");
+                Blinky.getSteps(new LatLng(51.223949, 4.407599));
             }
         });
         Log.d("Movement", "Ik ben non-blocking");
+
+
         List<LatLng> latLngs = new ArrayList<>();
         latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
             Marker mark;
-            LatLng assigmentMarker = new LatLng(assignments.get(i).lat, assignments.get(i).lon);
-            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).name));
+            LatLng assigmentMarker = new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon());
+            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).getName()));
             assigmentMarkers.add(mark);
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -192,6 +192,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("Style failed", "Style parsing failed.");
         }
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        //mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -205,8 +206,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Draggable Marker loc: ", "latitude : "+ marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-                if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.latLng, 10)){
+                if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
+                    collisionHandler.visitedSights();
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
@@ -214,15 +216,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 8)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
-                        Log.d("testRemoverMarker", String.valueOf(generatedDots.get(i).getMarker()));
+                        //removerMarkers On collision
+                        generatedDots.get(i).removeMarker();
                         generatedDots.remove(i);
-                        //removermarker
 
                     }
                 }
-                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.lat, currentAssigment.lon));
-                txtCurrentAssignment.setText(currentAssigment.name);
-                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.lat, currentAssigment.lon)));
+                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.getLat(), currentAssigment.getLon()));
+                txtCurrentAssignment.setText(currentAssigment.getName());
+                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.getLat(), currentAssigment.getLon())));
             }
 
             @Override
@@ -275,7 +277,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 for(int i = 0; i < assignments.size(); i++) {
-                    collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).lat, assignments.get(i).lon), 10);
+                    collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon()), 10);
 
                 }
 
@@ -283,7 +285,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
                 LatLng markable = perth.getPosition();
-                collisionDetection.collisionDetect(markable, new LatLng(currentAssigment.lat, currentAssigment.lon), 10);
+                collisionDetection.collisionDetect(markable, new LatLng(currentAssigment.getLat(), currentAssigment.getLon()), 10);
                 Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
 
                 //dots collision
@@ -304,7 +306,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     };
     private Assignment getRandomAssignment() {
         currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
-        txtCurrentAssignment.setText(currentAssigment.name);
+        txtCurrentAssignment.setText(currentAssigment.getName());
         return currentAssigment;
     }
 
@@ -325,15 +327,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 bottomPanel.setPanelHeight(400);
-                txtName.setText(assignments.get(i).name);
-                if(assignments.get(i).website != "N/A") {
+                txtName.setText(assignments.get(i).getName());
+                if(assignments.get(i).getWebsite() != "N/A") {
                     txtWebsite.setVisibility(View.VISIBLE);
-                    txtWebsite.setText(assignments.get(i).website);
+                    txtWebsite.setText(assignments.get(i).getWebsite());
                 }
                 else txtWebsite.setVisibility(View.INVISIBLE);
-                Picasso.get().load(assignments.get(i).imgUrl).into(imgSight);
-                txtShortDesc.setText(assignments.get(i).shortDescr);
-                txtLongDesc.setText(assignments.get(i).longDescr);
+                Picasso.get().load(assignments.get(i).getImgUrl()).into(imgSight);
+                txtShortDesc.setText(assignments.get(i).getShortDescr());
+                txtLongDesc.setText(assignments.get(i).getLongDescr());
             }
         }
     }

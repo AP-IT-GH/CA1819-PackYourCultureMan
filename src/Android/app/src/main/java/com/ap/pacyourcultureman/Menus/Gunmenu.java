@@ -30,13 +30,13 @@ public class Gunmenu {
         txtFreezeAmmo = activity.findViewById(R.id.game_txt_freeze);
         txtRifleAmmo = activity.findViewById(R.id.game_txt_rifle);
         txtPushbackAmmo = activity.findViewById(R.id.game_txt_pushback);
-        ApiHelper.player.getPlayerGameStats().setRifle(5);
         rifleammo = ApiHelper.player.getPlayerGameStats().getRifle();
         freezeammo = ApiHelper.player.getPlayerGameStats().getFreezeGun();
         pushbackammo = ApiHelper.player.getPlayerGameStats().getPushBackGun();
         txtFreezeAmmo.setText("x: " + Integer.toString(freezeammo));
         txtRifleAmmo.setText("x: " + Integer.toString(rifleammo));
         txtPushbackAmmo.setText("x: " + Integer.toString(pushbackammo));
+        gunUpdater();
         dropdownMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

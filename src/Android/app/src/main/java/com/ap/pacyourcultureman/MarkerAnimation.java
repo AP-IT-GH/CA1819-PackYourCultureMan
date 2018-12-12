@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.Marker;
 
 public class MarkerAnimation {
     public static void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time) {
-        Log.d("Movement", "Starting Handler");
         final LatLng startPosition = marker.getPosition();
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();

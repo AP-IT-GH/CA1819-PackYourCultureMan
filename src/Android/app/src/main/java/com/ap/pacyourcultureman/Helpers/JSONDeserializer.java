@@ -10,6 +10,7 @@ import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
 import com.ap.pacyourcultureman.Street;
 import com.ap.pacyourcultureman.Step;
+import com.ap.pacyourcultureman.VisitedSight;
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -18,46 +19,53 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class JSONDeserializer {
     Player player;
     private PlayerStats playerStats;
     private PlayerGameStats playerGameStats;
-
     public JSONDeserializer() {
     }
 
-    ;
+
 
     public Player setPlayer(String reply) {
         JSONObject jsObject;
         try {
             jsObject = new JSONObject(reply);
-            int userId = jsObject.getInt("id");
             String jwt = jsObject.getString("token");
-            String username = jsObject.getString("username");
-            String firstName = jsObject.getString("firstName");
-            String lastName = jsObject.getString("lastName");
-            String email = jsObject.getString("email");
-            int skinId = jsObject.getInt("skinId");
-
-            JSONObject stats = jsObject.getJSONObject("stats");
+            JSONObject jsUser = jsObject.getJSONObject("user");
+            int userId = jsUser.getInt("Id");
+            String username = jsUser.getString("Username");
+            String firstName = jsUser.getString("FirstName");
+            String lastName = jsUser.getString("LastName");
+            String email = jsUser.getString("Email");
+            int skinId = jsUser.getInt("skinId");
+            JSONObject stats = jsUser.getJSONObject("Stats");
             int totalScore = stats.getInt("totalScore");
             int totalSucces = stats.getInt("totalSucces");
             int totalFailed = stats.getInt("totalFailed");
             int totalLost = stats.getInt("totalLost");
             int highestScore = stats.getInt("highestScore");
-
-            JSONObject gameStats = jsObject.getJSONObject("gameStats");
+            JSONObject gameStats = jsUser.getJSONObject("gameStats");
             int lifePoints = gameStats.getInt("lifePoints");
             int rifle = gameStats.getInt("rifle");
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
-            Log.d("totalScore", gameStats.toString());
+            JSONArray jsUserSights = jsUser.getJSONArray("visitedSights");
+            for(int i = 0; i < jsUserSights.length(); i++) {
+                JSONObject visitedSight = jsUserSights.getJSONObject(i);
+                int id = visitedSight.getInt("id");
+                int buildingId = visitedSight.getInt("buildingId");
+                Boolean isChecked = visitedSight.getBoolean("isChecked");
+                ApiHelper.visitedSights.add(new VisitedSight(id,buildingId,userId,isChecked));
+            }
             PlayerStats playerStats = new PlayerStats(highestScore, totalScore, totalFailed, totalSucces, totalLost);
             PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun);
             player = new Player(userId, username, firstName, lastName, email, playerStats, playerGameStats, jwt, skinId);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -69,6 +77,7 @@ public class JSONDeserializer {
         for (int i = 0; i < reply.length(); i++) {
             try {
                 JSONObject jsonObject = reply.getJSONObject(i);
+                int id = jsonObject.getInt("id");
                 String name = jsonObject.getString("name");
                 String website = jsonObject.getString("website");
                 String shortDesc = jsonObject.getString("shortDescription");
@@ -76,7 +85,7 @@ public class JSONDeserializer {
                 String imgUrl = jsonObject.getString("sightImage");
                 String lat = jsonObject.getString("latitude");
                 String lng = jsonObject.getString("longitude");
-                assignments.add(new Assignment(name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
+                assignments.add(new Assignment(id,name, website, Double.valueOf(lng), Double.valueOf(lat), shortDesc, longDesc, imgUrl));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -119,9 +128,7 @@ public class JSONDeserializer {
         return streets;
     }
 
-    public List<Dot> corrected(JSONObject response){
-        Log.d("GoogleRoadsApi", "1 object");
-        Log.d("GoogleRoadsApi", response.toString());
+    public List<Dot> correctedDots(JSONObject response){
         List<Dot> dotsRoad = new ArrayList<>();
         try {
             JSONArray snappedPoints = response.getJSONArray("snappedPoints");
@@ -130,7 +137,6 @@ public class JSONDeserializer {
                 JSONObject loc = location.getJSONObject("location");
                 Double lat = loc.getDouble("latitude");
                 Double lng = loc.getDouble("longitude");
-                Log.d("GoogleRoadsApi", lat + "," + lng);
                 dotsRoad.add(new Dot(lat,lng));
                 //for (int j = 0; j < dotsRoad.size(); j++) {  Log.d("roadscheck3", dotsRoad.get(i).getLat()+","+dotsRoad.get(i).getLon());}
             }

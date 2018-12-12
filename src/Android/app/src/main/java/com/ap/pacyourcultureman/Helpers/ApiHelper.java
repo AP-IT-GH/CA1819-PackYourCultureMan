@@ -15,6 +15,7 @@ import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
 import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.Street;
+import com.ap.pacyourcultureman.VisitedSight;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -28,21 +29,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import static java.util.Collections.*;
 
 public class ApiHelper {
     HttpURLConnection conn;
     String resp = "";
     public String responseMessage;
     public Boolean run;
-    static public List<Assignment> assignments;
-    static public List<Dot> streets;
-    static public List<Street> streets2;
+    //static public List<Dot> dotStreets = new ArrayList<>();
+    static public List<Street> streets = new ArrayList<>();
+    static public List<Assignment> assignments = new ArrayList<>();
     static public List<Dot> correctedDots = new ArrayList<>();
     static public List<Dot> generatedDots = new ArrayList<>();
+    static public List<VisitedSight> visitedSights = new ArrayList<>();
     static public Player player;
     int userId;
     String jwt;
@@ -54,8 +59,7 @@ public class ApiHelper {
 
     public ApiHelper() {
     }
-    public void sendPost(final String urlstring, final JSONObject jsonObject) {
-        run = true;
+    public void sendPost(final String urlstring, final JSONObject jsonObject, final VolleyCallBack callBack) {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -83,11 +87,13 @@ public class ApiHelper {
                         resp = stringBuilder.toString();
                         resp = resp.substring(resp.indexOf(':') + 2, resp.lastIndexOf('"'));
                         Log.d("TAG", stringBuilder.toString());
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         resp = "Server down";
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                         resp = "Success";
@@ -103,11 +109,13 @@ public class ApiHelper {
                             in.close();
                         }
                         Log.d("LOGIN", reply);
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         resp = "Unauthorized";
-                        run = false;
+                        callBack.onSuccess();
+
                     }
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                     Log.i("MSG", conn.getResponseMessage());
@@ -119,11 +127,6 @@ public class ApiHelper {
             }
         });
         thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         // run = false;
     }
     public void getArray(final String url, final VolleyCallBack callBack) {
@@ -165,13 +168,13 @@ public class ApiHelper {
             e.printStackTrace();
         }
     }
-    public void getDirectionsApi(final String url, final VolleyCallBack callBack) {
+    public void get(final String url, final VolleyCallBack callBack) {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {
-                        Log.v("Data from the web: ", response.toString());
+                        Log.v("Steps, Data from the web ", response.toString());
                         Log.d("Finish", "end");
                         try {
                             jsonObject = new JSONObject(response.toString());
@@ -189,7 +192,6 @@ public class ApiHelper {
                         //Failure Callback
                     }
                 });
-// Adding the request to the queue along with a unique string tag
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
@@ -265,5 +267,7 @@ public class ApiHelper {
         });
         thread.start();
     }
+
+
 }
 

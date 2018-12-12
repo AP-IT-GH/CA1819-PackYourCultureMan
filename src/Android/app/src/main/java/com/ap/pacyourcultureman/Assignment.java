@@ -14,10 +14,64 @@ import java.util.List;
 import java.util.Random;
 
 public class Assignment {
-    String name,website, shortDescr, longDescr, imgUrl;
-    Double lat, lon;
-    LatLng latLng;
-    Circle circle;
+    private String name,website, shortDescr, longDescr, imgUrl;
+    private int id;
+    private Double lat, lon;
+    private LatLng latLng;
+    private Circle circle;
+
+    public Assignment(int id, String name, String website, Double lat, Double lon, String shortDescr, String longDescr, String imageUrl) {
+        this.name = name;
+        this.id = id;
+        this.website = website;
+        this.lat = lat;
+        this.lon = lon;
+        this.shortDescr = shortDescr;
+        this.longDescr = longDescr;
+        this.imgUrl = imageUrl;
+
+        latLng = new LatLng(this.lat, this.lon);
+    }
+
+    public Assignment getRandomAssignment(Context context, GoogleMap mMap, Assignment currentAssigment, List<Assignment> assignments, List<Circle> circles){
+        Random rand = new Random();
+        int n = rand.nextInt(assignments.size());
+        if(assignments.get(n) == currentAssigment && currentAssigment != null) {
+            n = rand.nextInt(assignments.size());
+        }
+        Log.d("Random", Integer.toString(n));
+            for (int i = 0; i < circles.size(); i++) {
+                circles.get(i).remove();
+                Log.d("REMOVE", Integer.toString(i));
+        }
+        circles.clear();
+        if(this.circle != null) {
+                this.circle.remove();
+        }
+        for(int i = 0; i < assignments.size(); i++) {
+                if(n == i) {
+                    CircleOptions circleOptionsCurrentAssignment = new CircleOptions();
+                    circleOptionsCurrentAssignment.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
+                    circleOptionsCurrentAssignment.radius(10);
+                    circleOptionsCurrentAssignment.strokeColor(Color.YELLOW);
+                    circleOptionsCurrentAssignment.fillColor(0x30ff0000);
+                    circleOptionsCurrentAssignment.strokeWidth(2);
+                    this.circle = mMap.addCircle(circleOptionsCurrentAssignment);
+                }
+                else {
+                    CircleOptions circleOptionsSafeZone = new CircleOptions();
+                    circleOptionsSafeZone.center(new LatLng(assignments.get(i).lat, assignments.get(i).lon));
+                    circleOptionsSafeZone.radius(10);
+                    circleOptionsSafeZone.strokeColor(Color.GREEN);
+                    circleOptionsSafeZone.fillColor(0x30ff0000);
+                    circleOptionsSafeZone.strokeWidth(2);
+                    Circle circleSafezone = mMap.addCircle(circleOptionsSafeZone);
+                    circles.add(circleSafezone);
+                }
+        }
+        return assignments.get(n);
+    }
+
     public String getName() {
         return name;
     }
@@ -36,22 +90,6 @@ public class Assignment {
 
     public String getShortDescr() {
         return shortDescr;
-    }
-
-    public Double getLon() {
-        return lon;
-    }
-
-    public void setLon(Double lon) {
-        this.lon = lon;
-    }
-
-    public LatLng getLatLng() {
-        return latLng;
-    }
-
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
     }
 
     public void setShortDescr(String shortDescr) {
@@ -74,6 +112,14 @@ public class Assignment {
         this.imgUrl = imgUrl;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Double getLat() {
         return lat;
     }
@@ -82,56 +128,27 @@ public class Assignment {
         this.lat = lat;
     }
 
-    public Assignment(String name, String website, Double lat, Double lon, String shortDescr, String longDescr, String imageUrl) {
-        this.name = name;
-        this.website = website;
-        this.lat = lat;
-        this.lon = lon;
-        this.shortDescr = shortDescr;
-        this.longDescr = longDescr;
-        this.imgUrl = imageUrl;
-
-        latLng = new LatLng(this.lat, this.lon);
+    public Double getLon() {
+        return lon;
     }
-    public Assignment getRandomAssignment(Context context, GoogleMap mMap, Assignment currentAssigment, List<Assignment> assignments, List<Circle> circles){
-        Random rand = new Random();
-        int n = rand.nextInt(assignments.size());
-        if(assignments.get(n) == currentAssigment && currentAssigment != null) {
-            n = rand.nextInt(assignments.size());
-        }
-        Log.d("Random", Integer.toString(n));
-            for (int i = 0; i < circles.size(); i++) {
-                circles.get(i).remove();
-                Log.d("REMOVE", Integer.toString(i));
-        }
-        circles.clear();
-        if(this.circle != null) {
-                this.circle.remove();
-                Log.d("RemoveMain", "fff");
-        }
-        for(int i = 0; i < assignments.size(); i++) {
-                if(n == i) {
-                    CircleOptions circleOptionsCurrentAssignment = new CircleOptions();
-                    circleOptionsCurrentAssignment.center(new LatLng(assignments.get(n).lat, assignments.get(n).lon));
-                    circleOptionsCurrentAssignment.radius(10);
-                    circleOptionsCurrentAssignment.strokeColor(Color.YELLOW);
-                    circleOptionsCurrentAssignment.fillColor(0x30ff0000);
-                    circleOptionsCurrentAssignment.strokeWidth(2);
-                    this.circle = mMap.addCircle(circleOptionsCurrentAssignment);
-                    Log.d("CurrentAssignmentWriter", "ff");
-                }
-                else {
-                    CircleOptions circleOptionsSafeZone = new CircleOptions();
-                    circleOptionsSafeZone.center(new LatLng(assignments.get(i).lat, assignments.get(i).lon));
-                    circleOptionsSafeZone.radius(10);
-                    circleOptionsSafeZone.strokeColor(Color.GREEN);
-                    circleOptionsSafeZone.fillColor(0x30ff0000);
-                    circleOptionsSafeZone.strokeWidth(2);
-                    Circle circleSafezone = mMap.addCircle(circleOptionsSafeZone);
-                    circles.add(circleSafezone);
-                    Log.d("SafeZonerWriter", Integer.toString(i));
-                }
-        }
-        return assignments.get(n);
+
+    public void setLon(Double lon) {
+        this.lon = lon;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
+
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public void setCircle(Circle circle) {
+        this.circle = circle;
     }
 }

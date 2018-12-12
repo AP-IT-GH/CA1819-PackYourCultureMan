@@ -21,6 +21,7 @@ import java.net.URL;
 import android.os.Handler;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 
 public class Register extends Activity {
     TextView txt_Errorchecker;
@@ -58,45 +59,46 @@ public class Register extends Activity {
                 password = edit_password.getText().toString();
                 confirmpassword = edit_confirmPassword.getText().toString();
                 txt_Errorchecker.setVisibility(View.GONE);
-                if(!password.equals(confirmpassword)) {
+                if (!password.equals(confirmpassword)) {
                     errorSetter("Passwords must match");
                 }
-                if(username == null || username.length() < 3) {
+                if (username == null || username.length() < 3) {
                     errorSetter("Please enter a username with a minimum of 3 characters");
                 }
-                if(lastName == null || lastName == null || firstName.equals(lastName)) {
+                if (lastName == null || lastName == null || firstName.equals(lastName)) {
                     errorSetter("Please enter your full name");
                 }
                 Boolean correctEmail = EmailValidator.getInstance().isValid(email);
-                if(!correctEmail) {
+                if (!correctEmail) {
                     errorSetter("Please enter a valid email address");
                 }
-                if(!passwordChecker(password)) {
+                if (!passwordChecker(password)) {
                     errorSetter("Password must include atleast 1 lowercase char, 1 uppercase char and 1 digit");
-                }
-                else {
+                } else {
                     JSONSerializer jsonSerializer = new JSONSerializer();
                     JSONObject jsonObject = jsonSerializer.jsonPostRegister(username, password, firstName, lastName, email);
-                    apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/register", jsonObject);
-                    Thread thread = new Thread(new Runnable() {
+                    apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/register", jsonObject, new VolleyCallBack() {
                         @Override
-                        public void run() {
-                            try {
-                                while (apiHelper.run) {
+                        public void onSuccess() {
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        errorSetter(apiHelper.getResponse());
+                                        if (apiHelper.getResponse() == "Success") {
+                                            Looper.prepare();
+                                            mHandler = new Handler();
+                                            mHandler.postDelayed(mLaunchTask, 1500);
+                                            Looper.loop();
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                                errorSetter(apiHelper.getResponse());
-                                if(apiHelper.getResponse() == "Success") {
-                                         Looper.prepare();
-                                    mHandler = new Handler();
-                                    mHandler.postDelayed(mLaunchTask, 1500);
-                                        Looper.loop();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            });
+                            thread.start();
                         }
                     });
-                    thread.start();
                 }
             }
         });

@@ -9,8 +9,10 @@ import android.widget.Toast;
 import com.ap.pacyourcultureman.GameActivity;
 import com.ap.pacyourcultureman.Ghost;
 import com.ap.pacyourcultureman.Player;
+import com.ap.pacyourcultureman.VisitedSight;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +59,7 @@ public class CollisionHandler {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //  apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.id), jsonObject);
+              apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
             Toast.makeText(context, "You got hit", Toast.LENGTH_LONG).show();
             Log.d("Toast", "Test");
             //TODO Reset ghost
@@ -83,9 +85,37 @@ public class CollisionHandler {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
         player.getPlayerStats().setCurrentScore(0);
+        Log.d("Json", jsonObject.toString());}
+
+
+    public void visitedSights() {
+        for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
+            if(GameActivity.currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
+                ApiHelper.visitedSights.get(i).setChecked(true);
+            }}
+        // jsonobject with json array put
+        JSONObject object = new JSONObject();
+        JSONArray array =new JSONArray();
+        JSONObject objp=new JSONObject();
+        try {
+        for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
+        objp.put("id",ApiHelper.visitedSights.get(i).getId());
+        objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
+        objp.put("isChecked",ApiHelper.visitedSights.get(i).isChecked());
+        objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
+        array.put(objp);
+        object.put("visitedSights",array)
+        ;}}
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("test",object.toString());
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object);
     }
+
     public void gunCollision(Ghost ghost) {
 
     }
