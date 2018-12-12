@@ -94,13 +94,21 @@ public class CollisionHandler {
                 ApiHelper.visitedSights.get(i).setChecked(true);
             }}
 
-        JSONObject jsonObject = new JSONObject();
+        JSONObject object = new JSONObject();
+        JSONArray array =new JSONArray();
+        JSONObject objp=new JSONObject();
         try {
-            jsonObject.put("visitedSights", ApiHelper.visitedSights);
-        } catch (JSONException e) {
+        for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
+        objp.put("id",ApiHelper.visitedSights.get(i).getId());
+        objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
+        objp.put("isChecked",ApiHelper.visitedSights.get(i).isChecked());
+        objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
+        array.put(objp.toString());
+        object.put("visitedSights",array.toString());}}
+        catch (JSONException e) {
             e.printStackTrace();
         }
-        apiHelper.put2("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object);
     }
 
     public void gunCollision(Ghost ghost) {
