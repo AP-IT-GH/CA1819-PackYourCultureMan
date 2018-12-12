@@ -26,6 +26,7 @@ public class NavigationMenu {
                     case R.id.nav_logout:
                         intent = new Intent(activity.getBaseContext(), Login.class);
                         activity.startActivity(intent);
+                        resetStaticLists();
                         break;
                     case R.id.nav_stats:
                         intent = new Intent(activity.getBaseContext(),StatsPage.class);
@@ -47,5 +48,15 @@ public class NavigationMenu {
                 return false;
             }
         });
+    }
+
+    public void resetStaticLists(){
+        ApiHelper.visitedSights.clear();
+        ApiHelper.assignments.clear();
+        ApiHelper.correctedDots.clear();
+        ApiHelper.generatedDots.clear();
+        ApiHelper.streets.clear();
+        Log.d("clearLists", "Static list are cleared");
+        Log.d("test", String.valueOf(ApiHelper.generatedDots.size()));
     }
 }
