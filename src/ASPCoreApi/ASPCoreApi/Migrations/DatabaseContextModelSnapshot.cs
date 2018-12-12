@@ -19,6 +19,23 @@ namespace ASPCoreApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ASPCoreApi.Models.Dot", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longitude");
+
+                    b.Property<bool>("Taken");
+
+                    b.HasKey("id");
+
+                    b.ToTable("dots");
+                });
+
             modelBuilder.Entity("ASPCoreApi.Models.GameStats", b =>
                 {
                     b.Property<int>("Id")

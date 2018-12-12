@@ -12,7 +12,7 @@ namespace ASPCoreApi.Services
 
         GameStats getByUserId(int id);
         Users UpdateGameStats(Users userParam);
-        void Delete(Users userParam)
+        void Delete(Users userParam);
 
     }
     public class GameStatsService : IGameStatsService
