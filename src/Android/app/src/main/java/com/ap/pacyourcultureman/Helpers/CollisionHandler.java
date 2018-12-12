@@ -91,28 +91,28 @@ public class CollisionHandler {
         Log.d("Json", jsonObject.toString());}
 
 
-    public void visitedSights() {
+    public void visitedSightsSetBoolean() {
         for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
             if(GameActivity.currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
                 ApiHelper.visitedSights.get(i).setChecked(true);
             }}
+    }
+    public void visitedSightsPut(){
         // jsonobject with json array put
         JSONObject object = new JSONObject();
         JSONArray array =new JSONArray();
-        JSONObject objp=new JSONObject();
         try {
-        for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
-        objp.put("id",ApiHelper.visitedSights.get(i).getId());
-        objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
-        objp.put("isChecked",ApiHelper.visitedSights.get(i).isChecked());
-        objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
-        array.put(objp);
-        object.put("visitedSights",array)
-        ;}}
+            for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
+                JSONObject objp = new JSONObject();
+                objp.put("id",ApiHelper.visitedSights.get(i).getId());
+                objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
+                objp.put("isChecked",ApiHelper.visitedSights.get(i).isChecked());
+                objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
+                array.put(objp); }
+                object.put("visitedSights",array);}
         catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("test",object.toString());
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object);
     }
 
