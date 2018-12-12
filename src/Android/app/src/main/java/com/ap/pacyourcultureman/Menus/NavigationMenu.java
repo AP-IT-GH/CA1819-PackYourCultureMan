@@ -11,6 +11,7 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Login;
 import com.ap.pacyourcultureman.R;
 import com.ap.pacyourcultureman.Settings;
+import com.ap.pacyourcultureman.Shop;
 import com.ap.pacyourcultureman.Sights;
 import com.ap.pacyourcultureman.StatsPage;
 
@@ -43,6 +44,11 @@ public class NavigationMenu {
                         intent = new Intent(activity.getBaseContext(),Sights.class);
                         activity.startActivity(intent);
                         break;
+                    case R.id.nav_shop:
+                        intent = new Intent(activity.getBaseContext(),Shop.class);
+
+                        activity.startActivity(intent);ss
+
                 }
                 return false;
             }
