@@ -139,7 +139,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         DrawGameFieldLine();
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
@@ -353,9 +353,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 gunmenu.gunUpdater();
             return true;
         }
+        // camera does not move anymore when dot is touched
+        for(int i = 0; i < generatedDots.size(); i++) {
+            if (marker.equals(generatedDots.get(i).getMarker())){
+                return true; // can't move map by this
+            }
+        }
+
         selectedMarker = marker;
         return false;
     }
+
+
     @Override
     public void onBackPressed() {
         if (bottomPanel != null &&
@@ -427,7 +436,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 new LatLng(51.221487, 4.396505), new LatLng(51.221343, 4.397210),
                 new LatLng(51.218344, 4.395123), new LatLng(51.215286, 4.392913),
                 new LatLng(51.210386, 4.387924), new LatLng(51.210306, 4.387794),
-                new LatLng(51.208187, 4.384678)).strokeColor(Color.RED));
+                new LatLng(51.208187, 4.384678)).strokeColor(Color.RED).strokeWidth(7));
     }
 
 

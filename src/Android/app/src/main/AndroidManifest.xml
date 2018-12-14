@@ -44,6 +44,7 @@
         <activity android:name=".StatsPage"></activity>
         <activity android:name=".Sights"></activity>
         <activity android:name=".SightsDetail"></activity>
+        <activity android:name=".DevOptions"></activity>
 
     </application>
 

@@ -53,7 +53,8 @@ public class Dot {
         this.taken = taken;
     }
 
-    // getters and setters
+
+// getters and setters
 
     public void setMarker(Marker marker) {
         this.marker = marker;
@@ -86,6 +87,21 @@ public class Dot {
     public Marker getMarker() { return marker;}
     public Double getLon() {
         return lon;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean getTaken() {
+        return taken;
+    }
+
+    public void setTaken(boolean taken) {
+        this.taken = taken;
     }
 
 

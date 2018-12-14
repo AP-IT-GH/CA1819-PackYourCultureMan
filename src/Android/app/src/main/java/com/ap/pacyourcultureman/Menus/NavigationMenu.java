@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.ap.pacyourcultureman.DevOptions;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Login;
 import com.ap.pacyourcultureman.R;
@@ -42,6 +43,10 @@ public class NavigationMenu {
                         break;
                     case R.id.nav_sights:
                         intent = new Intent(activity.getBaseContext(),Sights.class);
+                        activity.startActivity(intent);
+                        break;
+                    case R.id.nav_dev:
+                        intent = new Intent(activity.getBaseContext(),DevOptions.class);
                         activity.startActivity(intent);
                         break;
                 }
