@@ -65,7 +65,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     List<Assignment> assignments = ApiHelper.assignments;
     //List<Dot> streets = ApiHelper.dotStreets;
     List<Dot> correctedDots = ApiHelper.correctedDots;
-    List<Dot> generatedDots = ApiHelper.generatedDots;
+    //List<Dot> generatedDots = ApiHelper.generatedDots;
+    List<Dot> generatedDots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;

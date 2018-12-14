@@ -122,14 +122,14 @@ public class Login extends Activity {
                                 @Override
                                 public void run() {
                                     try {
-                                        //String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                        String url = "https://aspcoreapipycm.azurewebsites.net/street";
+                                        String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
+                                        //String url = "https://aspcoreapipycm.azurewebsites.net/street";
                                         apiHelper.getArray(url, new VolleyCallBack() {
                                             @Override
                                             public void onSuccess() {
                                                 JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                                //ApiHelper.dotStreets = jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                                ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
+                                                ApiHelper.dots= jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                                //ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
                                                 run2 = true;
                                                 streetsGenerate();
                                                 correctDots();
@@ -260,10 +260,10 @@ public class Login extends Activity {
     }
 
     private  void streetsGenerate(){
-        //for (int i = 0; i < ApiHelper.dotStreets.size(); i+=2) {
-        //GetDotsBetweenAanB(ApiHelper.dotStreets.get(i).getLat(),ApiHelper.dotStreets.get(i).getLon(),ApiHelper.dotStreets.get(i+1).getLat(),ApiHelper.dotStreets.get(i+1).getLon(),ApiHelper.generatedDots);}
-        for (int i = 0; i < ApiHelper.streets.size(); i++) {
-        GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
+        for (int i = 0; i < ApiHelper.dots.size(); i+=2) {
+        GetDotsBetweenAanB(ApiHelper.dots.get(i).getLat(),ApiHelper.dots.get(i).getLon(),ApiHelper.dots.get(i+1).getLat(),ApiHelper.dots.get(i+1).getLon(),ApiHelper.generatedDots);}
+        //for (int i = 0; i < ApiHelper.streets.size(); i++) {
+        //GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
     }
 
     private String linkGenerator(){
