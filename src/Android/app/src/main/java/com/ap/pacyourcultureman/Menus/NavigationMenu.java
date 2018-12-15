@@ -61,6 +61,8 @@ public class NavigationMenu {
         ApiHelper.correctedDots.clear();
         ApiHelper.generatedDots.clear();
         ApiHelper.streets.clear();
+        ApiHelper.dots.clear();
+       DevOptions.button.setEnabled(true);
         Log.d("clearLists", "Static list are cleared");
         Log.d("test", String.valueOf(ApiHelper.generatedDots.size()));
     }

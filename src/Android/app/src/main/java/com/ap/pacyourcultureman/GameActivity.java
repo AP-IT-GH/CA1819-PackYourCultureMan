@@ -63,10 +63,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Bitmap scaledPacman;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
-    //List<Dot> streets = ApiHelper.dotStreets;
-    List<Dot> correctedDots = ApiHelper.correctedDots;
-    //List<Dot> generatedDots = ApiHelper.generatedDots;
-    List<Dot> generatedDots = ApiHelper.dots;
+    List<Dot> generatedDots = ApiHelper.generatedDots;
+    List<Dot>   correctedDots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
@@ -140,12 +138,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         DrawGameFieldLine();
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-        //for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //for (int i = 0; i < correctedDots.size(); i++) {  Log.d("DotsCheck",correctedDots.get(i).getLat()+","+ correctedDots.get(i).getLon());}
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
         // generatedDots with getDotsBetween2Points
-        for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
+        //for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
@@ -216,13 +214,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
-                for(int i = 0; i < generatedDots.size(); i++) {
-                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 8)) {
+                for(int i = 0; i < correctedDots.size(); i++) {
+                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
-                        generatedDots.get(i).removeMarker();
-                        generatedDots.remove(i);
+                        correctedDots.get(i).removeMarker();
+                        correctedDots.remove(i);
 
                     }
                 }
@@ -294,8 +292,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
 
                 //dots collision
-                for(int i = 0; i < generatedDots.size(); i++) {
-                    collisionDetection.collisionDetect(markable, new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 5);
+                for(int i = 0; i < correctedDots.size(); i++) {
+                    collisionDetection.collisionDetect(markable, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 5);
                 }
                 if(ghostCollide) {
                     currentAssigment = getRandomAssignment();
@@ -355,8 +353,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             return true;
         }
         // camera does not move anymore when dot is touched
-        for(int i = 0; i < generatedDots.size(); i++) {
-            if (marker.equals(generatedDots.get(i).getMarker())){
+        for(int i = 0; i < correctedDots.size(); i++) {
+            if (marker.equals(correctedDots.get(i).getMarker())){
                 return true; // can't move map by this
             }
         }

@@ -45,6 +45,7 @@ public class Login extends Activity {
     Boolean run1 = false;
     Boolean run2 = false;
     Boolean run3 = false;
+    Boolean run4 = false;
     int userId;
     int counter  = 0;
     int urlCounter = 0;
@@ -122,14 +123,12 @@ public class Login extends Activity {
                                 @Override
                                 public void run() {
                                     try {
-                                        String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                        //String url = "https://aspcoreapipycm.azurewebsites.net/street";
+                                        String url = "https://aspcoreapipycm.azurewebsites.net/street";
                                         apiHelper.getArray(url, new VolleyCallBack() {
                                             @Override
                                             public void onSuccess() {
                                                 JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                                ApiHelper.dots= jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                                //ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
+                                                ApiHelper.streets = jsonDeserializer2.getSreets(apiHelper.getJsonArray());
                                                 run2 = true;
                                                 streetsGenerate();
                                                 correctDots();
@@ -146,6 +145,31 @@ public class Login extends Activity {
                                 }
                             });
                             thread2.start();
+
+
+                            Thread thread5 = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
+                                        apiHelper.getArray(url, new VolleyCallBack() {
+                                            @Override
+                                            public void onSuccess() {
+                                                JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
+                                                ApiHelper.dots= jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                                                run4 = true;
+                                                if (chb_rememberme.isChecked()) {
+                                                    Save();
+                                                }
+                                                startGame();
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            thread5.start();
                             userId = apiHelper.getUserId();
                             jwt = apiHelper.getJwt();
                         }
@@ -260,10 +284,8 @@ public class Login extends Activity {
     }
 
     private  void streetsGenerate(){
-        for (int i = 0; i < ApiHelper.dots.size(); i+=2) {
-        GetDotsBetweenAanB(ApiHelper.dots.get(i).getLat(),ApiHelper.dots.get(i).getLon(),ApiHelper.dots.get(i+1).getLat(),ApiHelper.dots.get(i+1).getLon(),ApiHelper.generatedDots);}
-        //for (int i = 0; i < ApiHelper.streets.size(); i++) {
-        //GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
+        for (int i = 0; i < ApiHelper.streets.size(); i++) {
+        GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
     }
 
     private String linkGenerator(){
@@ -281,7 +303,7 @@ public class Login extends Activity {
         return URL;
     }
     private void startGame() {
-        if (run1 && run2 && run3) {
+        if (run1 && run2 && run3 && run4) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
             intent.putExtra("userid", userId);
             intent.putExtra("jwt", jwt);

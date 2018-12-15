@@ -27,7 +27,7 @@ import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetw
 
 public class DevOptions extends Activity{
 
-    private Button button;
+    public static Button button;
     private Context mContext;
     private ApiHelper apiHelper;
     int counter  = 0;
@@ -49,8 +49,9 @@ public class DevOptions extends Activity{
      button.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-           // deleteDots();
+            deleteDots();
             postDots();
+            button.setEnabled(false);
         }
     });}
 
@@ -78,13 +79,13 @@ public class DevOptions extends Activity{
     public void deleteDots(){
 
       try {
-            for (int i = 0; i <  ApiHelper.correctedDots.size(); i++){
+            for (int i = 0; i <  ApiHelper.dots.size(); i++){
                 JSONObject objp = new JSONObject();
-                objp.put("latitude",ApiHelper.correctedDots.get(i+1).getLat());
-                objp.put("longitude",ApiHelper.correctedDots.get(i+1).getLon());
-                objp.put( "taken",ApiHelper.correctedDots.get(i+1).getTaken());
+                objp.put("latitude",ApiHelper.correctedDots.get(i).getLat());
+                objp.put("longitude",ApiHelper.correctedDots.get(i).getLon());
+                objp.put( "taken",ApiHelper.correctedDots.get(i).getTaken());
                 String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
-                apiHelper.delete(URL +"/"+ i+1, objp);
+                apiHelper.delete(URL +"/"+ ApiHelper.dots.get(i).getId(), objp);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -92,41 +93,7 @@ public class DevOptions extends Activity{
 
     }
 
-/*    private  void correctDots(){
-        final String URL = linkGenerator();
-        Thread thread4 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    apiHelper.get(URL, new VolleyCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                            ApiHelper.correctedDots.addAll(jsonDeserializer.correctedDots(apiHelper.getJsonObject()));
-                            counter++;
-                            if (counter < ApiHelper.generatedDots.size()/urlSize ){
-                                Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
-                                correctDots();
-                            } else  {
-                                run3 = true;
-                                startGame();
-                            }
-
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread4.start();
-        // }
-    }*/
-
     private  void streetsGenerate(){
-        //for (int i = 0; i < ApiHelper.dotStreets.size(); i+=2) {
-        //GetDotsBetweenAanB(ApiHelper.dotStreets.get(i).getLat(),ApiHelper.dotStreets.get(i).getLon(),ApiHelper.dotStreets.get(i+1).getLat(),ApiHelper.dotStreets.get(i+1).getLon(),ApiHelper.generatedDots);}
         for (int i = 0; i < ApiHelper.streets.size(); i++) {
             GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
     }
