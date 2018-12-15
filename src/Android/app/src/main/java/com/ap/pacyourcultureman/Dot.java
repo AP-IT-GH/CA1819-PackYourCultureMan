@@ -27,8 +27,8 @@ public class Dot {
     public Dot(double lat, double lon){
 
         //init default settings
-        height = 50;
-        width = 50;
+        height = 40;
+        width = 40;
         taken = false;
 
         //set
@@ -53,7 +53,8 @@ public class Dot {
         this.taken = taken;
     }
 
-    // getters and setters
+
+// getters and setters
 
     public void setMarker(Marker marker) {
         this.marker = marker;
@@ -87,6 +88,21 @@ public class Dot {
     public Double getLon() {
         return lon;
     }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean getTaken() {
+        return taken;
+    }
+
+    public void setTaken(boolean taken) {
+        this.taken = taken;
+    }
 
 
     //methods
@@ -99,8 +115,6 @@ public class Dot {
         Bitmap scaledDot = Bitmap.createScaledBitmap(dot, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
                 .position(location)
-                .icon(BitmapDescriptorFactory.fromBitmap(scaledDot))
-                .alpha(0.7f)
-                .flat(true));
+                .icon(BitmapDescriptorFactory.fromBitmap(scaledDot)));
     }
 }

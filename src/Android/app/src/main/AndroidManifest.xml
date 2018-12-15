@@ -45,6 +45,8 @@
         <activity android:name=".Sights"></activity>
         <activity android:name=".SightsDetail"></activity>
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <activity android:name=".DevOptions"></activity>
+
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.ap.pacyourcultureman.DevOptions;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Login;
 import com.ap.pacyourcultureman.R;
@@ -26,6 +27,7 @@ public class NavigationMenu {
                     case R.id.nav_logout:
                         intent = new Intent(activity.getBaseContext(), Login.class);
                         activity.startActivity(intent);
+                        resetStaticLists();
                         break;
                     case R.id.nav_stats:
                         intent = new Intent(activity.getBaseContext(),StatsPage.class);
@@ -43,9 +45,25 @@ public class NavigationMenu {
                         intent = new Intent(activity.getBaseContext(),Sights.class);
                         activity.startActivity(intent);
                         break;
+                    case R.id.nav_dev:
+                        intent = new Intent(activity.getBaseContext(),DevOptions.class);
+                        activity.startActivity(intent);
+                        break;
                 }
                 return false;
             }
         });
+    }
+
+    public void resetStaticLists(){
+        ApiHelper.visitedSights.clear();
+        ApiHelper.assignments.clear();
+        ApiHelper.correctedDots.clear();
+        ApiHelper.generatedDots.clear();
+        ApiHelper.streets.clear();
+        ApiHelper.dots.clear();
+       DevOptions.button.setEnabled(true);
+        Log.d("clearLists", "Static list are cleared");
+        Log.d("test", String.valueOf(ApiHelper.generatedDots.size()));
     }
 }

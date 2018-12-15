@@ -1,10 +1,12 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,12 +38,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
@@ -54,18 +60,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Ghost Blinky;
+    private Bitmap scaledPacman;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     List<Assignment> assignments = ApiHelper.assignments;
-    //List<Dot> streets = ApiHelper.dotStreets;
-    List<Dot> correctedDots = ApiHelper.correctedDots;
     List<Dot> generatedDots = ApiHelper.generatedDots;
+    List<Dot>   correctedDots = ApiHelper.dots;
     Location mLastLocation;
     Location mCurrentLocation;
     LocationRequest mLocationRequest;
     Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
     static  public Assignment currentAssigment;
-    List<Marker> assigmentMarkers = new ArrayList<>();
     SlidingUpPanelLayout bottomPanel;
     TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
     ImageView imgSight;
@@ -92,7 +97,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        initializer();
+        initializer(getApplicationContext());
         Blinky = new Ghost(new LatLng(51.229796, 4.418413));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -130,6 +135,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
+        DrawGameFieldLine();
         //snap to road
         Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
@@ -137,7 +143,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //streets Api
         //for (int i = 0; i < streets.size(); i++) {streets.get(i).Draw(mMap, getApplicationContext());}
         // generatedDots with getDotsBetween2Points
-        for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
+        //for (int i = 0; i < generatedDots.size(); i++) {generatedDots.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //Blinky draw and dummy movement
@@ -152,15 +158,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         });
         Log.d("Movement", "Ik ben non-blocking");
 
-
-        List<LatLng> latLngs = new ArrayList<>();
-        latLngs.add(new LatLng(51.217065, 4.397200));
         for(int i = 0; i < assignments.size(); i++) {
-            Marker mark;
-            LatLng assigmentMarker = new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon());
-            mark = mMap.addMarker(new MarkerOptions().position(assigmentMarker).title(assignments.get(i).getName()));
-            assigmentMarkers.add(mark);
+            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
         }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -208,17 +209,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if(collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)){
                     collisionHandler.currentAssigmentCollision();
-                    collisionHandler.visitedSights();
+                    collisionHandler.visitedSightsSetBoolean();
+                    collisionHandler.visitedSightsPut();
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
-                for(int i = 0; i < generatedDots.size(); i++) {
-                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 8)) {
+                for(int i = 0; i < correctedDots.size(); i++) {
+                    if(collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
-                        generatedDots.get(i).removeMarker();
-                        generatedDots.remove(i);
+                        correctedDots.get(i).removeMarker();
+                        correctedDots.remove(i);
 
                     }
                 }
@@ -234,7 +236,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         });
         perth = mMap.addMarker(new MarkerOptions()
                 .position(PERTH)
-                .draggable(true));
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman)));
 
     }
 
@@ -289,8 +292,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
 
                 //dots collision
-                for(int i = 0; i < generatedDots.size(); i++) {
-                    collisionDetection.collisionDetect(markable, new LatLng(generatedDots.get(i).getLat(), generatedDots.get(i).getLon()), 5);
+                for(int i = 0; i < correctedDots.size(); i++) {
+                    collisionDetection.collisionDetect(markable, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 5);
                 }
                 if(ghostCollide) {
                     currentAssigment = getRandomAssignment();
@@ -323,7 +326,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onInfoWindowClick(Marker marker) {
         for(int i = 0; i < assignments.size(); i++) {
-            if (marker.equals(assigmentMarkers.get(i)))
+            if (marker.equals(assignments.get(i).getMarker()))
             {
                 bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 bottomPanel.setPanelHeight(400);
@@ -349,9 +352,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 gunmenu.gunUpdater();
             return true;
         }
+        // camera does not move anymore when dot is touched
+        for(int i = 0; i < correctedDots.size(); i++) {
+            if (marker.equals(correctedDots.get(i).getMarker())){
+                return true; // can't move map by this
+            }
+        }
+
         selectedMarker = marker;
         return false;
     }
+
+
     @Override
     public void onBackPressed() {
         if (bottomPanel != null &&
@@ -367,7 +379,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         } else super.onBackPressed();
 
     }
-    private void initializer() {
+    private void initializer(Context context) {
         apiHelper = new ApiHelper();
         bottomPanel = findViewById(R.id.sliding_layout);
         bottomPanel.setPanelHeight(0);
@@ -393,10 +405,37 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         iin = getIntent();
         b = iin.getExtras();
         currentPos = PERTH;
+        Bitmap pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(getApplicationContext().getResources(),R.drawable.man, null));
+        scaledPacman = Bitmap.createScaledBitmap(pacman, 80, 80, false);
         if(b!=null){
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");
         }
+    }
+
+    private  void DrawGameFieldLine(){
+        mMap.addPolygon(new PolygonOptions().add(
+                new LatLng(51.208187, 4.384678), new LatLng(51.207181, 4.386604),
+                new LatLng(51.205057, 4.388015), new LatLng(51.204835, 4.388629),
+                new LatLng(51.204428, 4.388991), new LatLng(51.210132, 4.406642),
+                new LatLng(51.214943, 4.413262), new LatLng(51.215252, 4.413283),
+                new LatLng(51.216186, 4.414217), new LatLng(51.220990, 4.416567),
+                new LatLng(51.228645, 4.413866), new LatLng(51.229040, 4.418705),
+                new LatLng(51.229816, 4.418737), new LatLng(51.229797, 4.413367),
+                new LatLng(51.230891, 4.413121), new LatLng(51.231049, 4.412558),
+                new LatLng(51.231083, 4.408443), new LatLng(51.231325, 4.407488),
+                new LatLng(51.231313, 4.405128), new LatLng(51.234400, 4.405026),
+                new LatLng(51.234467, 4.403918), new LatLng(51.234373, 4.403333),
+                new LatLng(51.233599, 4.403078), new LatLng(51.231142, 4.402863),
+                new LatLng(51.230208, 4.402348), new LatLng(51.229673, 4.401967),
+                new LatLng(51.227898, 4.401870), new LatLng(51.226393, 4.400411),
+                new LatLng(51.222813, 4.398169), new LatLng(51.223087, 4.397072),
+                new LatLng(51.222943, 4.396975), new LatLng(51.222353, 4.397187),
+                new LatLng(51.221862, 4.396830), new LatLng(51.221724, 4.396492),
+                new LatLng(51.221487, 4.396505), new LatLng(51.221343, 4.397210),
+                new LatLng(51.218344, 4.395123), new LatLng(51.215286, 4.392913),
+                new LatLng(51.210386, 4.387924), new LatLng(51.210306, 4.387794),
+                new LatLng(51.208187, 4.384678)).strokeColor(Color.RED).strokeWidth(7));
     }
 
 

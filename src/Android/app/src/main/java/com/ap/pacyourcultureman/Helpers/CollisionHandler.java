@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class CollisionHandler {
     Context context;
     Player player = ApiHelper.player;
@@ -85,26 +87,31 @@ public class CollisionHandler {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
         player.getPlayerStats().setCurrentScore(0);
-    }
-    public void visitedSights() {
+        Log.d("Json", jsonObject.toString());}
+
+
+    public void visitedSightsSetBoolean() {
         for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
             if(GameActivity.currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
                 ApiHelper.visitedSights.get(i).setChecked(true);
             }}
-
+    }
+    public void visitedSightsPut(){
+        // jsonobject with json array put
         JSONObject object = new JSONObject();
         JSONArray array =new JSONArray();
-        JSONObject objp=new JSONObject();
         try {
-        for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
-        objp.put("id",ApiHelper.visitedSights.get(i).getId());
-        objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
-        objp.put("isChecked",ApiHelper.visitedSights.get(i).isChecked());
-        objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
-        array.put(objp.toString());
-        object.put("visitedSights",array.toString());}}
+            for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
+                JSONObject objp = new JSONObject();
+                objp.put("id",ApiHelper.visitedSights.get(i).getId());
+                objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
+                objp.put("isChecked",ApiHelper.visitedSights.get(i).isChecked());
+                objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
+                array.put(objp); }
+                object.put("visitedSights",array);}
         catch (JSONException e) {
             e.printStackTrace();
         }
