@@ -14,7 +14,7 @@ public class Step {
     }
 
     public String toString(){
-        String string = "Distance: " + distance + "/start: " + start + "/end: " + end;
+        String string = "Distance:" + distance + ", start:" + start + ", end:" + end;
         return string;
     }
 }

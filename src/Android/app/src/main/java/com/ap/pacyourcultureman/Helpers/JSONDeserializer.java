@@ -149,6 +149,7 @@ public class JSONDeserializer {
     public List<Step> getSteps(JSONObject reply)  {
         List<Step> steps = new ArrayList<>();
         try {
+            boolean firstStep = true;
             JSONArray array = reply.getJSONArray("routes");
             JSONObject route = array.getJSONObject(0);
             JSONArray jsonArray = route.getJSONArray("legs");
@@ -159,6 +160,10 @@ public class JSONDeserializer {
             Step step;
             Log.d("Steps", Integer.toString(stepssArray.length()));
             for (int i = 0; i < stepssArray.length(); i++) {
+                if (i == 1 && firstStep){
+                    i = 0;
+                    firstStep = false;
+                }
                 JSONObject endObject = stepssArray.getJSONObject(i);
                 JSONObject distanceJSON = endObject.getJSONObject("distance");
                 JSONObject startJSON = endObject.getJSONObject("start_location");

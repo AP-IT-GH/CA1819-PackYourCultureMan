@@ -97,7 +97,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         initializer(getApplicationContext());
-        Blinky = new Ghost(new LatLng(51.230108, 4.418516));
+        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
