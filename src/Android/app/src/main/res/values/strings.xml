@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">PacYourCultureMan</string>
     <string name="title_activity_game">PackYourCultureMan</string>
+    <string name="update">Update</string>
+    <string name="leeg">Leeg</string>
 </resources>

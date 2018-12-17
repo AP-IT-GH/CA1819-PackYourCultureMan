@@ -1,11 +1,17 @@
 package com.ap.pacyourcultureman;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
@@ -19,31 +25,52 @@ public class DevOptions extends Activity{
     public static Button button;
     private ApiHelper apiHelper;
     private int counter,urlCounter,urlSize;
+    private int posted,deleted;
+    private ProgressBar progressBar;
+    private TextView textView,txtDeleted,txtPosted,txtGenerated,txtCorrected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dev_options);
-        apiHelper = new ApiHelper();
-        counter  = 0;
-        urlCounter = 0;
-        urlSize = 1;
-        button = findViewById(R.id.button_update);
-        addListenerOnButton();
+        init();
     }
 
+    private void init(){
+    apiHelper = new ApiHelper();
+    counter  = 0;
+    urlCounter = 0;
+    urlSize = 1;
+    posted = 0;
+    deleted = 0;
+    progressBar = findViewById(R.id.progressBar);
+    progressBar.setVisibility(View.INVISIBLE);
+    button = findViewById(R.id.button_update);
+    textView =findViewById(R.id.txt_update);
+    textView.setVisibility(View.INVISIBLE);
+    txtCorrected =findViewById(R.id.txt_corrected);
+    txtCorrected.setVisibility(View.INVISIBLE);
+    txtDeleted =findViewById(R.id.txt_deleted);
+    txtDeleted.setVisibility(View.INVISIBLE);
+    txtGenerated =findViewById(R.id.txt_generated);
+    txtGenerated.setVisibility(View.INVISIBLE);
+    txtPosted =findViewById(R.id.txt_posted);
+    txtPosted.setVisibility(View.INVISIBLE);
+    addListenerOnButton(); }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
      button.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
+            progressBar.setVisibility(View.VISIBLE);
             deleteDots();
             correctDots();
             button.setEnabled(false);
+            button.setVisibility(View.INVISIBLE);
         }
     });}
 
 
-    public void deleteDots(){
+    private void deleteDots(){
         Thread thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -55,6 +82,7 @@ public class DevOptions extends Activity{
                         objp.put( "taken",ApiHelper.dots.get(i).getTaken());
                         String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
                         apiHelper.delete(URL +"/"+ ApiHelper.dots.get(i).getId(), objp);
+                        deleted ++;
                     }
                     ApiHelper.dots.clear();
                 } catch (JSONException e) {
@@ -110,7 +138,7 @@ public class DevOptions extends Activity{
      thread2.start();
  }
 
-    private  void correctAndPostDots(){
+    private void correctAndPostDots(){
         final String URL = linkGenerator();
         Thread thread3 = new Thread(new Runnable() {
             @Override
@@ -140,7 +168,7 @@ public class DevOptions extends Activity{
         thread3.start();
     }
 
-    public void postDots(){
+    private void postDots(){
 
         String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
         try {
@@ -151,8 +179,9 @@ public class DevOptions extends Activity{
                 objp.put("longitude",ApiHelper.correctedDots.get(i).getLon());
                 objp.put( "taken",ApiHelper.correctedDots.get(i).getTaken());
                 apiHelper.post(URL, objp);
-                Log.d("post", String.valueOf(objp));
+                posted ++;
             }
+           updateDone();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -175,6 +204,26 @@ public class DevOptions extends Activity{
         String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot/postarray";*/
     }
 
+    private void updateDone(){
+        textView.setText("update dots done ! ");
+        txtPosted.setText("Posted Dots: "+posted);
+        txtDeleted.setText("Deleted Dots: "+deleted);
+        txtGenerated.setText("Generated Dots "+ ApiHelper.generatedDots.size());
+        txtCorrected.setText("Corrected Dots "+ ApiHelper.correctedDots.size());
+        deleted = 0;
+        posted = 0;
+        textView.setTextColor(Color.RED);
+        progressBar.setVisibility(View.INVISIBLE);
+        textView.setVisibility(View.VISIBLE);
+        txtCorrected.setVisibility(View.VISIBLE);
+        txtGenerated.setVisibility(View.VISIBLE);
+        txtDeleted.setVisibility(View.VISIBLE);
+        txtPosted.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
 }

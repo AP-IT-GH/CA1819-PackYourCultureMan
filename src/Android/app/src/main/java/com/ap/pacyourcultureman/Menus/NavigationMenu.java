@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ap.pacyourcultureman.DevOptions;
+import com.ap.pacyourcultureman.GameActivity;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Login;
 import com.ap.pacyourcultureman.R;
@@ -15,7 +17,7 @@ import com.ap.pacyourcultureman.Settings;
 import com.ap.pacyourcultureman.Sights;
 import com.ap.pacyourcultureman.StatsPage;
 
-public class NavigationMenu {
+public class NavigationMenu  {
     NavigationView navigationView;
     public NavigationMenu(final Activity activity) {
         navigationView = activity.findViewById(R.id.menu);
@@ -46,9 +48,10 @@ public class NavigationMenu {
                         activity.startActivity(intent);
                         break;
                     case R.id.nav_dev:
+                        if (ApiHelper.player.getId() == 2 ){
                         intent = new Intent(activity.getBaseContext(),DevOptions.class);
                         activity.startActivity(intent);
-                        break;
+                        break;}
                 }
                 return false;
             }
