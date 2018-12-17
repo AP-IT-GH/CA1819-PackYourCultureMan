@@ -6,43 +6,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
 
 
 public class DevOptions extends Activity{
 
     public static Button button;
-    private Context mContext;
     private ApiHelper apiHelper;
-    int counter  = 0;
-    int urlCounter = 0;
-    int urlSize = 1;
+    private int counter,urlCounter,urlSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dev_options);
         apiHelper = new ApiHelper();
+        counter  = 0;
+        urlCounter = 0;
+        urlSize = 1;
         button = findViewById(R.id.button_update);
-        mContext = this;
         addListenerOnButton();
     }
-
 
 
     public void addListenerOnButton() {
@@ -50,49 +37,35 @@ public class DevOptions extends Activity{
         @Override
         public void onClick(final View v) {
             deleteDots();
-            postDots();
+            correctDots();
             button.setEnabled(false);
         }
     });}
 
 
-
-
-    public void postDots(){
-
-        String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
-        try {
-            for (int i = 0; i <  ApiHelper.correctedDots.size(); i++){
-                JSONObject objp = new JSONObject();
-                objp.put("latitude",i);
-                objp.put("latitude",ApiHelper.correctedDots.get(i).getLat());
-                objp.put("longitude",ApiHelper.correctedDots.get(i).getLon());
-                objp.put( "taken",ApiHelper.correctedDots.get(i).getTaken());
-                apiHelper.post(URL, objp);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-}
-
     public void deleteDots(){
-
-      try {
-            for (int i = 0; i <  ApiHelper.dots.size(); i++){
-                JSONObject objp = new JSONObject();
-                objp.put("latitude",ApiHelper.correctedDots.get(i).getLat());
-                objp.put("longitude",ApiHelper.correctedDots.get(i).getLon());
-                objp.put( "taken",ApiHelper.correctedDots.get(i).getTaken());
-                String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
-                apiHelper.delete(URL +"/"+ ApiHelper.dots.get(i).getId(), objp);
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i <  ApiHelper.dots.size(); i++){
+                        JSONObject objp = new JSONObject();
+                        objp.put("latitude",ApiHelper.dots.get(i).getLat());
+                        objp.put("longitude",ApiHelper.dots.get(i).getLon());
+                        objp.put( "taken",ApiHelper.dots.get(i).getTaken());
+                        String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
+                        apiHelper.delete(URL +"/"+ ApiHelper.dots.get(i).getId(), objp);
+                    }
+                    ApiHelper.dots.clear();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        });
+        thread1.start();
 
+        //delete with truncate table dbo.dots
     }
-
     private  void streetsGenerate(){
         for (int i = 0; i < ApiHelper.streets.size(); i++) {
             GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
@@ -113,8 +86,79 @@ public class DevOptions extends Activity{
         return URL;
     }
 
+    private  void correctDots(){
+     Thread thread2 = new Thread(new Runnable() {
+         @Override
+         public void run() {
+             try {
+                 String url = "https://aspcoreapipycm.azurewebsites.net/street";
+                 apiHelper.getArray(url, new VolleyCallBack() {
+                     @Override
+                     public void onSuccess() {
+                         JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                         ApiHelper.streets = jsonDeserializer.getSreets(apiHelper.getJsonArray());
+                         streetsGenerate();
+                         correctAndPostDots();
+                         Log.d("generatedDots", String.valueOf(ApiHelper.generatedDots.size() +" "+ ApiHelper.generatedDots.size()/urlSize ));
+                     }
+                 });
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+         }
+     });
+     thread2.start();
+ }
 
-/*        //Create json array for filter
+    private  void correctAndPostDots(){
+        final String URL = linkGenerator();
+        Thread thread3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    apiHelper.get(URL, new VolleyCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                            ApiHelper.correctedDots.addAll(jsonDeserializer.correctedDots(apiHelper.getJsonObject()));
+                            counter++;
+                            if (counter < ApiHelper.generatedDots.size()/urlSize ){
+                                Log.d("correctedDots", String.valueOf(ApiHelper.correctedDots.size()));
+                                correctAndPostDots();
+                            }
+                            if (counter ==  ApiHelper.generatedDots.size()/urlSize){
+                                postDots();
+                            }
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread3.start();
+    }
+
+    public void postDots(){
+
+        String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot";
+        try {
+            for (int i = 0; i <  ApiHelper.correctedDots.size(); i++){
+                JSONObject objp = new JSONObject();
+                objp.put("latitude",i);
+                objp.put("latitude",ApiHelper.correctedDots.get(i).getLat());
+                objp.put("longitude",ApiHelper.correctedDots.get(i).getLon());
+                objp.put( "taken",ApiHelper.correctedDots.get(i).getTaken());
+                apiHelper.post(URL, objp);
+                Log.d("post", String.valueOf(objp));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        /*        //Create json array for filter
         final JSONArray array = new JSONArray();
         try {
             for (int i = 0; i <  ApiHelper.correctedDots.size(); i++){
@@ -129,5 +173,8 @@ public class DevOptions extends Activity{
         }
 
         String URL =  "https://aspcoreapipycm.azurewebsites.net/Dot/postarray";*/
+    }
+
+
 
 }
