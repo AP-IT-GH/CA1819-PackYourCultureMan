@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +31,9 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     private SightsAdapter mSighsAdapter;
     private ArrayList<Assignment> mSightList;
     private RequestQueue mRequestQueue;
+    private ApiHelper apiHelper;
+    private Button button;
+    private Intent intent;
     public static final String DETAIL_IMAGE = "sightImage";
     public static final String DETAIL_NAME = "name";
     public static final String DETAIL_SHORTD = "shortDescription";
@@ -41,6 +46,9 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sights_menu);
+        apiHelper = new ApiHelper();
+        button = this.findViewById(R.id.btnReset);
+        addListenerOnButton();
         mRecyclerview = findViewById(R.id.recycler_view);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -101,5 +109,36 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         detailIntent.putExtra(DETAIL_IMAGE,clickedSight.getImgUrl());
         detailIntent.putExtra(DETAIL_WEBSITE,clickedSight.getWebsite());
         startActivity(detailIntent);
+    }
+
+    private void addListenerOnButton() {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                visitedSightsReset();
+                button.setEnabled(false);
+            }
+        });}
+
+    public void visitedSightsReset(){
+        // jsonobject with json array put
+        JSONObject object = new JSONObject();
+        JSONArray array =new JSONArray();
+        try {
+            for (int i = 0; i <  ApiHelper.visitedSights.size(); i++){
+                JSONObject objp = new JSONObject();
+                objp.put("id",ApiHelper.visitedSights.get(i).getId());
+                objp.put("buildingId",ApiHelper.visitedSights.get(i).getBuildingId());
+                objp.put("isChecked",false);
+                objp.put("userId",ApiHelper.visitedSights.get(i).getUserId());
+                array.put(objp);
+                ApiHelper.visitedSights.get(i).setChecked(false);}
+            object.put("visitedSights",array);
+            intent = new Intent(this.getBaseContext(),GameActivity.class);
+            this.startActivity(intent);}
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object);
     }
 }
