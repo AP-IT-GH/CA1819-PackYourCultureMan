@@ -57,7 +57,7 @@ public class NavigationMenu  {
         });
     }
 
-    public void resetStaticLists(){
+    public static void resetStaticLists(){
         ApiHelper.visitedSights.clear();
         ApiHelper.assignments.clear();
         ApiHelper.correctedDots.clear();

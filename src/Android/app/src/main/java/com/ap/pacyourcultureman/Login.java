@@ -47,6 +47,10 @@ public class Login extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_form);
+        init();
+    }
+
+    private  void init(){
         apiHelper = new ApiHelper();
         run1 = false;
         run2 = false;
@@ -86,53 +90,7 @@ public class Login extends Activity {
                     public void onSuccess() {
                         if (apiHelper.getResponse() == "Success") {
                             errorSetter("Fetching data");
-                            apiHelper.setPlayer(apiHelper.getReply());
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights", new VolleyCallBack() {
-                                            @Override
-                                            public void onSuccess() {
-                                                JSONDeserializer jsonDeserializer = new JSONDeserializer();
-                                                ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
-                                                run1 = true;
-                                                startGame();
-                                            }
-                                        });
-                                        if (chb_rememberme.isChecked()) {
-                                            Save();
-                                        }
-                                        Log.d("Nailed", "it");
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            thread.start();
-                            Thread thread2= new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
-                                        apiHelper.getArray(url, new VolleyCallBack() {
-                                            @Override
-                                            public void onSuccess() {
-                                                JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
-                                                ApiHelper.dots= jsonDeserializer2.getDots(apiHelper.getJsonArray());
-                                                run2 = true;
-                                                if (chb_rememberme.isChecked()) {
-                                                    Save();
-                                                }
-                                                startGame();
-                                            }
-                                        });
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            thread2.start();
+                            GetDataWhenLoginSucces();
                             userId = apiHelper.getUserId();
                             jwt = apiHelper.getJwt();
                         }
@@ -156,6 +114,55 @@ public class Login extends Activity {
                 startActivity(intent);
             }
         });
+    }
+  private void GetDataWhenLoginSucces(){
+        apiHelper.setPlayer(apiHelper.getReply());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/Sights", new VolleyCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                            ApiHelper.assignments = jsonDeserializer.getAssignnments(apiHelper.getJsonArray());
+                            run1 = true;
+                            startGame();
+                        }
+                    });
+                    if (chb_rememberme.isChecked()) {
+                        Save();
+                    }
+                    Log.d("Nailed", "it");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        Thread thread2= new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String url = "https://aspcoreapipycm.azurewebsites.net/Dot";
+                    apiHelper.getArray(url, new VolleyCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            JSONDeserializer jsonDeserializer2 = new JSONDeserializer();
+                            ApiHelper.dots= jsonDeserializer2.getDots(apiHelper.getJsonArray());
+                            run2 = true;
+                            if (chb_rememberme.isChecked()) {
+                                Save();
+                            }
+                            startGame();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread2.start();
     }
 
     private void errorSetter(final String errormsg) {

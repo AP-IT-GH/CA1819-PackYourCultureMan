@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
@@ -27,6 +30,7 @@ public class DevOptions extends Activity{
     private int counter,urlCounter,urlSize;
     private int posted,deleted;
     private ProgressBar progressBar;
+    private Intent intent;
     private TextView textView,txtDeleted,txtPosted,txtGenerated,txtCorrected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,6 +228,9 @@ public class DevOptions extends Activity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        NavigationMenu.resetStaticLists();
+        intent = new Intent(this.getBaseContext(),Login.class);
+        this.startActivity(intent);
     }
 
 }
