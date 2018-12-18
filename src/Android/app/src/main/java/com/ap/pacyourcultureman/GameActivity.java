@@ -400,7 +400,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         b = iin.getExtras();
         currentPos = PERTH;
         Bitmap pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(getApplicationContext().getResources(),R.drawable.man, null));
-        scaledPacman = Bitmap.createScaledBitmap(pacman, 80, 80, false);
+        scaledPacman = Bitmap.createScaledBitmap(pacman, 150, 150, false);
         if(b!=null){
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");

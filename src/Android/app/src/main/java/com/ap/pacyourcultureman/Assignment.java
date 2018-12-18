@@ -50,8 +50,8 @@ public class Assignment {
         this.longDescr = longDescr;
         this.imgUrl = imageUrl;
         latLng = new LatLng(this.lat, this.lon);
-        this.height = 80;
-        this.width = 80;
+        this.height = 110;
+        this.width = 110;
     }
 
     public Assignment getRandomAssignment(Context context, GoogleMap mMap, Assignment currentAssigment, List<Assignment> assignments, List<Circle> circles){

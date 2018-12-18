@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ap.pacyourcultureman">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".Helpers.AppController"
         android:allowBackup="true"
@@ -11,8 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -27,8 +28,7 @@
 
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game">
-        </activity>
+            android:label="@string/title_activity_game"></activity>
         <activity
             android:name=".Login"
             android:label="@string/title_activity_game">
@@ -38,15 +38,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Register" />
+        <activity android:name=".Settings" />
+        <activity android:name=".StatsPage" />
+        <activity android:name=".Sights" />
+        <activity android:name=".SightsDetail" />
 
-        <activity android:name=".Register"></activity>
-        <activity android:name=".Settings"></activity>
-        <activity android:name=".StatsPage"></activity>
-        <activity android:name=".Sights"></activity>
-        <activity android:name=".SightsDetail"></activity>
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-        <activity android:name=".DevOptions"></activity>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
+        <activity android:name=".DevOptions" />
+        <activity android:name=".Skins"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import com.ap.pacyourcultureman.Login;
 import com.ap.pacyourcultureman.R;
 import com.ap.pacyourcultureman.Settings;
 import com.ap.pacyourcultureman.Sights;
+import com.ap.pacyourcultureman.Skins;
 import com.ap.pacyourcultureman.StatsPage;
 
 
@@ -51,6 +52,10 @@ public class NavigationMenu  {
                         break;
                     case R.id.nav_dev:
                         intent = new Intent(activity.getBaseContext(),DevOptions.class);
+                        activity.startActivity(intent);
+                        break;
+                    case R.id.nav_skins:
+                        intent = new Intent(activity.getBaseContext(),Skins.class);
                         activity.startActivity(intent);
                         break;
 
