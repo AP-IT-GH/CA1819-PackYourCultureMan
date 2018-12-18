@@ -14,9 +14,10 @@
     <item
         android:id="@+id/nav_reset"
         android:title="Reset" />
-    <item
-        android:id="@+id/nav_dev"
-        android:title="Dev" />
     <item android:id="@+id/nav_logout"
         android:title="Logout" />
+    <item
+        android:id="@+id/nav_dev"
+        android:title="Dev"
+        android:visible="false"/>
 </menu>

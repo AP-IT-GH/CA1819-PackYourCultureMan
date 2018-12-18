@@ -115,6 +115,7 @@ public class Dot {
         Bitmap scaledDot = Bitmap.createScaledBitmap(dot, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
                 .position(location)
-                .icon(BitmapDescriptorFactory.fromBitmap(scaledDot)));
+                .icon(BitmapDescriptorFactory.fromBitmap(scaledDot))
+                .flat(true));
     }
 }

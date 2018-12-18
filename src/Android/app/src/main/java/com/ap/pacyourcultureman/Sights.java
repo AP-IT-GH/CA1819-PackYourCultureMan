@@ -46,6 +46,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sights_menu);
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         apiHelper = new ApiHelper();
         button = this.findViewById(R.id.btnReset);
         addListenerOnButton();

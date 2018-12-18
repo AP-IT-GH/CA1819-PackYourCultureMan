@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -404,6 +405,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");
         }
+        if (ApiHelper.player.getId() <5 ){
+            Menu nav_menu = NavigationMenu.getNav_Menu();
+            nav_menu.findItem(R.id.nav_dev).setVisible(true);}
     }
 
     private  void DrawGameFieldLine(){

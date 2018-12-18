@@ -1,9 +1,11 @@
 package com.ap.pacyourcultureman.Menus;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import com.ap.pacyourcultureman.DevOptions;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
@@ -16,9 +18,12 @@ import com.ap.pacyourcultureman.StatsPage;
 
 public class NavigationMenu  {
     NavigationView navigationView;
+    static Menu nav_Menu;
     public NavigationMenu(final Activity activity) {
         navigationView = activity.findViewById(R.id.menu);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        nav_Menu = navigationView.getMenu();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
+        {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 Intent intent;
@@ -45,16 +50,20 @@ public class NavigationMenu  {
                         activity.startActivity(intent);
                         break;
                     case R.id.nav_dev:
-                        if (ApiHelper.player.getId() <5 ){
                         intent = new Intent(activity.getBaseContext(),DevOptions.class);
                         activity.startActivity(intent);
-                        break;}
+                        break;
 
 
                 }
                 return false;
             }
         });
+
+    }
+
+    public static Menu getNav_Menu() {
+        return nav_Menu;
     }
 
     public static void resetStaticLists(){
