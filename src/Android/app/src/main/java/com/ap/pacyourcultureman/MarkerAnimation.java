@@ -14,36 +14,44 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 public class MarkerAnimation {
-    public static void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time) {
+    public Handler handler = new Handler();
+    public Runnable r;
+    public Boolean isFrozen = false;
+    public MarkerAnimation() {}
+    public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time) {
         final LatLng startPosition = marker.getPosition();
-        final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final Interpolator interpolator = new AccelerateDecelerateInterpolator();
         final float durationInMs = time;
-        handler.post(new Runnable() {
-            long elapsed;
-            float t;
-            float v;
-            @Override
-            public void run() {
-                // Calculate progress using interpolator
-                elapsed = SystemClock.uptimeMillis() - start;
-                t = elapsed / durationInMs;
-                v = interpolator.getInterpolation(t);
-                marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
-                CollisionDetection collisionDetection = new CollisionDetection();
-                CollisionHandler.ghostLatLng = marker.getPosition();
-                if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
-                    GameActivity.ghostCollide = true;
-                    Log.d("Ghost hit", "Ghost hit");
+        if(!isFrozen) {
+            handler.post(r =new Runnable() {
+                long elapsed;
+                float t;
+                float v;
+                Boolean test = isFrozen;
+                @Override
+                public void run() {
+                    if(!test) {
+                        // Calculate progress using interpolator
+                        elapsed = SystemClock.uptimeMillis() - start;
+                        t = elapsed / durationInMs;
+                        v = interpolator.getInterpolation(t);
+                        marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
+                        CollisionDetection collisionDetection = new CollisionDetection();
+                        CollisionHandler.ghostLatLng = marker.getPosition();
+                        if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
+                            GameActivity.ghostCollide = true;
+                            Log.d("Ghost hit", "Ghost hit");
+                        }
+                        // Repeat till progress is complete.
+                        if (t < 1 && !test) {
+                            // Post again 16ms later.
+                            Log.d("Markeranimation", "Animatiom");
+                            handler.postDelayed(r, 16);
+                        }
+                    }
                 }
-                // Repeat till progress is complete.
-                if (t < 1) {
-                    // Post again 16ms later.
-                    handler.postDelayed(this, 16);
-                }
-
-            }
-        });
+            });
+        }
     }
 }

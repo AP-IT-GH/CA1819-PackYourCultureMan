@@ -30,12 +30,14 @@ public class Ghost {
     public Marker marker;
     List<Step> steps = new ArrayList<>();
     private int iter;
-    Handler handler;
+    public Handler handler = new Handler();
     ApiHelper apiHelper;
     int speed = 10;
-
+    public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
-
+    public Runnable r;
+    public Boolean isFrozen = false;
+    public Boolean isDead = false;
     public Ghost(LatLng location) {
         apiHelper = new ApiHelper();
         initLoc = location;
@@ -66,6 +68,7 @@ public class Ghost {
         apiHelper.get(baseUrl, new VolleyCallBack() {
             @Override
             public void onSuccess() {
+                steps.clear();
                 steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());
                 newDirections = true;
                 marker.setPosition(steps.get(0).start);
@@ -79,27 +82,26 @@ public class Ghost {
 
 
     public void FollowPath() {
-        handler = new Handler();
         final long start = SystemClock.uptimeMillis();
-
-
-        handler.post(new Runnable() {
+        handler.post(r = new Runnable() {
             long elapsed;
             long time = 30000;
 
             @Override
             public void run() {
-                elapsed = SystemClock.uptimeMillis() - start;
-                Log.d("Movement", "Moving to point: " + iter);
-                time = (steps.get(0).distance * 1000)/(speed);
-                Log.d("Movement" ,"Step: " + steps.get(0));
-                Log.d("Movement", "Time for this step: " + time);
-                Move(steps.get(1).start, marker, time);
-                iter++;
-                steps.remove(0);
-                Log.d("Movement", "Steps to go = " + steps.size());
-                if (1 < steps.size()) {
-                    handler.postDelayed(this, time + 500);
+                if (!isFrozen) {
+                    elapsed = SystemClock.uptimeMillis() - start;
+                    Log.d("Movement", "Moving to point: " + iter);
+                    time = (steps.get(0).distance * 1000) / (speed);
+                    Log.d("Movement", "Step: " + steps.get(0));
+                    Log.d("Movement", "Time for this step: " + time);
+                    Move(steps.get(1).start, marker, time);
+                    iter++;
+                    steps.remove(0);
+                    Log.d("Movement", "Steps to go = " + steps.size());
+                    if (1 < steps.size() && !isFrozen) {
+                        handler.postDelayed(r, time + 500);
+                    }
                 }
             }
         });
@@ -107,7 +109,7 @@ public class Ghost {
 
     public void Move(LatLng dest, Marker mrkr, long time) {
         Log.d("Movement", "MarkerLocation: " + mrkr.getPosition());
-        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
+        markerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
 
     }
 
