@@ -405,7 +405,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");
         }
-        if (ApiHelper.player.getUserName()== "Cedric" ){
+        if (ApiHelper.player.getId() == 21 ){
             Menu nav_menu = NavigationMenu.getNav_Menu();
             nav_menu.findItem(R.id.nav_dev).setVisible(true);}
     }

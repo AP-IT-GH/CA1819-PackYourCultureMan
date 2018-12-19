@@ -2,6 +2,7 @@ package com.ap.pacyourcultureman;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class Skins extends AppCompatActivity {
         imageView = findViewById(R.id.imgv_selectedskin);
         apiHelper = new ApiHelper();
         skinId = player.getSkinId();
+        textView.setText(String.valueOf(skinId));
         radiogroupSelect();
     }
 
@@ -47,6 +49,7 @@ public class Skins extends AppCompatActivity {
                         putSkinId();
                         Toast.makeText(getBaseContext(), "Yellow pacman selected, skinid:" + skinId,
                                 Toast.LENGTH_LONG).show();
+                        textView.setText(setTextView());
 
                         break;
                     case R.id.pacmanR:
@@ -54,18 +57,21 @@ public class Skins extends AppCompatActivity {
                         putSkinId();
                         Toast.makeText(getBaseContext(), "Red pacman selected, skinid:" + skinId,
                                 Toast.LENGTH_LONG).show();
+                        textView.setText(setTextView());
                         break;
                     case R.id.pacmanG:
-                        putSkinId();
                         skinId = 3;
+                        putSkinId();
                         Toast.makeText(getBaseContext(), "Green pacman selected, skinid:" + skinId,
                                 Toast.LENGTH_LONG).show();
+                        textView.setText(String.valueOf(skinId));
                         break;
                     case R.id.pacmanB:
                         skinId = 4;
                         putSkinId();
                         Toast.makeText(getBaseContext(), "Blue pacman selected, skinid:" + skinId,
                                 Toast.LENGTH_LONG).show();
+                        textView.setText(String.valueOf(skinId));
                         break;
                 }
             }
@@ -79,12 +85,29 @@ public class Skins extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("testputSkinId","skind pushed" + skinId + " " + jsonObject);
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(player.getId()), jsonObject, new VolleyCallBack() {
             @Override
             public void onSuccess() {
-                finish();
             }
         });
+    }
+
+    private String setTextView(){
+        int skins = skinId;
+        String setText = null;
+        switch (skins) {
+            case 1:  setText = "Yellow";
+                break;
+            case 2:  setText = "Red";
+                break;
+            case 3:  setText= "Green";
+                break;
+            case 4:  setText = "Blue";
+                break;
+
+        }
+        return setText;
     }
 
 }
