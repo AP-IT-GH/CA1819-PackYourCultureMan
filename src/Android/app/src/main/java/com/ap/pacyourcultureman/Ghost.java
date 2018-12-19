@@ -89,19 +89,17 @@ public class Ghost {
 
             @Override
             public void run() {
-                if (!isFrozen) {
+                if (1 < steps.size()) {
                     elapsed = SystemClock.uptimeMillis() - start;
                     Log.d("Movement", "Moving to point: " + iter);
-                    time = (steps.get(0).distance * 1000) / (speed);
-                    Log.d("Movement", "Step: " + steps.get(0));
+                    time = (steps.get(0).distance * 1000)/(speed);
+                    Log.d("Movement" ,"Step: " + steps.get(0));
                     Log.d("Movement", "Time for this step: " + time);
                     Move(steps.get(1).start, marker, time);
                     iter++;
                     steps.remove(0);
                     Log.d("Movement", "Steps to go = " + steps.size());
-                    if (1 < steps.size() && !isFrozen) {
-                        handler.postDelayed(r, time + 500);
-                    }
+                    handler.postDelayed(this, time + 500);
                 }
             }
         });
