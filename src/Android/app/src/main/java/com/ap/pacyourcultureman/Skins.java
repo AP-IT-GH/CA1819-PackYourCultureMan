@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class Skins extends AppCompatActivity {
         imageView = findViewById(R.id.imgv_selectedskin);
         apiHelper = new ApiHelper();
         skinId = player.getSkinId();
-        textView.setText(String.valueOf(skinId));
+        selectSkin();
         radiogroupSelect();
     }
 
@@ -46,32 +47,19 @@ public class Skins extends AppCompatActivity {
                 switch (id) {
                     case R.id.pacmanY:
                         skinId = 1;
-                        putSkinId();
-                        Toast.makeText(getBaseContext(), "Yellow pacman selected, skinid:" + skinId,
-                                Toast.LENGTH_LONG).show();
-                        textView.setText(setTextView());
-
+                       selectSkin();
                         break;
                     case R.id.pacmanR:
                         skinId = 2;
-                        putSkinId();
-                        Toast.makeText(getBaseContext(), "Red pacman selected, skinid:" + skinId,
-                                Toast.LENGTH_LONG).show();
-                        textView.setText(setTextView());
+                       selectSkin();
                         break;
                     case R.id.pacmanG:
                         skinId = 3;
-                        putSkinId();
-                        Toast.makeText(getBaseContext(), "Green pacman selected, skinid:" + skinId,
-                                Toast.LENGTH_LONG).show();
-                        textView.setText(String.valueOf(skinId));
+                        selectSkin();
                         break;
                     case R.id.pacmanB:
                         skinId = 4;
-                        putSkinId();
-                        Toast.makeText(getBaseContext(), "Blue pacman selected, skinid:" + skinId,
-                                Toast.LENGTH_LONG).show();
-                        textView.setText(String.valueOf(skinId));
+                        selectSkin();
                         break;
                 }
             }
@@ -85,7 +73,7 @@ public class Skins extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("testputSkinId","skind pushed" + skinId + " " + jsonObject);
+        Log.d("putSkinId","skind pushed with skinid " + skinId + " jsonobject:  " + jsonObject);
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(player.getId()), jsonObject, new VolleyCallBack() {
             @Override
             public void onSuccess() {
@@ -93,21 +81,37 @@ public class Skins extends AppCompatActivity {
         });
     }
 
-    private String setTextView(){
+    private void  selectSkin(){
         int skins = skinId;
         String setText = null;
         switch (skins) {
-            case 1:  setText = "Yellow";
+            case 1:
+                putSkinId();
+                setText = "Selected skin: Yellow";
+                textView.setText(setText);
+                imageView.setImageResource(R.drawable.pacman_yellow_left);
                 break;
-            case 2:  setText = "Red";
+            case 2:
+                putSkinId();
+                setText = "Selected skin: Red";
+                textView.setText(setText);
+                imageView.setImageResource(R.drawable.pacman_red_left);
                 break;
-            case 3:  setText= "Green";
+            case 3:
+                putSkinId();
+                setText= "Selected skin: Green";
+                textView.setText(setText);
+                imageView.setImageResource(R.drawable.pacman_green_left);
                 break;
-            case 4:  setText = "Blue";
+            case 4:
+                putSkinId();
+                setText = "Selected skin: Blue";
+                textView.setText(setText);
+                imageView.setImageResource(R.drawable.pacman_blue_left);
                 break;
 
         }
-        return setText;
     }
 
 }
+
