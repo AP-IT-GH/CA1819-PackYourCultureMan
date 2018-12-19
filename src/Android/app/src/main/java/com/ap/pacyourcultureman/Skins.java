@@ -82,9 +82,9 @@ public class Skins extends AppCompatActivity {
     }
 
     private void  selectSkin(){
-        int skins = skinId;
-        String setText = null;
-        switch (skins) {
+        int skin = skinId;
+        String setText;
+        switch (skin) {
             case 1:
                 putSkinId();
                 setText = "Selected skin: Yellow";
