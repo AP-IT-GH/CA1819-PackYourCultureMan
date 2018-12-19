@@ -69,6 +69,9 @@ public class CollisionHandler {
         Boolean newhighscore = false;
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonParam = new JSONObject();
+
+        player.getPlayerGameStats().setCoins(player.getPlayerGameStats().getCoins() + player.getPlayerStats().getCurrentScore());
+
         player.getPlayerStats().setTotalScore(player.getPlayerStats().getTotalScore() + player.getPlayerStats().getCurrentScore());
         player.getPlayerStats().setTotalSuccess(player.getPlayerStats().getTotalSuccess() + 1);
         if(player.getPlayerStats().getCurrentScore() > player.getPlayerStats().getHighestScore()) {

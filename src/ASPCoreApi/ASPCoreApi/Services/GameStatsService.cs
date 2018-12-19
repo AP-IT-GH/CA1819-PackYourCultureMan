@@ -26,8 +26,8 @@ namespace ASPCoreApi.Services
 
         public GameStats getByUserId(int id)
         {
-            IQueryable<GameStats> stats = _context.gameStats;
-            var result = stats.Single(d => d.userId == id);
+            IQueryable<GameStats> gamestats = _context.gameStats;
+            var result = gamestats.Single(d => d.userId == id);
 
             return result;
         }
@@ -46,6 +46,7 @@ namespace ASPCoreApi.Services
             gameStats.rifle = userParam.gameStats.rifle;
             gameStats.freezeGun = userParam.gameStats.freezeGun;
             gameStats.pushBackGun = userParam.gameStats.pushBackGun;
+            gameStats.coins = userParam.gameStats.coins;
 
             _context.gameStats.Update(gameStats);
             _context.users.Update(user);

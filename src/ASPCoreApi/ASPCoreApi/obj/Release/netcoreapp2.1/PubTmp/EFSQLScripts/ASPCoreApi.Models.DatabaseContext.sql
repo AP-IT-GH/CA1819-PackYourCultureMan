@@ -148,3 +148,18 @@ END;
 
 GO
 
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181217160643_coins')
+BEGIN
+    ALTER TABLE [gameStats] ADD [coins] int NOT NULL DEFAULT 0;
+END;
+
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181217160643_coins')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20181217160643_coins', N'2.1.4-rtm-31024');
+END;
+
+GO
+

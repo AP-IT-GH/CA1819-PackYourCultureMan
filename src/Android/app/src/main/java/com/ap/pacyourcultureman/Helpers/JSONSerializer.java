@@ -67,7 +67,7 @@ public class JSONSerializer {
         }
         return jsonObject;
     }
-    public JSONObject jsonPutGameStats(int lifePoints, int rifle, int freezeGun, int pushBackGun) {
+    public JSONObject jsonPutGameStats(int lifePoints, int rifle, int freezeGun, int pushBackGun,int coins) {
         final JSONObject jsonObject = new JSONObject();
         JSONObject jsonGroup = new JSONObject();
         try {
@@ -75,6 +75,7 @@ public class JSONSerializer {
             jsonObject.put("rifle", rifle);
             jsonObject.put("freezeGun", freezeGun);
             jsonObject.put("pushBackGun", pushBackGun);
+            jsonObject.put("coins",coins);
             Log.d("JSONGameStats",jsonObject.toString());
             jsonGroup.put("gameStats", jsonObject);
 

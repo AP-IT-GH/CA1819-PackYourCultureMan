@@ -47,8 +47,8 @@ public class NavigationMenu {
                     case R.id.nav_shop:
                         intent = new Intent(activity.getBaseContext(),Shop.class);
 
-                        activity.startActivity(intent);ss
-
+                        activity.startActivity(intent);
+                        break;
                 }
                 return false;
             }

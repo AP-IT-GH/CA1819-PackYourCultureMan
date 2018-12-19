@@ -399,6 +399,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
+    }
 }

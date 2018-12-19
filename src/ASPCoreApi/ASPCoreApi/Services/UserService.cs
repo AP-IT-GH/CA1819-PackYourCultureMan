@@ -23,11 +23,12 @@ namespace ASP.Services
         private IVisitedSightsService _visitedSightsService;
         private IStatsService _statsService;
         private IGameStatsService _gameStatsService;
-        public UserService(DatabaseContext context,IVisitedSightsService visitedSightsService,IStatsService statsService)
+        public UserService(DatabaseContext context,IVisitedSightsService visitedSightsService,IStatsService statsService,IGameStatsService gameStats)
         {
             _context = context;
             _visitedSightsService = visitedSightsService;
             _statsService = statsService;
+            _gameStatsService = gameStats;
         }
 
         public Users Authenticate(string username, string password)
@@ -121,7 +122,7 @@ namespace ASP.Services
             if (userParam.Email != null && userParam.Email != "string" && userParam.Email != "") user.Email = userParam.Email;
 
             
-            if (!string.IsNullOrWhiteSpace(password)|| password != "string")
+            if (!string.IsNullOrWhiteSpace(password)&& password != "string")
             {
                 Boolean hasUpper = false;
                 Boolean hasLower = false;

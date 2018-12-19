@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class Settings extends Activity {
     EditText edit_password,edit_firstname,edit_lastname,edit_email;
-    String email, firstName, lastName, password;
+    String email, firstName, lastName, password,currentUsername;
     Button btn_apply;
     ApiHelper apiHelper;
     Player player;
@@ -40,6 +40,7 @@ public class Settings extends Activity {
         edit_password.setText("");
         apiHelper = new ApiHelper();
         skinId = 1;
+
 
         btn_apply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +66,7 @@ public class Settings extends Activity {
                                 ApiHelper.player.setEmail(email);
                                 ApiHelper.player.setLastName(lastName);
                                 ApiHelper.player.setFirstName(firstName);
-                                ApiHelper.player.setId(skinId);
+                                ApiHelper.player.setSkinId(skinId);
                                 Log.d("Test", "Test");
                             }
                             Intent i = new Intent(getBaseContext(), GameActivity.class);
