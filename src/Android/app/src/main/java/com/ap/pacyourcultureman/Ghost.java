@@ -32,7 +32,7 @@ public class Ghost {
     private int iter;
     public Handler handler = new Handler();
     ApiHelper apiHelper;
-    int speed = 10;
+    int speed = 5;
     public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
     public Runnable r;
@@ -62,6 +62,7 @@ public class Ghost {
 
     public void getSteps(LatLng destination) {
         steps = new ArrayList<>();
+        markerAnimation = new MarkerAnimation();
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&mode=walking&key=" + BuildConfig.GoogleSecAPIKEY;
         Log.d("Steps", baseUrl);
         final JSONDeserializer jsonDeserializer = new JSONDeserializer();
