@@ -66,7 +66,7 @@ public class GunHandler {
     }
     private JSONObject putGameStats() {
         JSONSerializer jsonSerializer = new JSONSerializer();
-        JSONObject jsonObject = jsonSerializer.jsonPutGameStats(ApiHelper.player.getPlayerGameStats().getLifePoints(), ApiHelper.player.getPlayerGameStats().getRifle(), ApiHelper.player.getPlayerGameStats().getFreezeGun(), ApiHelper.player.getPlayerGameStats().getPushBackGun());
+        JSONObject jsonObject = jsonSerializer.jsonPutGameStats(ApiHelper.player.getPlayerGameStats().getLifePoints(), ApiHelper.player.getPlayerGameStats().getRifle(), ApiHelper.player.getPlayerGameStats().getFreezeGun(), ApiHelper.player.getPlayerGameStats().getPushBackGun(),apiHelper.player.getPlayerGameStats().getCoins());
         return jsonObject;
     }
 }

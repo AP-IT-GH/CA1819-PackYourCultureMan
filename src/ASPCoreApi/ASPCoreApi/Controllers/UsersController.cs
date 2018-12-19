@@ -113,7 +113,8 @@ namespace ASP.Dtos
                 lifePoints = 2,
                 rifle = 0,
                 freezeGun = 0,
-                pushBackGun = 0
+                pushBackGun = 0,
+                coins = 0,
 
             };
             user.skinId = 1;
@@ -130,7 +131,7 @@ namespace ASP.Dtos
                 _visitedSights.Add(visitedSight);
             }
             user.visitedSights = _visitedSights;
-
+            
             try
             {
                              
@@ -191,7 +192,7 @@ namespace ASP.Dtos
 
             return Ok(jsonUser);
         }
-
+        [AllowAnonymous]
         [HttpPut("updateuser/{id}")]
         public IActionResult Update(int id,[FromBody]UserDto userDto)
         {
@@ -211,7 +212,7 @@ namespace ASP.Dtos
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+        [AllowAnonymous]
         [HttpPut("updatestats/{id}")]
         public async Task<IActionResult> UpdateStats(int id, [FromBody]UserDto userDto)
         {

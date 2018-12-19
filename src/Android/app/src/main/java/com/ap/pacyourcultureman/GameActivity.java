@@ -435,6 +435,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 new LatLng(51.208187, 4.384678)).strokeColor(Color.RED).strokeWidth(7));
     }
 
-
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
+    }
 }

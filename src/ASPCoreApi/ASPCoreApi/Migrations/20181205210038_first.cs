@@ -44,6 +44,22 @@ namespace ASPCoreApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "streets",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LatitudeA = table.Column<string>(nullable: true),
+                    LongitudeA = table.Column<string>(nullable: true),
+                    LatitudeB = table.Column<string>(nullable: true),
+                    LongitudeB = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_streets", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -162,6 +178,9 @@ namespace ASPCoreApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "stats");
+
+            migrationBuilder.DropTable(
+                name: "streets");
 
             migrationBuilder.DropTable(
                 name: "visitedSights");

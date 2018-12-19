@@ -54,6 +54,7 @@ public class JSONDeserializer {
             int rifle = gameStats.getInt("rifle");
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
+            int coins = gameStats.getInt("coins");
             JSONArray jsUserSights = jsUser.getJSONArray("visitedSights");
             for(int i = 0; i < jsUserSights.length(); i++) {
                 JSONObject visitedSight = jsUserSights.getJSONObject(i);
@@ -63,7 +64,7 @@ public class JSONDeserializer {
                 ApiHelper.visitedSights.add(new VisitedSight(id,buildingId,userId,isChecked));
             }
             PlayerStats playerStats = new PlayerStats(highestScore, totalScore, totalFailed, totalSucces, totalLost);
-            PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun);
+            PlayerGameStats playerGameStats = new PlayerGameStats(lifePoints, rifle, freezeGun, pushBackGun,coins);
             player = new Player(userId, username, firstName, lastName, email, playerStats, playerGameStats, jwt, skinId);
 
         } catch (JSONException e) {

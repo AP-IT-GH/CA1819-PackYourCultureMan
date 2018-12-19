@@ -9,11 +9,18 @@
         android:id="@+id/nav_stats"
         android:title="Statistics" />
     <item
+        android:id="@+id/nav_shop"
+        android:title="Shop" />
+    <item
         android:id="@+id/nav_sights"
         android:title="Sights" />
     <item
         android:id="@+id/nav_skins"
         android:title="Skins" />
+    <item
+        android:id="@+id/nav_reset"
+        android:title="Reset" />
+
     <item android:id="@+id/nav_logout"
         android:title="Logout" />
     <item

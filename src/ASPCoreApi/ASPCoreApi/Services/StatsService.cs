@@ -11,7 +11,7 @@ namespace ASP.Services
 
         Statistics getByUserId(int id);
         Users UpdateStats(Users userParam);
-        void Delete(Users userParam)
+        void Delete(Users userParam);
 
     }
 
