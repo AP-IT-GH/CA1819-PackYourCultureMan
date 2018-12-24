@@ -27,18 +27,16 @@ public class Assignment {
     private Circle circle;
     private Marker marker;
     private  int height;
+    private  int width;
+    private  Bitmap house;
+
 
     public Marker getMarker() {
         return marker;
     }
-
     public void setMarker(Marker marker) {
         this.marker = marker;
     }
-
-    private  int width;
-    Bitmap house;
-
 
     public Assignment(int id, String name, String website, Double lat, Double lon, String shortDescr, String longDescr, String imageUrl) {
         this.name = name;

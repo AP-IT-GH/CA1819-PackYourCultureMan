@@ -55,58 +55,55 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ap.pacyourcultureman.Helpers.ApiHelper.player;
 import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
+import static com.ap.pacyourcultureman.Skins.skinId;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private Ghost Blinky;
-    private Bitmap scaledPacman;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
-    List<Assignment> assignments = ApiHelper.assignments;
-    List<Dot>   correctedDots = ApiHelper.dots;
-    Location mLastLocation;
-    Location mCurrentLocation;
-    LocationRequest mLocationRequest;
-    Marker mCurrLocationMarker;
-    FusedLocationProviderClient mFusedLocationClient;
-    static  public Assignment currentAssigment;
-    SlidingUpPanelLayout bottomPanel;
-    TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
-    ImageView imgSight;
-    Marker selectedMarker;
-    Location location;
-    List<Circle> circles;
-    Marker perth;
-    Player player = ApiHelper.player;
-    int userId;
-    ApiHelper apiHelper;
-    CollisionDetection collisionDetection;
-    Intent iin;
-    Bundle b;
-    String jwt;
-    static LatLng currentPos;
-    static Boolean ghostCollide = false;
-    BearingCalc bearingCalc;
-    CollisionHandler collisionHandler;
-    Gunmenu gunmenu;
-    static final LatLng PERTH = new LatLng(51.230663, 4.407146);
-    Handler handler;
+    private List<Assignment> assignments;
+    private List<Dot> correctedDots;
+    private Location mLastLocation;
+    private Location mCurrentLocation;
+    private LocationRequest mLocationRequest;
+    private Marker mCurrLocationMarker;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SlidingUpPanelLayout bottomPanel;
+    private TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
+    private ImageView imgSight;
+    private Marker selectedMarker;
+    private Location location;
+    private List<Circle> circles;
+    private Skins dragablePlayer;
+    private Player player;
+    private int userId;
+    private ApiHelper apiHelper;
+    private CollisionDetection collisionDetection;
+    private Intent iin;
+    private Bundle b;
+    private String jwt;
+    private BearingCalc bearingCalc;
+    private CollisionHandler collisionHandler;
+    private Gunmenu gunmenu;
+    private Handler handler;
+    public static LatLng currentPos;
+    public static Boolean ghostCollide = false;
+    public static final LatLng PERTH = new LatLng(51.230663, 4.407146);
+    public static Assignment currentAssigment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         initializer(getApplicationContext());
-        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -135,11 +132,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
-        DrawGameFieldLine();
+        Perimeter.DrawGameFieldLine(mMap);
         //draw dots on map
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+        //perth.DrawPlayer(mMap, getApplicationContext());
         //Blinky draw and dummy movement
         Blinky.Draw(mMap, getApplicationContext());
         handler = new Handler();
@@ -228,10 +226,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-        perth = mMap.addMarker(new MarkerOptions()
-                .position(PERTH)
-                .draggable(true)
-                .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman)));
+
+       dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
+
 
     }
 
@@ -281,7 +278,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
-                LatLng markable = perth.getPosition();
+                LatLng markable = dragablePlayer.getMarker().getPosition();
                 collisionDetection.collisionDetect(markable, new LatLng(currentAssigment.getLat(), currentAssigment.getLon()), 10);
                 Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
 
@@ -374,67 +371,51 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     private void initializer(Context context) {
+        //objects init
+        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
         apiHelper = new ApiHelper();
+        NavigationMenu navigationMenu = new NavigationMenu(this);
+        gunmenu = new Gunmenu(this);
+        dragablePlayer = new Skins();
+        collisionDetection = new CollisionDetection();
+        bearingCalc = new BearingCalc();
+        collisionHandler = new CollisionHandler(GameActivity.this);
+        circles = new ArrayList<>();
+        //findview
         bottomPanel = findViewById(R.id.sliding_layout);
-        bottomPanel.setPanelHeight(0);
         txtName = findViewById(R.id.txtName);
         imgSight = findViewById(R.id.imgSight);
         txtWebsite = findViewById(R.id.txtWebsite);
         txtShortDesc = findViewById(R.id.txtShortDesc);
         txtLongDesc = findViewById(R.id.txtLongDesc);
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
-        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
         txtCurrentLifePoints = findViewById(R.id.game_txt_currentLifePoints);
-        txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
         txtCurrentHeading = findViewById(R.id.game_txt_currentHeading);
         txtCurrentDistance = findViewById(R.id.game_txt_currentDistance);
-        NavigationMenu navigationMenu = new NavigationMenu(this);
-        gunmenu = new Gunmenu(this);
-        collisionDetection = new CollisionDetection();
-        bearingCalc = new BearingCalc();
-        collisionHandler = new CollisionHandler(GameActivity.this);
+        //fill list
+        assignments = ApiHelper.assignments;
+        correctedDots= ApiHelper.dots;
+        // get
+        player= ApiHelper.player;
         currentAssigment = assignments.get(0);
-        circles = new ArrayList<>();
         iin = getIntent();
         b = iin.getExtras();
-        currentPos = PERTH;
-        Bitmap pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(getApplicationContext().getResources(),R.drawable.man, null));
-        scaledPacman = Bitmap.createScaledBitmap(pacman, 150, 150, false);
         if(b!=null){
             userId = (int) b.get("userid");
             jwt = (String) b.get("jwt");
         }
+        //set
+        bottomPanel.setPanelHeight(0);
+        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
+        txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
+        //skin init
+        currentPos = PERTH;
+        Skins.SkinInit(getApplicationContext());
+        //hide dev options
         if (ApiHelper.player.getId() == 21 ){
             Menu nav_menu = NavigationMenu.getNav_Menu();
             nav_menu.findItem(R.id.nav_dev).setVisible(true);}
     }
-
-    private  void DrawGameFieldLine(){
-        mMap.addPolygon(new PolygonOptions().add(
-                new LatLng(51.208187, 4.384678), new LatLng(51.207181, 4.386604),
-                new LatLng(51.205057, 4.388015), new LatLng(51.204835, 4.388629),
-                new LatLng(51.204428, 4.388991), new LatLng(51.210132, 4.406642),
-                new LatLng(51.214943, 4.413262), new LatLng(51.215252, 4.413283),
-                new LatLng(51.216186, 4.414217), new LatLng(51.220990, 4.416567),
-                new LatLng(51.228645, 4.413866), new LatLng(51.229040, 4.418705),
-                new LatLng(51.229816, 4.418737), new LatLng(51.229797, 4.413367),
-                new LatLng(51.230891, 4.413121), new LatLng(51.231049, 4.412558),
-                new LatLng(51.231083, 4.408443), new LatLng(51.231325, 4.407488),
-                new LatLng(51.231313, 4.405128), new LatLng(51.234400, 4.405026),
-                new LatLng(51.234467, 4.403918), new LatLng(51.234373, 4.403333),
-                new LatLng(51.233599, 4.403078), new LatLng(51.231142, 4.402863),
-                new LatLng(51.230208, 4.402348), new LatLng(51.229673, 4.401967),
-                new LatLng(51.227898, 4.401870), new LatLng(51.226393, 4.400411),
-                new LatLng(51.222813, 4.398169), new LatLng(51.223087, 4.397072),
-                new LatLng(51.222943, 4.396975), new LatLng(51.222353, 4.397187),
-                new LatLng(51.221862, 4.396830), new LatLng(51.221724, 4.396492),
-                new LatLng(51.221487, 4.396505), new LatLng(51.221343, 4.397210),
-                new LatLng(51.218344, 4.395123), new LatLng(51.215286, 4.392913),
-                new LatLng(51.210386, 4.387924), new LatLng(51.210306, 4.387794),
-                new LatLng(51.208187, 4.384678)).strokeColor(Color.RED).strokeWidth(7));
-    }
-
-
 
 }
