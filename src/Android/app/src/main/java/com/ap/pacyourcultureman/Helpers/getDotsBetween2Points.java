@@ -1,13 +1,12 @@
 package com.ap.pacyourcultureman.Helpers;
 
 import com.ap.pacyourcultureman.Dot;
-import com.ap.pacyourcultureman.Street;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class getDotsBetween2Points {
+public class GetDotsBetween2Points {
 
     private static final long RADIUS_OF_EARTH = 6371000; // radius of earth in m
 
@@ -17,12 +16,12 @@ public class getDotsBetween2Points {
         // distance between points
         int meters = 30;
         // start and end position
-        getDotsBetween2Points.MockLocation start = new getDotsBetween2Points.MockLocation(latA, lngA);
-        getDotsBetween2Points.MockLocation end = new getDotsBetween2Points.MockLocation(latB, lngB);
+        GetDotsBetween2Points.MockLocation start = new GetDotsBetween2Points.MockLocation(latA, lngA);
+        GetDotsBetween2Points.MockLocation end = new GetDotsBetween2Points.MockLocation(latB, lngB);
         //azimuth
         double azimuth = calculateBearing(start, end);
-        ArrayList<getDotsBetween2Points.MockLocation> coords = getLocations(azimuth, start, end);
-        for (getDotsBetween2Points.MockLocation mockLocation : coords) {
+        ArrayList<GetDotsBetween2Points.MockLocation> coords = getLocations(azimuth, start, end);
+        for (GetDotsBetween2Points.MockLocation mockLocation : coords) {
             tempList.add(new Dot(mockLocation.lat , mockLocation.lng));
         }
         for(int i = 0; i < tempList.size()  ; i+=meters) {

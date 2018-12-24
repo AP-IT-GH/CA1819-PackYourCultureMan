@@ -17,7 +17,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 import java.util.Random;
 
-import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
+import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
+
 
 public class Assignment {
     private String name,website, shortDescr, longDescr, imgUrl;

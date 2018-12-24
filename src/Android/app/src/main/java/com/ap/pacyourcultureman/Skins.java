@@ -16,19 +16,20 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
 import static com.ap.pacyourcultureman.Helpers.ApiHelper.player;
+import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
 
 public class Skins extends AppCompatActivity {
-    private RadioGroup radioGroup;
+
     public static Integer skinId;
+    public  static boolean redraw_skin;
+    private RadioGroup radioGroup;
     private TextView textView;
     private ImageView imageView;
     private ApiHelper apiHelper;
@@ -51,6 +52,7 @@ public class Skins extends AppCompatActivity {
         textView = findViewById(R.id.txt_selectedskin);
         imageView = findViewById(R.id.imgv_selectedskin);
         apiHelper = new ApiHelper();
+        //if empty retrieve from login
         if(skinId == null){
             skinId = player.getSkinId();
         }
@@ -100,6 +102,8 @@ public class Skins extends AppCompatActivity {
             public void onSuccess() {
             }
         });
+
+        redraw_skin = true;
     }
 
     private void  selectSkin(Context context){
@@ -149,9 +153,12 @@ public class Skins extends AppCompatActivity {
     }
 
     public static void SkinInit(Context context){
+        redraw_skin = false;
+        //if empty retrieve at login
         if(skinId == null){
             skinId = player.getSkinId();
         }
+        //set skin at start
         switch (skinId) {
             case 1:
                 Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_left, null));
@@ -167,6 +174,8 @@ public class Skins extends AppCompatActivity {
                 break;
 
         }
+
     }
+
 }
 

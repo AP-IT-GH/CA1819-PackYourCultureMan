@@ -78,6 +78,8 @@ public class NavigationMenu  {
         ApiHelper.generatedDots.clear();
         ApiHelper.streets.clear();
         ApiHelper.dots.clear();
+        Skins.skinId = null;
+        Skins.redraw_skin =false;
         Log.d("clearLists", "Static list are cleared");
 
     }

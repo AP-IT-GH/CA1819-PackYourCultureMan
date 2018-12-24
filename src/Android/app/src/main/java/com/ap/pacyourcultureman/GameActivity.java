@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -39,15 +37,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
@@ -55,13 +49,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ap.pacyourcultureman.Helpers.ApiHelper.player;
-import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
-import static com.ap.pacyourcultureman.Skins.skinId;
-
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
-    private GoogleMap mMap;
     private Ghost Blinky;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     private List<Assignment> assignments;
@@ -77,7 +66,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker selectedMarker;
     private Location location;
     private List<Circle> circles;
-    private Skins dragablePlayer;
     private Player player;
     private int userId;
     private ApiHelper apiHelper;
@@ -89,9 +77,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private CollisionHandler collisionHandler;
     private Gunmenu gunmenu;
     private Handler handler;
+    private GoogleMap mMap;
+    private Skins dragablePlayer;
     public static LatLng currentPos;
     public static Boolean ghostCollide = false;
-    public static final LatLng PERTH = new LatLng(51.230663, 4.407146);
+    public static  LatLng pinnedLocation;
     public static Assignment currentAssigment;
 
     @Override
@@ -127,19 +117,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.227076, 4.417227), 15));
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        //mMap.getUiSettings().setZoomGesturesEnabled(false);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(500); // 0.5 second interval
         mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         currentAssigment = getRandomAssignment();
-        Perimeter.DrawGameFieldLine(mMap);
-        //draw dots on map
-        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-        //perth.DrawPlayer(mMap, getApplicationContext());
-        //Blinky draw and dummy movement
-        Blinky.Draw(mMap, getApplicationContext());
+        //draw ghost assignements and dots
+        startDraw();
         handler = new Handler();
         handler.post(new Runnable() {
             @Override
@@ -149,10 +138,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         Log.d("Movement", "Ik ben non-blocking");
-
-        for(int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
-        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -179,19 +164,16 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
         });
-        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
 
-        if (!success) {
-            Log.e("Style failed", "Style parsing failed.");
-        }
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        //mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnInfoWindowClickListener(this);
+
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
 
             @Override
             public void onMarkerDragStart(Marker marker) {
+                if( Skins.redraw_skin){
+                    dragablePlayer.getMarker().remove();
+                    dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
+                    Skins.redraw_skin = false;}
             }
 
             @Override
@@ -227,8 +209,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
-       dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
+        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
 
+        if (!success) {
+            Log.e("Style failed", "Style parsing failed.");
+        }
 
     }
 
@@ -275,6 +260,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
 
+
                 //Place current location marker
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CircleOptions circleOptions = new CircleOptions();
@@ -284,7 +270,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                 //dots collision
                 for(int i = 0; i < correctedDots.size(); i++) {
-                    collisionDetection.collisionDetect(markable, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 5);
+                    collisionDetection.collisionDetect(markable, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
                 }
                 if(ghostCollide) {
                     currentAssigment = getRandomAssignment();
@@ -298,21 +284,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     };
+
     private Assignment getRandomAssignment() {
         currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
         txtCurrentAssignment.setText(currentAssigment.getName());
         return currentAssigment;
     }
 
-
-    @NonNull
-    public static Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
-        final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bmp;
-    }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
@@ -372,6 +350,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void initializer(Context context) {
         //objects init
+        pinnedLocation = new LatLng(51.230663, 4.407146);
         Blinky = new Ghost(new LatLng(51.229796, 4.418413));
         apiHelper = new ApiHelper();
         NavigationMenu navigationMenu = new NavigationMenu(this);
@@ -410,7 +389,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
         txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         //skin init
-        currentPos = PERTH;
+        currentPos = pinnedLocation;
         Skins.SkinInit(getApplicationContext());
         //hide dev options
         if (ApiHelper.player.getId() == 21 ){
@@ -418,4 +397,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             nav_menu.findItem(R.id.nav_dev).setVisible(true);}
     }
 
+    private void startDraw(){
+        //draw perimeter
+        Perimeter.DrawGameFieldLine(mMap);
+        //draw dots on map
+        for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
+        //draw player
+        dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
+        //Blinky draw and dummy movement
+        Blinky.Draw(mMap, getApplicationContext());
+        //draw assignments
+        for(int i = 0; i < assignments.size(); i++) {
+            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
+        }
+    }
 }

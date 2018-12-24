@@ -11,7 +11,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
+import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
+
 
 public class Dot {
 
