@@ -42,9 +42,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.Task;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Gunmenu gunmenu;
     private Handler handler;
     private GoogleMap mMap;
-    private Skins dragablePlayer;
+    private Skins dragablePlayer,playerpos;
     public static LatLng currentPos;
     public static Boolean ghostCollide = false;
     public static  LatLng pinnedLocation;
@@ -112,6 +112,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -257,20 +259,33 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                 for(int i = 0; i < assignments.size(); i++) {
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon()), 10);
-
                 }
 
-
-                //Place current location marker
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                CircleOptions circleOptions = new CircleOptions();
+             /*  //dragableMarker
+                dragablePlayer.getMarker().setPosition(pinnedLocation);
                 LatLng markable = dragablePlayer.getMarker().getPosition();
+
                 collisionDetection.collisionDetect(markable, new LatLng(currentAssigment.getLat(), currentAssigment.getLon()), 10);
-                Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));
+                Log.d(String.valueOf(markable.latitude), String.valueOf(markable.longitude));*/
+
+                //playerpos
+
+                if( Skins.redraw_skinP){
+                    playerpos.getMarker().remove();
+                   playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+                    Skins.redraw_skinP = false;}
+
+                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                playerpos.getMarker().setPosition(currentLocation);
+                LatLng markableP = playerpos.getMarker().getPosition();
+
+                collisionDetection.collisionDetect(markableP, new LatLng(currentAssigment.getLat(), currentAssigment.getLon()), 10);
+                Log.d(String.valueOf(markableP.latitude), String.valueOf(markableP.longitude));
 
                 //dots collision
                 for(int i = 0; i < correctedDots.size(); i++) {
-                    collisionDetection.collisionDetect(markable, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
+                    //collisionDetection.collisionDetect(markable, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
+                    collisionDetection.collisionDetect(markableP, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
                 }
                 if(ghostCollide) {
                     currentAssigment = getRandomAssignment();
@@ -348,6 +363,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         } else super.onBackPressed();
 
     }
+
+
     private void initializer(Context context) {
         //objects init
         pinnedLocation = new LatLng(51.230663, 4.407146);
@@ -356,6 +373,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         NavigationMenu navigationMenu = new NavigationMenu(this);
         gunmenu = new Gunmenu(this);
         dragablePlayer = new Skins();
+        playerpos = new Skins();
         collisionDetection = new CollisionDetection();
         bearingCalc = new BearingCalc();
         collisionHandler = new CollisionHandler(GameActivity.this);
@@ -404,6 +422,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //draw player
         dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
+        playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
         //Blinky draw and dummy movement
         Blinky.Draw(mMap, getApplicationContext());
         //draw assignments

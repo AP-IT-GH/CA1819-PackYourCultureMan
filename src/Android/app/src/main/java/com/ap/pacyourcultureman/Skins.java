@@ -29,6 +29,7 @@ public class Skins extends AppCompatActivity {
 
     public static Integer skinId;
     public  static boolean redraw_skin;
+    public  static boolean redraw_skinP;
     private RadioGroup radioGroup;
     private TextView textView;
     private ImageView imageView;
@@ -104,6 +105,7 @@ public class Skins extends AppCompatActivity {
         });
 
         redraw_skin = true;
+        redraw_skinP = true;
     }
 
     private void  selectSkin(Context context){
@@ -154,6 +156,7 @@ public class Skins extends AppCompatActivity {
 
     public static void SkinInit(Context context){
         redraw_skin = false;
+        redraw_skinP =false;
         //if empty retrieve at login
         if(skinId == null){
             skinId = player.getSkinId();
