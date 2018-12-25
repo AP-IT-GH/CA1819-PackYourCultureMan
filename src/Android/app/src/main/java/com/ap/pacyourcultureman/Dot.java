@@ -117,6 +117,7 @@ public class Dot {
         marker = mMap.addMarker(new MarkerOptions()
                 .position(location)
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledDot))
-                .flat(true));
+                .flat(true)
+                .anchor(0.5f,0.5f));
     }
 }

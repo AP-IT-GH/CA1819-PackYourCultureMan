@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -77,6 +78,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static Boolean ghostCollide = false;
     public static LatLng pinnedLocation;
     public static Assignment currentAssigment;
+    public static float rotation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +140,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(false);
+            mMap.setMyLocationEnabled(true);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -244,15 +246,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                playerpos.getMarker().remove();
-                playerpos.getMarker().setPosition(currentLocation);
+                playerpos.removeMarker();
+                rotation =  location.getBearing();
                 playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 playerpos.getMarker().setPosition(currentLocation);
-                playerpos.getMarker().setDraggable(false);
+                playerpos.setRotations(playerpos.getMarker());
+                playerpos.setDraggable(playerpos.getMarker());
                 LatLng markableP = playerpos.getMarker().getPosition();
-               
-
+                Log.d("testtest", String.valueOf(location.getBearing() + " " + playerpos.getMarker().getRotation()));
                 for(int i = 0; i < assignments.size(); i++) {
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon()), 10);
                 }
@@ -274,7 +276,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 // zooms to player
-                /*CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+               /* CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
                 CameraUpdate zoom = CameraUpdateFactory.zoomTo(10.0f);
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);*/

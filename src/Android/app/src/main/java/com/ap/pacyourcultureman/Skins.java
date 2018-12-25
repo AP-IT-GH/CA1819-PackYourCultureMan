@@ -36,9 +36,6 @@ public class Skins extends AppCompatActivity {
     private ImageView imageView;
     private ApiHelper apiHelper;
     private Marker marker;
-    public Marker getMarker() {
-        return marker;
-    }
     public static Bitmap player_pacman;
 
     @Override
@@ -56,7 +53,6 @@ public class Skins extends AppCompatActivity {
         selectSkin(getApplicationContext());
         radiogroupSelect();
     }
-
 
 
     private void radiogroupSelect(){
@@ -110,33 +106,49 @@ public class Skins extends AppCompatActivity {
                 setText = "Selected skin: Yellow";
                 textView.setText(setText);
                 imageView.setImageResource(R.drawable.pacman_yellow_left);
-                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_left, null));
+                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_top, null));
                 break;
             case 2:
                 putSkinId();
                 setText = "Selected skin: Red";
                 textView.setText(setText);
                 imageView.setImageResource(R.drawable.pacman_red_left);
-                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_red_left, null));
+                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_red_top, null));
                 break;
             case 3:
                 putSkinId();
                 setText= "Selected skin: Green";
                 textView.setText(setText);
                 imageView.setImageResource(R.drawable.pacman_green_left);
-                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_green_left, null));
+                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_green_top, null));
                 break;
             case 4:
                 putSkinId();
                 setText = "Selected skin: Blue";
                 textView.setText(setText);
                 imageView.setImageResource(R.drawable.pacman_blue_left);
-                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_blue_left, null));
+                player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_blue_top, null));
                 break;
 
         }
     }
 
+    public void setRotations(Marker marker) {
+       marker.setRotation(GameActivity.rotation);
+        this.marker = marker;
+    }
+    public void setDraggable(Marker marker) {
+        marker.setDraggable(false);
+        this.marker = marker;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void removeMarker() {
+        marker.remove();
+    }
 
     public void DrawPlayer(GoogleMap mMap, Context context, int width, int height ){
         Bitmap scaledPacman = Bitmap.createScaledBitmap( player_pacman, width, height, false);
@@ -144,7 +156,9 @@ public class Skins extends AppCompatActivity {
                 .position(GameActivity.currentPos)
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman))
                 .draggable(true)
-                .flat(true));
+                .flat(true)
+                .anchor(0.5f,0.5f)
+                .rotation(0f));
 
     }
 
@@ -156,16 +170,16 @@ public class Skins extends AppCompatActivity {
         //set skin at start
         switch (skinId) {
             case 1:
-                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_left, null));
+                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_top, null));
                 break;
             case 2:
-                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_red_left, null));
+                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_red_top, null));
                 break;
             case 3:
-                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_green_left, null));
+                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_green_top, null));
                 break;
             case 4:
-                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_blue_left, null));
+                Skins.player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_blue_top, null));
                 break;
 
         }
