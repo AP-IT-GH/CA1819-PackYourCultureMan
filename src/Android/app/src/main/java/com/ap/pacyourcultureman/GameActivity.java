@@ -4,6 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,13 +48,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
+public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener {
 
     private Ghost Blinky;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     private List<Assignment> assignments;
     private List<Dot> correctedDots;
-    private Location mLastLocation;
+    public  static Location mLastLocation;
+    public  static Location mPrevLocation;
     private Location mCurrentLocation;
     private LocationRequest mLocationRequest;
     private Marker mCurrLocationMarker;
@@ -79,6 +84,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static LatLng pinnedLocation;
     public static Assignment currentAssigment;
     public static float rotation;
+    private SensorManager mSensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +106,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // for the system's orientation sensor registered listeners
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                SensorManager.SENSOR_DELAY_GAME);
+    }
 
     @Override
     public void onPause() {
@@ -108,6 +122,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
+        // to stop the listener and save battery
+        mSensorManager.unregisterListener(this);
     }
 
 
@@ -246,12 +262,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
+                location = locationList.get(0);
+                mPrevLocation = location;
+
                 playerpos.removeMarker();
-                rotation =  location.getBearing();
+                //rotation =  location.getBearing();
                 playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 playerpos.getMarker().setPosition(currentLocation);
-                playerpos.setRotations(playerpos.getMarker());
+               // playerpos.setRotations(playerpos.getMarker());
                 playerpos.setDraggable(playerpos.getMarker());
                 LatLng markableP = playerpos.getMarker().getPosition();
                 Log.d("testtest", String.valueOf(location.getBearing() + " " + playerpos.getMarker().getRotation()));
@@ -352,6 +371,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void initializer(Context context) {
         //objects init
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         pinnedLocation = new LatLng(51.230663, 4.407146);
         Blinky = new Ghost(new LatLng(51.229796, 4.418413));
         apiHelper = new ApiHelper();
@@ -388,6 +408,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             jwt = (String) b.get("jwt");
         }
         //set
+        rotation = 0f;
         bottomPanel.setPanelHeight(0);
         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
         txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
@@ -414,5 +435,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i = 0; i < assignments.size(); i++) {
             assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        rotation = Math.round(event.values[0]);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

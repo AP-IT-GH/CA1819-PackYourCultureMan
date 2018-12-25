@@ -13,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.ap.pacyourcultureman.Helpers.BearingCalc;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -134,7 +136,10 @@ public class Skins extends AppCompatActivity {
     }
 
     public void setRotations(Marker marker) {
-       marker.setRotation(GameActivity.rotation);
+double bearing =  BearingCalc.getBearingBetweenTwoPoints1(new LatLng(GameActivity.mLastLocation.getLatitude(), GameActivity.mLastLocation.getLongitude()), new LatLng(GameActivity.mPrevLocation.getLatitude(), GameActivity.mPrevLocation.getLongitude()));
+        //marker.setRotation((float) bearing);
+       Log.d("testbear", String.valueOf((float)bearing));
+      marker.setRotation(GameActivity.rotation);
         this.marker = marker;
     }
     public void setDraggable(Marker marker) {

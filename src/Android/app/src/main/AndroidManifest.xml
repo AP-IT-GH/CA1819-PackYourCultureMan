@@ -29,7 +29,8 @@
 
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game"></activity>
+            android:label="@string/title_activity_game"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Login"
             android:label="@string/title_activity_game">
