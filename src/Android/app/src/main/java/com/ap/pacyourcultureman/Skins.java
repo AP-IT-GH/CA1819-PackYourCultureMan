@@ -1,12 +1,14 @@
 package com.ap.pacyourcultureman;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
@@ -28,8 +31,6 @@ import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
 public class Skins extends AppCompatActivity {
 
     public static Integer skinId;
-    public  static boolean redraw_skin;
-    public  static boolean redraw_skinP;
     private RadioGroup radioGroup;
     private TextView textView;
     private ImageView imageView;
@@ -38,11 +39,6 @@ public class Skins extends AppCompatActivity {
     public Marker getMarker() {
         return marker;
     }
-
-    public void setMarker(Marker marker) {
-        this.marker = marker;
-    }
-
     public static Bitmap player_pacman;
 
     @Override
@@ -103,9 +99,6 @@ public class Skins extends AppCompatActivity {
             public void onSuccess() {
             }
         });
-
-        redraw_skin = true;
-        redraw_skinP = true;
     }
 
     private void  selectSkin(Context context){
@@ -150,13 +143,12 @@ public class Skins extends AppCompatActivity {
         marker = mMap.addMarker(new MarkerOptions()
                 .position(GameActivity.currentPos)
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman))
-                .draggable(true));
+                .draggable(true)
+                .flat(true));
 
     }
 
     public static void SkinInit(Context context){
-        redraw_skin = false;
-        redraw_skinP =false;
         //if empty retrieve at login
         if(skinId == null){
             skinId = player.getSkinId();
@@ -178,6 +170,13 @@ public class Skins extends AppCompatActivity {
 
         }
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this.getBaseContext(), GameActivity.class);
+        finish();
+        this.startActivity(intent);
     }
 
 }
