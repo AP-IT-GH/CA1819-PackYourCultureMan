@@ -42,8 +42,8 @@ public class Dot {
     public Dot(int id ,double lat, double lon, boolean taken ){
 
         //init default settings
-        height = 50;
-        width = 50;
+        height = 40;
+        width = 40;
         this.taken = false;
 
         //set
@@ -109,6 +109,11 @@ public class Dot {
     //methods
     public void removeMarker() {
         marker.remove();
+    }
+
+    public void setMarkerVisible(Marker marker, boolean bool) {
+        marker.setVisible(bool);
+        this.marker = marker;
     }
 
     public void Draw(GoogleMap mMap, Context context){

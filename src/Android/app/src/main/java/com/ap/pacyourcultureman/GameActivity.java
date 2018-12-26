@@ -85,7 +85,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static LatLng pinnedLocation;
     public static Assignment currentAssigment;
     public static float rotation;
-    public  static Location mLastLocation;
+    public static Location mLastLocation;
 
 
     @Override
@@ -133,7 +133,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 15));
-        mMap.setMinZoomPreference(12.0f);
+        mMap.setMinZoomPreference(14.0f);
         mMap.setMaxZoomPreference(17.0f);
         //mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -161,7 +161,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(false);
+            mMap.setMyLocationEnabled(true);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -415,6 +415,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (ApiHelper.player.getId() == 21 ){
             Menu nav_menu = NavigationMenu.getNav_Menu();
             nav_menu.findItem(R.id.nav_dev).setVisible(true);}
+
     }
 
     private void startDraw(){
@@ -430,7 +431,28 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw assignments
         for(int i = 0; i < assignments.size(); i++) {
             assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
+
         }
+        //hide dots on certain zoom levels
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                for (Dot item : correctedDots ) {
+                    item.setMarkerVisible(item.getMarker(),false);
+                }
+                if (mMap.getCameraPosition().zoom <= 16){
+                    for (Dot item : correctedDots ) {
+                        item.setMarkerVisible(item.getMarker(),false);
+                    }
+                } else
+                {
+                    for (Dot item : correctedDots ) {
+                        item.setMarkerVisible(item.getMarker(),true);
+                    }
+                }
+            }
+        });
+
     }
 
     private void drawPlayer(){
@@ -451,5 +473,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
 
 }

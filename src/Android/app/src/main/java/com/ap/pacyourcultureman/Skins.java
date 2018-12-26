@@ -28,12 +28,13 @@ import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
 public class Skins extends AppCompatActivity {
 
     public static Integer skinId;
+    public static Bitmap player_pacman;
     private RadioGroup radioGroup;
     private TextView textView;
     private ImageView imageView;
     private ApiHelper apiHelper;
     private Marker marker;
-    public static Bitmap player_pacman;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,28 +103,28 @@ public class Skins extends AppCompatActivity {
                 putSkinId();
                 setText = "Selected skin: Yellow";
                 textView.setText(setText);
-                imageView.setImageResource(R.drawable.pacman_yellow_left);
+                imageView.setImageResource(R.drawable.pacman_yellow_right);
                 player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_top, null));
                 break;
             case 2:
                 putSkinId();
                 setText = "Selected skin: Red";
                 textView.setText(setText);
-                imageView.setImageResource(R.drawable.pacman_red_left);
+                imageView.setImageResource(R.drawable.pacman_red_right);
                 player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_red_top, null));
                 break;
             case 3:
                 putSkinId();
                 setText= "Selected skin: Green";
                 textView.setText(setText);
-                imageView.setImageResource(R.drawable.pacman_green_left);
+                imageView.setImageResource(R.drawable.pacman_green_right);
                 player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_green_top, null));
                 break;
             case 4:
                 putSkinId();
                 setText = "Selected skin: Blue";
                 textView.setText(setText);
-                imageView.setImageResource(R.drawable.pacman_blue_left);
+                imageView.setImageResource(R.drawable.pacman_blue_right);
                 player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_blue_top, null));
                 break;
 
@@ -194,8 +195,6 @@ public class Skins extends AppCompatActivity {
         if (rota >= 270 && rota<= 360){
             rot = 360;
         }
-
-
         marker.setRotation(rot);
         this.marker = marker;
     }
