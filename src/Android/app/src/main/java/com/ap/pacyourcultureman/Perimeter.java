@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 public class Perimeter {
@@ -31,4 +32,15 @@ public class Perimeter {
                 new LatLng(51.218344, 4.395123), new LatLng(51.215286, 4.392913),
                 new LatLng(51.210386, 4.387924), new LatLng(51.210306, 4.387794),
                 new LatLng(51.208187, 4.384678)).strokeColor(Color.RED).strokeWidth(7));
-    } }
+
+        // camera bound
+       LatLngBounds antwerpen = new LatLngBounds(new LatLng(51.199208, 4.349306), new LatLng(51.267221, 4.461687));
+        mMap.setLatLngBoundsForCameraTarget(antwerpen);
+//       LatLngBounds Belgie = new LatLngBounds(
+//                new LatLng(51.111501, 4.153060), new LatLng(51.487785, 4.844578));
+//        mMap.setLatLngBoundsForCameraTarget(Belgie);
+    }
+
+
+
+}

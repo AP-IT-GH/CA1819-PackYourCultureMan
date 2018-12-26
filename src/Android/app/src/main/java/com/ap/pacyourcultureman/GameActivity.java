@@ -38,8 +38,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -48,7 +50,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener {
+public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener{
 
     private Ghost Blinky;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
@@ -131,11 +133,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 15));
-        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.setMinZoomPreference(12.0f);
+        mMap.setMaxZoomPreference(17.0f);
         //mMap.getUiSettings().setZoomGesturesEnabled(false);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
+
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(500); // 0.5 second interval
         mLocationRequest.setFastestInterval(500);
@@ -156,7 +161,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(false);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -262,14 +267,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                playerpos.removeMarker();
-                playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
-                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                playerpos.getMarker().setPosition(currentLocation);
-                playerpos.setRotations(playerpos.getMarker());
-                playerpos.setDraggable(playerpos.getMarker());
+                drawPlayer();
                 LatLng markableP = playerpos.getMarker().getPosition();
-                Log.d("Rotation", String.valueOf( "Rotation: " + playerpos.getMarker().getRotation()));
                 for(int i = 0; i < assignments.size(); i++) {
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon()), 10);
                 }
@@ -291,10 +290,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 // zooms to player
-               /* CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(10.0f);
+             /*   CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(15.0f);
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);*/
+
 
             }
         }
@@ -433,6 +433,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    private void drawPlayer(){
+        playerpos.removeMarker();
+        playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        playerpos.getMarker().setPosition(currentLocation);
+        playerpos.setRotations(playerpos.getMarker());
+        playerpos.setDraggable(playerpos.getMarker());
+        Log.d("Rotation", String.valueOf( "Rotation: " + playerpos.getMarker().getRotation()));
+    }
     @Override
     public void onSensorChanged(SensorEvent event) {
          rotation = Math.round(event.values[0]);
@@ -442,4 +451,5 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
 }
