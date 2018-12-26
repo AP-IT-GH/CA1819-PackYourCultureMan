@@ -3,21 +3,16 @@ package com.ap.pacyourcultureman;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
-
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
-import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -135,13 +130,7 @@ public class Skins extends AppCompatActivity {
         }
     }
 
-    public void setRotations(Marker marker) {
-double bearing =  BearingCalc.getBearingBetweenTwoPoints1(new LatLng(GameActivity.mLastLocation.getLatitude(), GameActivity.mLastLocation.getLongitude()), new LatLng(GameActivity.mPrevLocation.getLatitude(), GameActivity.mPrevLocation.getLongitude()));
-        //marker.setRotation((float) bearing);
-       Log.d("testbear", String.valueOf((float)bearing));
-      marker.setRotation(GameActivity.rotation);
-        this.marker = marker;
-    }
+
     public void setDraggable(Marker marker) {
         marker.setDraggable(false);
         this.marker = marker;
@@ -190,6 +179,27 @@ double bearing =  BearingCalc.getBearingBetweenTwoPoints1(new LatLng(GameActivit
         }
 
     }
+    public void setRotations(Marker marker) {
+        float rot = 0;
+        float rota = GameActivity.rotation - 45;
+        if (rota >= 0 && rota<= 90){
+            rot = 90;
+        }
+        if (rota>= 90 && rota<= 180){
+            rot = 180;
+        }
+        if (rota >= 180 && rota<= 270){
+            rot = 270;
+        }
+        if (rota >= 270 && rota<= 360){
+            rot = 360;
+        }
+
+
+        marker.setRotation(rot);
+        this.marker = marker;
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

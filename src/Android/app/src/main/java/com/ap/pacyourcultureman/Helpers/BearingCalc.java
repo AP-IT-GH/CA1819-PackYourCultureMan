@@ -40,31 +40,4 @@ public class BearingCalc {
         return distanceInM + "m";
     }
 
-    public static double getBearingBetweenTwoPoints1(LatLng latLng1, LatLng latLng2) {
-
-        double lat1 = degreesToRadians(latLng1.latitude);
-        double long1 = degreesToRadians(latLng1.longitude);
-        double lat2 = degreesToRadians(latLng2.latitude);
-        double long2 = degreesToRadians(latLng2.longitude);
-
-
-        double dLon = (long2 - long1);
-
-
-        double y = Math.sin(dLon) * Math.cos(lat2);
-        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1)
-                * Math.cos(lat2) * Math.cos(dLon);
-
-        double radiansBearing = Math.atan2(y, x);
-
-
-        return radiansToDegrees(radiansBearing);
-    }
-    private static double degreesToRadians(double degrees) {
-        return degrees * Math.PI / 180.0;
-    }
-
-    private static double radiansToDegrees(double radians) {
-        return radians * 180.0 / Math.PI;
-    }
 }
