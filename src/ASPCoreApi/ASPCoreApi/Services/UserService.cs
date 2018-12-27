@@ -120,7 +120,7 @@ namespace ASP.Services
             if (userParam.LastName != null && userParam.LastName != "string"&& userParam.LastName != "") user.LastName = userParam.LastName;
             if (userParam.Username != null && userParam.Username != "string" && userParam.Username != "") user.Username = userParam.Username;
             if (userParam.Email != null && userParam.Email != "string" && userParam.Email != "") user.Email = userParam.Email;
-
+            if (userParam.skinId != null)user.skinId = userParam.skinId;
             
             if (!string.IsNullOrWhiteSpace(password)&& password != "string")
             {

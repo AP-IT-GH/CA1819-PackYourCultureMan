@@ -163,3 +163,11 @@ END;
 
 GO
 
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20181227131421_skinid')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20181227131421_skinid', N'2.1.4-rtm-31024');
+END;
+
+GO
+

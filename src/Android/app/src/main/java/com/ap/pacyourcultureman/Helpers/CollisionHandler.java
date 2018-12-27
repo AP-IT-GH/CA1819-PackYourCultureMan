@@ -42,7 +42,12 @@ public class CollisionHandler {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+            apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
+                @Override
+                public void onSuccess() {
+
+                }
+            });
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -61,7 +66,12 @@ public class CollisionHandler {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-              apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+              apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
+                  @Override
+                  public void onSuccess() {
+
+                  }
+              });
             Toast.makeText(context, "You got hit", Toast.LENGTH_LONG).show();
             Log.d("Toast", "Test");
             //TODO Reset ghost
@@ -91,7 +101,12 @@ public class CollisionHandler {
             e.printStackTrace();
         }
 
-        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
+            @Override
+            public void onSuccess() {
+
+            }
+        });
         player.getPlayerStats().setCurrentScore(0);
         Log.d("Json", jsonObject.toString());}
 
@@ -118,7 +133,12 @@ public class CollisionHandler {
         catch (JSONException e) {
             e.printStackTrace();
         }
-        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object);
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object, new VolleyCallBack() {
+            @Override
+            public void onSuccess() {
+
+            }
+        });
     }
 
     public void gunCollision(Ghost ghost) {

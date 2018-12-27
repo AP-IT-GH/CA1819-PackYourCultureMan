@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import org.json.JSONObject;
@@ -56,7 +57,12 @@ public class Settings extends Activity {
                 Log.d("xxx",password);
                 JSONSerializer jsonSerializer = new JSONSerializer();
                 JSONObject jsonObject = jsonSerializer.jsonPutUserData(skinId, firstName, lastName, email, password);
-                apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+                apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+                });
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
