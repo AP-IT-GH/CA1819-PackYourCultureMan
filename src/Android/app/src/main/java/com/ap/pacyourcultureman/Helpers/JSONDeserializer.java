@@ -164,6 +164,19 @@ public class JSONDeserializer {
                     i = 0;
                     firstStep = false;
                 }
+/*                if (i == stepssArray.length() - 1) {
+                    JSONObject endObject = stepssArray.getJSONObject(i);
+                    JSONObject distanceJSON = endObject.getJSONObject("distance");
+                    JSONObject startJSON = endObject.getJSONObject("start_location");
+                    JSONObject endJSON = endObject.getJSONObject("end_location");
+
+                    int distance = distanceJSON.getInt("value");
+                    LatLng end = new LatLng(startJSON.getDouble("lat"), startJSON.getDouble("lng"));
+                    LatLng start = new LatLng(endJSON.getDouble("lat"), startJSON.getDouble("lng"));
+
+                    step = new Step(start, end, distance);
+                    steps.add(step);
+                }*/
                 JSONObject endObject = stepssArray.getJSONObject(i);
                 JSONObject distanceJSON = endObject.getJSONObject("distance");
                 JSONObject startJSON = endObject.getJSONObject("start_location");
@@ -180,7 +193,7 @@ public class JSONDeserializer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("Steps", steps.toString());
+        Log.d("Movement", steps.toString());
         return steps;
     }
 

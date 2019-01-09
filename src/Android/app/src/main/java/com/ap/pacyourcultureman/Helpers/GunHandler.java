@@ -9,6 +9,7 @@ import com.ap.pacyourcultureman.GameActivity;
 import com.ap.pacyourcultureman.Ghost;
 import com.ap.pacyourcultureman.Menus.Gunmenu;
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONObject;
@@ -18,6 +19,8 @@ public class GunHandler {
     Activity activity;
     Ghost ghost;
     ApiHelper apiHelper;
+    BearingCalc bearingCalc = new BearingCalc();
+
     public GunHandler(Ghost ghost, Activity activity) {
         this.ghost = ghost;
         this.activity = activity;
@@ -90,7 +93,8 @@ public class GunHandler {
             ApiHelper.player.getPlayerGameStats().setPushBackGun(ApiHelper.player.getPlayerGameStats().getPushBackGun() - 1);
             Log.d("Ghost", "hit with pushback");
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats());
-
+            LatLng spookyloc = ghost.getLocation();
+            //bearingCalc.getBearingInString(spookyloc.latitude, spookyloc.longitude, );
         }
         else {
             Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();

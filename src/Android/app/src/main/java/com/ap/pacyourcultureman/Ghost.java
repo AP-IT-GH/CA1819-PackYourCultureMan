@@ -32,7 +32,7 @@ public class Ghost {
     private int iter;
     public Handler handler = new Handler();
     ApiHelper apiHelper;
-    int speed = 5;
+    int speed = 40;
     public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
     public Runnable r;
@@ -72,7 +72,7 @@ public class Ghost {
                 steps.clear();
                 steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());
                 newDirections = true;
-                marker.setPosition(steps.get(0).start);
+                //marker.setPosition(steps.get(0).start);
                 Log.d("Movement", "newdirections: " + newDirections);
 
                 FollowPath();
@@ -94,7 +94,7 @@ public class Ghost {
                     elapsed = SystemClock.uptimeMillis() - start;
                     Log.d("Movement", "Moving to point: " + iter);
                     time = (steps.get(0).distance * 1000)/(speed);
-                    Log.d("Movement" ,"Step: " + steps.get(0));
+                    Log.d("Movement" ,"Step: " + steps.get(1));
                     Log.d("Movement", "Time for this step: " + time);
                     Move(steps.get(1).start, marker, time);
                     iter++;
