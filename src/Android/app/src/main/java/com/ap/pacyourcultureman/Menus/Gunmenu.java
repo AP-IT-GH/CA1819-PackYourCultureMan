@@ -49,6 +49,7 @@ public class Gunmenu {
                     dropdownLayout.setVisibility(View.GONE);
                     dropdownMenu.setRotation(0);
                     isMenuDropped = false;
+                    gunSelected = false;
                 }
             }
         });
