@@ -86,7 +86,7 @@
 
             <ImageView
                 android:id="@+id/game_img_dropdown"
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"

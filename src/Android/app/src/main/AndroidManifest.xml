@@ -52,6 +52,8 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+        
+        <activity android:name=".Shop"></activity>
 
         <activity android:name=".DevOptions" />
         <activity android:name=".Skins"            android:noHistory="true"></activity>

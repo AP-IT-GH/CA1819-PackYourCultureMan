@@ -1,12 +1,13 @@
 package com.ap.pacyourcultureman;
 
 public class PlayerGameStats {
-    private int lifePoints,rifle,freezeGun,pushBackGun;
-    public PlayerGameStats(int lifePoints,int rifle,int freezeGun,int pushBackGun){
+    private int lifePoints,rifle,freezeGun,pushBackGun,coins;
+    public PlayerGameStats(int lifePoints,int rifle,int freezeGun,int pushBackGun,int coins){
         this.lifePoints = lifePoints;
         this.freezeGun = freezeGun;
         this.rifle = rifle;
         this.pushBackGun = pushBackGun;
+        this.coins = coins;
     }
     public int getLifePoints(){
         return lifePoints;
@@ -19,6 +20,9 @@ public class PlayerGameStats {
     }
     public int getPushBackGun(){
         return pushBackGun;
+    }
+    public int getCoins(){
+        return coins;
     }
 
     public void setFreezeGun(int freezeGun) {
@@ -35,5 +39,8 @@ public class PlayerGameStats {
 
     public void setRifle(int rifle) {
         this.rifle = rifle;
+    }
+    public void setCoins(int coins){
+        this.coins = coins;
     }
 }

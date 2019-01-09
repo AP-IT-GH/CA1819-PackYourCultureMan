@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPCoreApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181205185525_first")]
-    partial class first
+    [Migration("20181227131421_skinid")]
+    partial class skinid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,8 @@ namespace ASPCoreApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("coins");
 
                     b.Property<int>("freezeGun");
 
@@ -113,6 +115,25 @@ namespace ASPCoreApi.Migrations
                         .IsUnique();
 
                     b.ToTable("stats");
+                });
+
+            modelBuilder.Entity("ASPCoreApi.Models.Streets", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LatitudeA");
+
+                    b.Property<string>("LatitudeB");
+
+                    b.Property<string>("LongitudeA");
+
+                    b.Property<string>("LongitudeB");
+
+                    b.HasKey("id");
+
+                    b.ToTable("streets");
                 });
 
             modelBuilder.Entity("ASPCoreApi.Models.Users", b =>
