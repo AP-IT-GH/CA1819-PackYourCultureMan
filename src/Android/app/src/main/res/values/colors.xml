@@ -3,5 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="darkgrey">#44433b</color>
+    <color name="lightgrey">#5c5d60</color>
     <color name="totalPrice">#6aff00</color>
 </resources>

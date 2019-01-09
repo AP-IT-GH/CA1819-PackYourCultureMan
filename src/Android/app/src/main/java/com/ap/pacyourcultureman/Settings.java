@@ -19,8 +19,8 @@ import org.json.JSONObject;
 
 public class Settings extends Activity {
     EditText edit_password,edit_firstname,edit_lastname,edit_email;
+    Button btn_apply, btn_cancel;
     String email, firstName, lastName, password,currentUsername;
-    Button btn_apply;
     ApiHelper apiHelper;
     Player player;
     int skinId;
@@ -34,6 +34,7 @@ public class Settings extends Activity {
         edit_lastname = findViewById(R.id.edit_lastName);
         edit_email = findViewById(R.id.edit_email);
         btn_apply = findViewById(R.id.btn_apply);
+        btn_cancel = findViewById(R.id.btn_cancel);
         player = ApiHelper.player;
         edit_email.setText(player.getEmail());
         edit_firstname.setText(player.getFirstName());
@@ -57,10 +58,11 @@ public class Settings extends Activity {
                 Log.d("xxx",password);
                 JSONSerializer jsonSerializer = new JSONSerializer();
                 JSONObject jsonObject = jsonSerializer.jsonPutUserData(skinId, firstName, lastName, email, password);
+                btn_apply.setEnabled(false);
                 apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
                     @Override
                     public void onSuccess() {
-
+                        btn_apply.setEnabled(true);
                     }
                 });
                 Thread thread = new Thread(new Runnable() {
@@ -84,6 +86,12 @@ public class Settings extends Activity {
                     }
                 });
                 thread.start();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

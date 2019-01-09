@@ -19,6 +19,7 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.SightsAdapter;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
     private ArrayList<Assignment> mSightList;
     private RequestQueue mRequestQueue;
     private ApiHelper apiHelper;
-    private Button button;
+    private Button button, btnBack;
     private Intent intent;
     public static final String DETAIL_IMAGE = "sightImage";
     public static final String DETAIL_NAME = "name";
@@ -50,6 +51,13 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         NavigationMenu navigationMenu = new NavigationMenu(this);
         apiHelper = new ApiHelper();
         button = this.findViewById(R.id.btnReset);
+        btnBack = this.findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         addListenerOnButton();
         mRecyclerview = findViewById(R.id.recycler_view);
         mRecyclerview.setHasFixedSize(true);
@@ -101,6 +109,10 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         mRequestQueue.add(request);
     }
 
+    @Override
+    public void onBackPressed() {
+            finish();
+        }
     @Override
     public void onItemClick(int position) {
         Intent detailIntent = new Intent(this,SightsDetail.class);
