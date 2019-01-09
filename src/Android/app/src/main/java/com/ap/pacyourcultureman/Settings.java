@@ -1,11 +1,13 @@
 package com.ap.pacyourcultureman;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Settings extends Activity {
@@ -45,6 +48,27 @@ public class Settings extends Activity {
 
 
         btn_apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openResetDialog();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+    private void openResetDialog(){
+
+        final Dialog dialog = new Dialog(Settings.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_settings);
+        dialog.setCancelable(true);
+        final Button btn_dialog_apply = dialog.findViewById(R.id.btn_dialog_apply);
+        final Button btn_dialog_cancel = dialog.findViewById(R.id.btn_dialogset_cancel);
+        btn_dialog_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("pasw","hit");
@@ -86,13 +110,16 @@ public class Settings extends Activity {
                     }
                 });
                 thread.start();
+                dialog.dismiss();
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btn_dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                finish();
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
+        dialog.show();
+
     }
 }

@@ -1,8 +1,11 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,6 +14,7 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Shop extends AppCompatActivity {
@@ -177,6 +181,24 @@ public class Shop extends AppCompatActivity {
         buybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openResetDialog();
+
+
+            }
+        });
+
+    }
+    private void openResetDialog(){
+
+        final Dialog dialog = new Dialog(Shop.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_shop);
+        dialog.setCancelable(true);
+        final Button btn_dialog_buy = dialog.findViewById(R.id.btn_dialog_buy);
+        final Button btn_dialog_cancel = dialog.findViewById(R.id.btn_dialogshop_cancel);
+        btn_dialog_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 _totalprice = calcTotalPrice();
                 if(_totalprice <= _coins){
                     _PushbackGunBullets = _PushbackGunBullets + cntpushbackBullets;
@@ -225,10 +247,16 @@ public class Shop extends AppCompatActivity {
                 }else{
                     Toast.makeText(Shop.this, "You don't have enough credits", Toast.LENGTH_SHORT).show();
                 }
-
-
+                dialog.dismiss();
             }
         });
+        btn_dialog_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
     private int calcTotalPrice(){
