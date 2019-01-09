@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,12 +8,15 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,7 +29,7 @@ import org.json.JSONObject;
 import static com.ap.pacyourcultureman.Helpers.ApiHelper.player;
 import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
 
-public class Skins extends AppCompatActivity {
+public class Skins extends Activity {
 
     public static Integer skinId;
     public static Bitmap player_pacman;
@@ -34,7 +38,7 @@ public class Skins extends AppCompatActivity {
     private ImageView imageView;
     private ApiHelper apiHelper;
     private Marker marker;
-
+    private Button btnOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,14 @@ public class Skins extends AppCompatActivity {
         textView = findViewById(R.id.txt_selectedskin);
         imageView = findViewById(R.id.imgv_selectedskin);
         apiHelper = new ApiHelper();
+        btnOk = findViewById(R.id.skins_btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         //if empty retrieve from login
         if(skinId == null){
             skinId = player.getSkinId();
