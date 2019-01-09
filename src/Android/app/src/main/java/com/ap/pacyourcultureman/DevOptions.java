@@ -1,9 +1,6 @@
 package com.ap.pacyourcultureman;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,7 +17,7 @@ import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import static com.ap.pacyourcultureman.Helpers.getDotsBetween2Points.GetDotsBetweenAanB;
+import static com.ap.pacyourcultureman.Helpers.GetDotsBetween2Points.GetDotsBetweenAanB;
 
 
 public class DevOptions extends Activity{

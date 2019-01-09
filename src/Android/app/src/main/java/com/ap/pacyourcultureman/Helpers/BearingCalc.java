@@ -39,4 +39,5 @@ public class BearingCalc {
         distanceInM = new DecimalFormat("##.##").format(loc1.distanceTo(loc2));
         return distanceInM + "m";
     }
+
 }

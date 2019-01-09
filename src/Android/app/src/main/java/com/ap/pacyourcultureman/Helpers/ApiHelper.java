@@ -221,7 +221,7 @@ public class ApiHelper {
         return userId;
     }
 
-    public void put(final String url, final JSONObject jsonObject){
+    public void put(final String url, final JSONObject jsonObject, final VolleyCallBack callBack){
         run = true;
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -232,6 +232,7 @@ public class ApiHelper {
                             public void onResponse(JSONObject response) {
                                 Log.d("Response", response.toString());
                                 run = false;
+                                callBack.onSuccess();
                             }
                         },
                         new Response.ErrorListener() {

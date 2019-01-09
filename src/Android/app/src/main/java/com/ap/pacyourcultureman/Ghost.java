@@ -22,7 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
+import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
+
 
 public class Ghost {
     private int id;

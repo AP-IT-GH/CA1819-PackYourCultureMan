@@ -11,7 +11,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import static com.ap.pacyourcultureman.GameActivity.getBitmapFromDrawable;
+import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
+
 
 public class Dot {
 
@@ -41,8 +42,8 @@ public class Dot {
     public Dot(int id ,double lat, double lon, boolean taken ){
 
         //init default settings
-        height = 50;
-        width = 50;
+        height = 40;
+        width = 40;
         this.taken = false;
 
         //set
@@ -110,12 +111,18 @@ public class Dot {
         marker.remove();
     }
 
+    public void setMarkerVisible(Marker marker, boolean bool) {
+        marker.setVisible(bool);
+        this.marker = marker;
+    }
+
     public void Draw(GoogleMap mMap, Context context){
         Bitmap dot = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.pacman_dot, null));
         Bitmap scaledDot = Bitmap.createScaledBitmap(dot, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
                 .position(location)
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledDot))
-                .flat(true));
+                .flat(true)
+                .anchor(0.5f,0.5f));
     }
 }

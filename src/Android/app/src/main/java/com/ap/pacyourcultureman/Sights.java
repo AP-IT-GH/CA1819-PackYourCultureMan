@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.SightsAdapter;
+import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import org.json.JSONArray;
@@ -140,6 +141,10 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         catch (JSONException e) {
             e.printStackTrace();
         }
-        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object);
+        apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object, new VolleyCallBack() {
+            @Override
+            public void onSuccess() {
+            }
+        });
     }
 }
