@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import org.json.JSONObject;
 
@@ -44,7 +45,7 @@ public class Shop extends AppCompatActivity {
         plusLifePoints = findViewById(R.id.plusLifepoints);
         lifepointscnt = findViewById(R.id.lifepointsView);
         lifepointsView = findViewById(R.id.currentLifepoints);
-
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         player = ApiHelper.player;
         apiHelper = new ApiHelper();
         cntfreezegunBullets = 0;
