@@ -19,10 +19,8 @@ import org.json.JSONObject;
 
 public class Settings extends Activity {
     EditText edit_password,edit_firstname,edit_lastname,edit_email;
-    String email, firstName, lastName, password;
     Button btn_apply, btn_cancel;
     String email, firstName, lastName, password,currentUsername;
-    Button btn_apply;
     ApiHelper apiHelper;
     Player player;
     int skinId;
