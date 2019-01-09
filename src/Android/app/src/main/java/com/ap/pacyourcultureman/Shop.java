@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 
 import org.json.JSONObject;
 
@@ -206,7 +207,12 @@ public class Shop extends AppCompatActivity {
 
                     JSONSerializer jsonSerializer = new JSONSerializer();
                     JSONObject jsonObject = jsonSerializer.jsonPutGameStats(_lifePoints,_RifleBullets,_FreezegunBullets,_PushbackGunBullets,_coins);
-                    apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject);
+                    apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(Shop.this, "Thank you!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                     coinView.setText(Integer.toString(_coins));
                     _totalprice = 0;
