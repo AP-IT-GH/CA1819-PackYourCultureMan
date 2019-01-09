@@ -240,7 +240,8 @@ public class ApiHelper {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.d("Error.Response", error.toString());
-                                run = false; }
+                                run = false;
+                            callBack.onSuccess();}
                         }
                 )
                 {
