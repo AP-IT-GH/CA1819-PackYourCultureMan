@@ -29,8 +29,8 @@ public class Ghost {
     private int id;
     LatLng initLoc;
     public Marker marker;
-    List<Step> steps = new ArrayList<>();
-    private int iter;
+    public List<Step> steps = new ArrayList<>();
+    public int iter;
     public Handler handler = new Handler();
     ApiHelper apiHelper;
     int speed = 40;
@@ -81,7 +81,6 @@ public class Ghost {
         });
 
     }
-
 
     public void FollowPath() {
         final long start = SystemClock.uptimeMillis();

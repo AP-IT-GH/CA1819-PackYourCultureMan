@@ -331,7 +331,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
         if(marker.equals(Blinky.marker)) {
-                GunHandler gunHandler = new GunHandler(Blinky, this);
+                GunHandler gunHandler = new GunHandler(Blinky, playerpos, this);
                 gunHandler.gunHandler(Blinky.marker);
                 gunmenu.gunUpdater();
             return true;
