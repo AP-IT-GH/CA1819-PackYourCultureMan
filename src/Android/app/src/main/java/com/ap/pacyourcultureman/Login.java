@@ -48,7 +48,6 @@ public class Login extends Activity {
         run2 = false;
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
-        btn_dev = findViewById(R.id.btn_dev);
         edit_email = findViewById(R.id.edit_mail);
         edit_password = findViewById(R.id.edit_pass);
         errorChecker = findViewById(R.id.txt_errorchecker);
@@ -77,6 +76,8 @@ public class Login extends Activity {
                 String pass = edit_password.getText().toString();
                 JSONSerializer jsonSerializer = new JSONSerializer();
                 JSONObject jsonObject = jsonSerializer.jsonPostLogin(user, pass);
+                btn_login.setEnabled(false);
+                btn_register.setEnabled(false);
                 apiHelper.sendPost("https://aspcoreapipycm.azurewebsites.net/Users/authenticate", jsonObject, new VolleyCallBack() {
                     @Override
                     public void onSuccess() {
@@ -85,6 +86,11 @@ public class Login extends Activity {
                             GetDataWhenLoginSucces();
                             userId = apiHelper.getUserId();
                             jwt = apiHelper.getJwt();
+                        }
+                        else {
+                            errorSetter(apiHelper.getResponse());
+                            btn_login.setEnabled(true);
+                            btn_register.setEnabled(true);
                         }
                     }
                 });
@@ -95,14 +101,8 @@ public class Login extends Activity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btn_register.setEnabled(false);
                 Intent intent = new Intent(getBaseContext(), Register.class);
-                startActivity(intent);
-            }
-        });
-        btn_dev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), GameActivity.class);
                 startActivity(intent);
             }
         });
@@ -213,11 +213,12 @@ public class Login extends Activity {
         }
     }
     private void startGame() {
-        if (run1) {
+        if (run1 && run2) {
             Intent intent = new Intent(getBaseContext(), GameActivity.class);
             intent.putExtra("userid", userId);
             intent.putExtra("jwt", jwt);
             startActivity(intent);
+            finish();
         }
 
 

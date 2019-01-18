@@ -86,7 +86,7 @@
 
             <ImageView
                 android:id="@+id/game_img_dropdown"
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
@@ -180,7 +180,7 @@
                 android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="100dp"
-                android:background="@android:color/holo_red_dark"
+                android:background="@drawable/button"
                 android:text="Cancel"
                 android:textSize="12sp"
                 android:visibility="gone" />
@@ -247,6 +247,7 @@ android:id="@+id/menu"
 android:layout_width="200dp"
 android:layout_height="match_parent"
 android:layout_gravity="start"
-    android:background="#52606d"
+    android:background="@android:color/holo_orange_light"
+    app:itemTextColor="@color/darkgrey"
 app:menu="@menu/nav_menu"></android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
