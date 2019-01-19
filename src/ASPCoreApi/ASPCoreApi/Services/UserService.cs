@@ -15,6 +15,7 @@ namespace ASP.Services
         Users Create(Users user, string password);
         Users Update(Users user, string password = null);              
         void Delete(int id);
+        List<Users> getTop10();
     }
 
     public class UserService : IUserService
@@ -201,6 +202,19 @@ namespace ASP.Services
             }
 
             return true;
+        }
+
+        public List<Users> getTop10()
+        {
+            IQueryable<Users> top10Query = _context.users;
+            top10Query = top10Query.OrderByDescending(d => d.Stats.highestScore);
+            var top10List = top10Query.ToList();
+
+            foreach (var user in top10List)
+            {
+                user.Stats = _statsService.getByUserId(user.Id);
+            }
+            return top10List;
         }
     }
 }
