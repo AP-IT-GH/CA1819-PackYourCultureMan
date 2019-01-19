@@ -1,12 +1,14 @@
 package com.ap.pacyourcultureman;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import com.android.volley.Request;
@@ -129,8 +131,26 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                visitedSightsReset();
-                button.setEnabled(false);
+                final Dialog dialog = new Dialog(Sights.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_reset);
+                dialog.setCancelable(true);
+                final Button btn_dialog_reset = dialog.findViewById(R.id.btn_dialog_reset);
+                final Button btn_dialog_cancel = dialog.findViewById(R.id.btn_dialog_cancel);
+                dialog.show();
+                btn_dialog_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                btn_dialog_reset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        visitedSightsReset();
+                        button.setEnabled(false);
+                    }
+                });
             }
         });}
 
@@ -148,14 +168,14 @@ public class Sights extends Activity implements SightsAdapter.OnItemClickListene
                 array.put(objp);
                 ApiHelper.visitedSights.get(i).setChecked(false);}
             object.put("visitedSights",array);
-            intent = new Intent(this.getBaseContext(),GameActivity.class);
-            this.startActivity(intent);}
+            }
         catch (JSONException e) {
             e.printStackTrace();
         }
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatevisitedsights/" + Integer.toString(ApiHelper.player.getId()), object, new VolleyCallBack() {
             @Override
             public void onSuccess() {
+                finish();
             }
         });
     }

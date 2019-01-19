@@ -1,7 +1,9 @@
 package com.ap.pacyourcultureman;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.content.res.ResourcesCompat;
@@ -52,7 +54,17 @@ public class Skins extends Activity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                AlertDialog alertDialog = new AlertDialog.Builder(Skins.this).create();
+                alertDialog.setTitle("Skin updated");
+                alertDialog.setMessage("Application needs to be restarted for effect to occur.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                alertDialog.show();
             }
         });
         NavigationMenu navigationMenu = new NavigationMenu(this);
@@ -214,9 +226,7 @@ public class Skins extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this.getBaseContext(), GameActivity.class);
         finish();
-        this.startActivity(intent);
     }
 
 }

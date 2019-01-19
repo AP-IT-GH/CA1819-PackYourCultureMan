@@ -131,11 +131,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onPause() {
         super.onPause();
         // Stops Location Updates if activity is paused
-        if (mFusedLocationClient != null) {
+       /* if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
         // to stop the listener and save battery
-        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(this);*/
     }
 
 
