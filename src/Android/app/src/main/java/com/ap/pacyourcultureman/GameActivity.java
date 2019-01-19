@@ -479,6 +479,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void drawPlayer(){
         playerpos.removeMarker();
+        int hallo;
         playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
         LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         playerpos.getMarker().setPosition(currentLocation);
