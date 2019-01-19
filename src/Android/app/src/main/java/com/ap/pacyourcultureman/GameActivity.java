@@ -1,6 +1,7 @@
 package com.ap.pacyourcultureman;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,8 +30,12 @@ import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.Helpers.GunHandler;
+import com.ap.pacyourcultureman.Helpers.JSONSerializer;
+import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
 import com.ap.pacyourcultureman.Menus.Gunmenu;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
+import com.bhargavms.podslider.OnPodClickListener;
+import com.bhargavms.podslider.PodSlider;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -46,6 +54,9 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +78,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Location location;
     private List<Circle> circles;
     private Player player;
-    private int userId;
+    private int userId,speed;
     private ApiHelper apiHelper;
     private CollisionDetection collisionDetection;
     private Intent iin;
     private Bundle b;
-    private String jwt;
+    private String jwt,distance,bearing;
     private BearingCalc bearingCalc;
     private CollisionHandler collisionHandler;
     private Gunmenu gunmenu;
@@ -80,12 +91,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private SensorManager mSensorManager;
     private Skins dragablePlayer, playerpos;
+    private boolean startDialogEnded;
     public static LatLng currentPos;
     public static Boolean ghostCollide = false;
     public static LatLng pinnedLocation;
     public static Assignment currentAssigment;
     public static float rotation;
     public static Location mLastLocation;
+
 
 
     @Override
@@ -201,6 +214,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionHandler.visitedSightsPut();
                     currentAssigment = getRandomAssignment();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
+                    openAssignmentStartDialog();
                 }
                 for (int i = 0; i < correctedDots.size(); i++) {
                     if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
@@ -211,9 +225,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         correctedDots.remove(i);
                     }
                 }
-                txtCurrentHeading.setText(bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.getLat(), currentAssigment.getLon()));
+                distance = bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.getLat(), currentAssigment.getLon()));
+                bearing = bearingCalc.getBearingInString(marker.getPosition().latitude, marker.getPosition().longitude, currentAssigment.getLat(), currentAssigment.getLon());
+                txtCurrentHeading.setText(bearing);
                 txtCurrentAssignment.setText(currentAssigment.getName());
-                txtCurrentDistance.setText(bearingCalc.getDistance(marker.getPosition(), new LatLng(currentAssigment.getLat(), currentAssigment.getLon())));
+                txtCurrentDistance.setText(distance);
             }
 
             @Override
@@ -227,6 +243,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
+        openAssignmentStartDialog();
+
+
 
     }
 
@@ -285,6 +304,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionHandler.ghostCollision();
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
+                                        openAssignmentStartDialog();
+
                     }
                     txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
                 }
@@ -476,6 +497,96 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+    private boolean openAssignmentStartDialog(){
+
+        final Dialog dialog1 = new Dialog(GameActivity.this);
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setContentView(R.layout.dialog_startassignment);
+        final TextView txt_distance = dialog1.findViewById(R.id.dialog_txt_currentDistance);
+        final TextView txt_bearing = dialog1.findViewById(R.id.dialog_txt_currentHeading);
+        final TextView txt_assignment = dialog1.findViewById(R.id.txt_assignmentname);
+        final TextView txt_speed = dialog1.findViewById(R.id.dialog_txt_currentSpeed);
+        final PodSlider podSlider = (PodSlider) dialog1.findViewById(R.id.pod_slider);
+        final Button btnGo = dialog1.findViewById(R.id.dialog_btn_GO);
+        startDialogEnded = false;
+        podSlider.setPodClickListener(new OnPodClickListener() {
+            @Override
+            public void onPodClick(int position) {
+                speed = SetSpeed(position);
+                Log.d("speed",Integer.toString(speed));
+                txt_speed.setText(addKm(speed));
+            }
+        });
+        btnGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDialogEnded = true;
+                dialog1.dismiss();
+                openCountDownDialog();
+            }
+
+        });
+        txt_assignment.setText(currentAssigment.getName());
+        txt_distance.setText(distance);
+        txt_bearing.setText(bearing);
+        txt_speed.setText(addKm(speed));
+
+
+        dialog1.show();
+        return startDialogEnded;
+
+    }
+    private void openCountDownDialog(){
+        final Dialog dialog = new Dialog(GameActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_counter);
+        final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
+        //dialog.show();
+        new CountDownTimer(6000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                txt_counter.setText(Long.toString((millisUntilFinished / 1000)-1));
+
+                if(millisUntilFinished <= 1000){
+                    txt_counter.setText("GO!");
+                }
+            }
+            public void onFinish() {
+
+                dialog.dismiss();
+            }
+        }.start();
+        dialog.show();
+
+    }
+    private String addKm(int speed){
+        String speedStr = Integer.toString(speed);
+        return speedStr + "km/h";
+    }
+    private int SetSpeed(int position){
+        int speed = 5;
+        switch(position) {
+            case 0:
+                speed = 4;
+                break;
+
+            case 1:
+                speed = 5;
+                break;
+            case 2:
+                speed = 6;
+                break;
+            case 3:
+                speed = 7;
+                break;
+            case 4:
+                speed = 8;
+                break;
+
+        }
+        return speed;
     }
 
 
