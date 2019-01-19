@@ -85,14 +85,7 @@ public class GunHandler {
             Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
             ghost.markerAnimation.isFrozen = true;
             ghost.isFrozen = true;
-            ghost.handler.removeCallbacksAndMessages(ghost.r);
-            ghost.iter = 0;
-         //   ghost.handler = null;
-            ghost.markerAnimation.handler.removeCallbacksAndMessages(ghost.markerAnimation.r);
-           // ghost.markerAnimation.handler = null;
-           // ghost.r = null;
-            ghost.markerAnimation.r = null;
-            ghost.steps = new ArrayList<>();
+            ghost.stopGhost();
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

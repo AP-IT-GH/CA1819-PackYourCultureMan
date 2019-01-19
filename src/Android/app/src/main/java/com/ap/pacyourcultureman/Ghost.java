@@ -2,12 +2,14 @@ package com.ap.pacyourcultureman;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
 import com.ap.pacyourcultureman.Helpers.LatLngInterpolator;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
@@ -33,7 +35,7 @@ public class Ghost {
     public int iter;
     public Handler handler = new Handler();
     ApiHelper apiHelper;
-    private int speed = 2;
+    private int speed = 40;
     public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
     public Runnable r;
@@ -62,7 +64,7 @@ public class Ghost {
 
     }
 
-    public void getSteps(LatLng destination) {
+    public void getSteps(final LatLng destination) {
         steps = new ArrayList<>();
         markerAnimation = new MarkerAnimation();
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&mode=walking&key=" + BuildConfig.GoogleSecAPIKEY;
@@ -76,7 +78,17 @@ public class Ghost {
                 newDirections = true;
                 //marker.setPosition(steps.get(0).start);
                 Log.d("Movement", "newdirections: " + newDirections);
+                Location destinationloc = new Location("");
+                destinationloc.setLatitude(destination.latitude);
+                destinationloc.setLongitude(destination.longitude);
 
+                Location otherLoc = new Location("");
+                otherLoc.setLatitude(destination.latitude);
+                otherLoc.setLongitude(destination.longitude);
+
+                double finalDistance  = destinationloc.distanceTo(otherLoc);
+                Step finalStep = new Step(destination, destination, (int)finalDistance);
+                steps.add(finalStep);
                 FollowPath();
             }
         });
@@ -91,7 +103,7 @@ public class Ghost {
 
             @Override
             public void run() {
-                if (1 < steps.size()) {
+                if (steps.size() > 1) {
                     elapsed = SystemClock.uptimeMillis() - start;
                     Log.d("Movement", "Moving to point: " + iter);
                     time = (steps.get(0).distance * 1000)/(speed);
