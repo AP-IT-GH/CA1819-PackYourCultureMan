@@ -15,7 +15,8 @@ namespace ASP.Services
         Users Create(Users user, string password);
         Users Update(Users user, string password = null);              
         void Delete(int id);
-        List<Users> getTop10(string orderBy);
+        List<HighscoresProfile> getTop10(string orderBy);
+        HighscoresProfile getUserHsList(string orderBy, int id);
     }
 
     public class UserService : IUserService
@@ -204,25 +205,89 @@ namespace ASP.Services
             return true;
         }
 
-        public List<Users> getTop10(string orderBy)
+        public List<HighscoresProfile> getTop10(string orderBy)
         {
-            IQueryable<Users> top10Query = _context.users;
+            IQueryable<Users> Query = _context.users;
             switch (orderBy)
             {
                 case "high":
-                    top10Query = top10Query.OrderByDescending(d => d.Stats.highestScore);
+                    Query = Query.OrderByDescending(d => d.Stats.highestScore);
                     break;
                 case "total":
-                    top10Query = top10Query.OrderByDescending(d => d.Stats.totalScore);
+                    Query = Query.OrderByDescending(d => d.Stats.totalScore);
                     break;
             }           
-            var top10List = top10Query.ToList();
+            var userList = Query.ToList();
 
-            foreach (var user in top10List)
+            foreach (var user in userList)
             {
                 user.Stats = _statsService.getByUserId(user.Id);
             }
-            return top10List;
+            var highscoreProfiles = new List<HighscoresProfile>();
+            if (userList.Count > 10)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var highscore = new HighscoresProfile();
+                    highscoreProfiles.Add(highscore);
+                    highscoreProfiles[i].ranking = i + 1;
+                    highscoreProfiles[i].highestScore = userList[i].Stats.highestScore;
+                    highscoreProfiles[i].userName = userList[i].Username;
+                    highscoreProfiles[i].totalFailed = userList[i].Stats.totalFailed;
+                    highscoreProfiles[i].totalLost = userList[i].Stats.totalLost;
+                    highscoreProfiles[i].totalScore = userList[i].Stats.totalScore;
+                    highscoreProfiles[i].totalSucces = userList[i].Stats.totalSucces;
+                }
+            }
+            if (userList.Count < 10)
+            {
+                for (int i = 0; i < userList.Count; i++)
+                {
+                    var highscore = new HighscoresProfile();
+                    highscoreProfiles.Add(highscore);
+                    highscoreProfiles[i].ranking = i + 1;
+                    highscoreProfiles[i].highestScore = userList[i].Stats.highestScore;
+                    highscoreProfiles[i].userName = userList[i].Username;
+                    highscoreProfiles[i].totalFailed = userList[i].Stats.totalFailed;
+                    highscoreProfiles[i].totalLost = userList[i].Stats.totalLost;
+                    highscoreProfiles[i].totalScore = userList[i].Stats.totalScore;
+                    highscoreProfiles[i].totalSucces = userList[i].Stats.totalSucces;
+                }
+            }
+            return highscoreProfiles;
+        }
+        public HighscoresProfile getUserHsList(string orderBy, int id)
+        {
+            var user = GetById(id);
+            var stats = _statsService.getByUserId(id);
+            var ranking = 0;
+            var highscoreProfile = new HighscoresProfile();
+            IQueryable<Users> userQuery = _context.users;
+            switch (orderBy)
+            {
+                case "high":
+                    userQuery = userQuery.OrderByDescending(d => d.Stats.highestScore);
+                    break;
+                case "total":
+                    userQuery = userQuery.OrderByDescending(d => d.Stats.totalScore);
+                    break;
+            }
+            var userList = userQuery.ToList();
+            foreach (var _user in userList)
+            {
+                ranking++;
+                if(user.Username == _user.Username)
+                {
+                    highscoreProfile.ranking = ranking;
+                    highscoreProfile.highestScore = stats.highestScore;
+                    highscoreProfile.totalFailed = stats.totalFailed;
+                    highscoreProfile.totalLost = stats.totalLost;
+                    highscoreProfile.totalScore = stats.totalScore;
+                    highscoreProfile.totalSucces = stats.totalSucces;
+                    highscoreProfile.userName = user.Username;
+                }
+            }
+            return highscoreProfile;
         }
     }
 }

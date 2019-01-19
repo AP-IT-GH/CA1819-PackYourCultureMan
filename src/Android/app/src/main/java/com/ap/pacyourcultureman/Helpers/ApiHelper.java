@@ -192,7 +192,14 @@ public class ApiHelper {
                     public void onErrorResponse(VolleyError error) {
                         //Failure Callback
                     }
-                });
+                }){@Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", "Bearer "+ player.getJwt());
+                    Log.d("xxx",player.getJwt());
+                    return params;
+                }
+        };
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 

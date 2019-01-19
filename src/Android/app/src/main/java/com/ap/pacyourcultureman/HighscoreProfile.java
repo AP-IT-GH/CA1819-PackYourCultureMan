@@ -6,15 +6,18 @@ public class HighscoreProfile {
     private int totalFailed;
     private int totalSuccess;
     private int totalLost;
+    private int ranking;
     private String username;
-    public HighscoreProfile(String username,int highestScore, int totalScore, int totalFailed, int totalSuccess, int totalLost) {
+    public HighscoreProfile(int ranking,String username,int highestScore, int totalScore, int totalFailed, int totalSuccess, int totalLost) {
         this.highestScore = highestScore;
         this.totalScore = totalScore;
         this.totalFailed = totalFailed;
         this.totalSuccess = totalSuccess;
         this.totalLost = totalLost;
         this.username = username;
+        this.ranking = ranking;
     }
+    public int getRanking(){return ranking;}
     public String getUsername(){return username;}
 
     public int getHighestScore() {
@@ -36,6 +39,8 @@ public class HighscoreProfile {
     public int getTotalScore() {
         return totalScore;
     }
+
+    public void setRanking(int ranking){this.ranking = ranking;}
 
     public void setUsername(String username){this.username = username;}
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,13 +21,20 @@ import java.util.List;
 public class Highscores extends AppCompatActivity {
     ApiHelper apiHelper;
     List<HighscoreProfile> highscoreProfile;
+    HighscoreProfile userProfile;
     ListView listview_Top10;
     CustomAdapter customAdapter;
+    Button btnHigh,btnTotal;
+    TextView txt_playername,txt_rank;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscores);
         apiHelper = new ApiHelper();
+        btnTotal = findViewById(R.id.btn_bytotal);
+        btnHigh = findViewById(R.id.btn_byhigh);
+        txt_playername = findViewById(R.id.HS_txt_username);
+        txt_rank = findViewById(R.id.HS_txt_rank);
         customAdapter = new CustomAdapter();
         listview_Top10 = findViewById(R.id.list_top10);
         Thread thread = new Thread(new Runnable() {
@@ -39,6 +47,7 @@ public class Highscores extends AppCompatActivity {
                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
                             highscoreProfile = jsonDeserializer.getTop10(apiHelper.getJsonArray());
                             listview_Top10.setAdapter(customAdapter);
+
                         }
                     });
 
@@ -50,7 +59,120 @@ public class Highscores extends AppCompatActivity {
         });
         thread.start();
 
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    apiHelper.get("https://aspcoreapipycm.azurewebsites.net/users/gethighscoreuser/"+ Integer.toString(ApiHelper.player.getId())+"/high", new VolleyCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                            userProfile = jsonDeserializer.getPlayerHsProfile(apiHelper.getJsonObject());
+                            txt_playername.setText(userProfile.getUsername());
+                            txt_rank.setText(Integer.toString(userProfile.getRanking()));
+                        }
+                    });
+
+                    Log.d("Nailed", userProfile.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread2.start();
+
+        btnHigh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/users/gettop10/high", new VolleyCallBack() {
+                                @Override
+                                public void onSuccess() {
+                                    JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                    highscoreProfile = jsonDeserializer.getTop10(apiHelper.getJsonArray());
+                                    listview_Top10.setAdapter(customAdapter);
+                                }
+                            });
+
+                            Log.d("Nailed", "it");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
+                Thread thread2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            apiHelper.get("https://aspcoreapipycm.azurewebsites.net/users/gethighscoreuser/"+ Integer.toString(ApiHelper.player.getId())+"/high", new VolleyCallBack() {
+                                @Override
+                                public void onSuccess() {
+                                    JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                    userProfile = jsonDeserializer.getPlayerHsProfile(apiHelper.getJsonObject());
+                                }
+                            });
+
+                            Log.d("Nailed", userProfile.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread2.start();
+            }
+        });
+        btnTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            apiHelper.getArray("https://aspcoreapipycm.azurewebsites.net/users/gettop10/total", new VolleyCallBack() {
+                                @Override
+                                public void onSuccess() {
+                                    JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                    highscoreProfile = jsonDeserializer.getTop10(apiHelper.getJsonArray());
+                                    listview_Top10.setAdapter(customAdapter);
+                                }
+                            });
+
+                            Log.d("Nailed", "it");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
+                Thread thread2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            apiHelper.get("https://aspcoreapipycm.azurewebsites.net/users/gethighscoreuser/"+ Integer.toString(ApiHelper.player.getId())+"/total", new VolleyCallBack() {
+                                @Override
+                                public void onSuccess() {
+                                    JSONDeserializer jsonDeserializer = new JSONDeserializer();
+                                    userProfile = jsonDeserializer.getPlayerHsProfile(apiHelper.getJsonObject());
+                                }
+                            });
+
+                            Log.d("Nailed", userProfile.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread2.start();
+            }
+        });
+
+
     }
+
     public class CustomAdapter extends BaseAdapter {
         public CustomAdapter() {
         }

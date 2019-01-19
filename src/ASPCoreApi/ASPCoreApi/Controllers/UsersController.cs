@@ -195,36 +195,16 @@ namespace ASP.Dtos
         [HttpGet("gettop10/{orderBy}")]
         public IActionResult GetTop10([FromRoute]string orderBy)
         {
-            var users = _userService.getTop10(orderBy);
-            var highscores = new List<HighscoresProfile>();
-            if(users.Count > 10)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    highscores[i].highestScore = users[i].Stats.highestScore;
-                    highscores[i].userName = users[i].Username;
-                    highscores[i].totalFailed = users[i].Stats.totalFailed;
-                    highscores[i].totalLost = users[i].Stats.totalLost;
-                    highscores[i].totalScore = users[i].Stats.totalScore;
-                    highscores[i].totalSucces = users[i].Stats.totalSucces;
-                }
-            }
-            if(users.Count < 10)
-            {
-                for (int i = 0; i < users.Count; i++)
-                {
-                    var highscore = new HighscoresProfile();
-                    highscores.Add(highscore);
-                    highscores[i].highestScore = users[i].Stats.highestScore;
-                    highscores[i].userName = users[i].Username;
-                    highscores[i].totalFailed = users[i].Stats.totalFailed;
-                    highscores[i].totalLost = users[i].Stats.totalLost;
-                    highscores[i].totalScore = users[i].Stats.totalScore;
-                    highscores[i].totalSucces = users[i].Stats.totalSucces;
-                }
-            }
-            
-            return Ok(highscores);
+            var top10List = _userService.getTop10(orderBy);
+                       
+            return Ok(top10List);
+        }
+        [HttpGet("gethighscoreuser/{id}/{orderBy}")]
+        public IActionResult getUserhsProfile([FromRoute]string orderBy,[FromRoute] int id)
+        {
+            var highscoreProfile = _userService.getUserHsList(orderBy,id);
+                      
+            return Ok(highscoreProfile);
         }
 
         [AllowAnonymous]

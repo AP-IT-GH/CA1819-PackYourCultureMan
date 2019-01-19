@@ -7,6 +7,7 @@ namespace ASPCoreApi.Models
 {
     public class HighscoresProfile
     {
+        public int ranking { get; set; }
         public string userName { get; set; }
         public int highestScore { get; set; }
         public int totalScore { get; set; }

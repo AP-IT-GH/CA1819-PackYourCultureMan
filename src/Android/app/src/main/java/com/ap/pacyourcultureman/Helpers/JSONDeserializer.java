@@ -105,12 +105,37 @@ public class JSONDeserializer {
                 int totalLost = jsonObject.getInt("totalLost");
                 int highestScore = jsonObject.getInt("highestScore");
                 String username = jsonObject.getString("userName");
-                top10.add(new HighscoreProfile(username,highestScore,totalScore,totalFailed,totalSucces,totalLost));
+                int ranking = jsonObject.getInt("ranking");
+                top10.add(new HighscoreProfile(ranking,username,highestScore,totalScore,totalFailed,totalSucces,totalLost));
             }catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return top10;
+    }
+    public HighscoreProfile getPlayerHsProfile(JSONObject reply){
+        HighscoreProfile playerHsProfile = new HighscoreProfile(0,"x",0,0,0,0,0);
+
+            try {
+                JSONObject jsonObject = reply;
+                int ranking = jsonObject.getInt("ranking");
+                int totalScore = jsonObject.getInt("totalScore");
+                int totalSucces = jsonObject.getInt("totalSucces");
+                int totalFailed = jsonObject.getInt("totalFailed");
+                int totalLost = jsonObject.getInt("totalLost");
+                int highestScore = jsonObject.getInt("highestScore");
+                String username = jsonObject.getString("userName");
+                playerHsProfile.setHighestScore(highestScore);
+                playerHsProfile.setTotalFailed(totalFailed);
+                playerHsProfile.setTotalLost(totalLost);
+                playerHsProfile.setTotalScore(totalScore);
+                playerHsProfile.setTotalSuccess(totalSucces);
+                playerHsProfile.setUsername(username);
+                playerHsProfile.setRanking(ranking);
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return playerHsProfile;
     }
 
     public List<Dot> getDots(JSONArray reply) {
