@@ -33,12 +33,13 @@ public class Ghost {
     public int iter;
     public Handler handler = new Handler();
     ApiHelper apiHelper;
-    int speed = 40;
+    private int speed = 2;
     public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
     public Runnable r;
     public Boolean isFrozen = false;
     public Boolean isDead = false;
+
     public Ghost(LatLng location) {
         apiHelper = new ApiHelper();
         initLoc = location;
@@ -114,5 +115,17 @@ public class Ghost {
 
     public LatLng getLocation() {
         return marker.getPosition();
+    }
+
+    public void setSpeed(int _speed){
+        speed = _speed;
+    }
+
+    public void stopGhost(){
+        handler.removeCallbacksAndMessages(r);
+        markerAnimation.handler.removeCallbacksAndMessages(markerAnimation.r);
+        markerAnimation.r = null;
+        steps = new ArrayList<>();
+        iter = 0;
     }
 }

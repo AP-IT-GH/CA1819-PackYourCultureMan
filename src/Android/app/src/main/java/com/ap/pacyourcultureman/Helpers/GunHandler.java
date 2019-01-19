@@ -180,14 +180,8 @@ public class GunHandler {
             double fakelat = destination.latitude + 0.001;
             double fakelong = destination.longitude + 0.001;
             
-            ghost.handler.removeCallbacksAndMessages(ghost.r);
-            //   ghost.handler = null;
-            ghost.markerAnimation.handler.removeCallbacksAndMessages(ghost.markerAnimation.r);
-            // ghost.markerAnimation.handler = null;
-            // ghost.r = null;
-            ghost.markerAnimation.r = null;
-            ghost.steps = new ArrayList<>();
-            ghost.iter = 0;
+            ghost.stopGhost();
+
             String url = "https://roads.googleapis.com/v1/snapToRoads?path=" + destination.latitude + "," + destination.longitude + "|" + fakelat + "," + fakelong + "&interpolate=false&key=" + BuildConfig.GoogleSecAPIKEY;
             Log.d("push", url);
 
