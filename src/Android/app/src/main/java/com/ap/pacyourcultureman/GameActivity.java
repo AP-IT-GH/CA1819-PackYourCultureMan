@@ -75,7 +75,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Location location;
     private List<Circle> circles;
     private Player player;
-    private int userId,speed;
+    private int userId,speed = 2;
     private ApiHelper apiHelper;
     private CollisionDetection collisionDetection;
     private Intent iin;
@@ -158,15 +158,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentAssigment = getRandomAssignment();
         //draw ghost assignements players
         startDraw();
-        handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("Steps", "Getting steps...");
-                Blinky.getSteps(ApiHelper.assignments.get(1).getLatLng());
-            }
-        });
-        Log.d("Movement", "Ik ben non-blocking");
 
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -515,9 +506,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         podSlider.setPodClickListener(new OnPodClickListener() {
             @Override
             public void onPodClick(int position) {
-                speed = SetSpeed(position);
+                speed = SetSpeed(position);        handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("Steps", "Getting steps...");
+                        Blinky.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                    }
+                });
+                Log.d("Movement", "Ik ben non-blocking");
                 Log.d("speed",Integer.toString(speed));
                 txt_speed.setText(addKm(speed));
+                Blinky.setSpeed((int)(speed/3.6));
             }
         });
         btnGo.setOnClickListener(new View.OnClickListener() {
@@ -553,6 +553,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(millisUntilFinished <= 1000){
                     txt_counter.setText("GO!");
+                    handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("Steps", "Getting steps...");
+                            Blinky.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                        }
+                    });
+                    Log.d("Movement", "Ik ben non-blocking");
                 }
             }
             public void onFinish() {
@@ -571,20 +580,20 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         int speed = 5;
         switch(position) {
             case 0:
-                speed = 4;
+                speed = 2;
                 break;
 
             case 1:
-                speed = 5;
+                speed = 3;
                 break;
             case 2:
-                speed = 6;
+                speed = 4;
                 break;
             case 3:
-                speed = 7;
+                speed = 5;
                 break;
             case 4:
-                speed = 8;
+                speed = 6;
                 break;
 
         }

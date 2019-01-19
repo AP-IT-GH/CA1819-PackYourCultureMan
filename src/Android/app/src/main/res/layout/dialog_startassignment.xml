@@ -99,7 +99,7 @@
 
             android:layout_weight="1"
             android:gravity="center"
-            android:text="5km/h"
+            android:text="2km/h"
             android:textAlignment="textStart"
             android:textColor="@android:color/holo_orange_light"
             android:textSize="18dp" />
