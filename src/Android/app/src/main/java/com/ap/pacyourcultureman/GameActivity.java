@@ -47,6 +47,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
+import com.bhargavms.podslider.OnPodClickListener;
+import com.bhargavms.podslider.PodSlider;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -475,6 +478,97 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+    
+    private boolean openAssignmentStartDialog(){
+
+        final Dialog dialog1 = new Dialog(GameActivity.this);
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setContentView(R.layout.dialog_startassignment);
+        final TextView txt_distance = dialog1.findViewById(R.id.dialog_txt_currentDistance);
+        final TextView txt_bearing = dialog1.findViewById(R.id.dialog_txt_currentHeading);
+        final TextView txt_assignment = dialog1.findViewById(R.id.txt_assignmentname);
+        final TextView txt_speed = dialog1.findViewById(R.id.dialog_txt_currentSpeed);
+        final PodSlider podSlider = (PodSlider) dialog1.findViewById(R.id.pod_slider);
+        final Button btnGo = dialog1.findViewById(R.id.dialog_btn_GO);
+        startDialogEnded = false;
+        podSlider.setPodClickListener(new OnPodClickListener() {
+            @Override
+            public void onPodClick(int position) {
+                speed = SetSpeed(position);
+                Log.d("speed",Integer.toString(speed));
+                txt_speed.setText(addKm(speed));
+            }
+        });
+        btnGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDialogEnded = true;
+                dialog1.dismiss();
+                openCountDownDialog();
+            }
+
+        });
+        txt_assignment.setText(currentAssigment.getName());
+        txt_distance.setText(distance);
+        txt_bearing.setText(bearing);
+        txt_speed.setText(addKm(speed));
+
+
+        dialog1.show();
+        return startDialogEnded;
+
+    }
+    private void openCountDownDialog(){
+        final Dialog dialog = new Dialog(GameActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_counter);
+        final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
+        //dialog.show();
+        new CountDownTimer(6000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                txt_counter.setText(Long.toString((millisUntilFinished / 1000)-1));
+
+                if(millisUntilFinished <= 1000){
+                    txt_counter.setText("GO!");
+                }
+            }
+            public void onFinish() {
+
+                dialog.dismiss();
+            }
+        }.start();
+        dialog.show();
+
+    }
+    private String addKm(int speed){
+        String speedStr = Integer.toString(speed);
+        return speedStr + "km/h";
+    }
+    private int SetSpeed(int position){
+        int speed = 5;
+        switch(position) {
+            case 0:
+                speed = 4;
+                break;
+
+            case 1:
+                speed = 5;
+                break;
+            case 2:
+                speed = 6;
+                break;
+            case 3:
+                speed = 7;
+                break;
+            case 4:
+                speed = 8;
+                break;
+
+        }
+        return speed;
     }
 
 
