@@ -1,9 +1,14 @@
 package com.ap.pacyourcultureman;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +38,7 @@ public class Login extends Activity {
     Boolean run1,run2;
     int userId;
     String jwt;
-
+    private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,21 @@ public class Login extends Activity {
         Intent intent = getIntent();
         queue = Volley.newRequestQueue(this);
         Load();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION);
+            }
+        }
         String intentuser = intent.getStringExtra("username");
         String intentpassword = intent.getStringExtra("pass");
         if (intentuser != null && intentpassword != null) {

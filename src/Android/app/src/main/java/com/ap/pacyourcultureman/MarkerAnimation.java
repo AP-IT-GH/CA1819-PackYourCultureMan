@@ -46,7 +46,6 @@ public class MarkerAnimation {
                         // Repeat till progress is complete.
                         if (t < 1 && !test) {
                             // Post again 16ms later.
-                            Log.d("Markeranimation", "Animatiom");
                             handler.postDelayed(r, 16);
                         }
                     }

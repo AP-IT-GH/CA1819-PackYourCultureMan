@@ -2,6 +2,7 @@ package com.ap.pacyourcultureman;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.location.Location;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -88,6 +90,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private SensorManager mSensorManager;
     private Skins dragablePlayer, playerpos;
+    private LatLng currentLocation;
     private boolean startDialogEnded;
     public static LatLng currentPos;
     public static Boolean ghostCollide = false;
@@ -96,8 +99,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static float rotation;
     public static Location mLastLocation;
     BottomSlideMenu bottomSlideMenu;
-
-
+    private ProgressDialog progressDialog;
+    private FloatingActionButton fab;
+    private Boolean lockCam = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +175,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(false);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -240,10 +244,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         if (!success) {
             Log.e("Style failed", "Style parsing failed.");
         }
-        openAssignmentStartDialog();
-
-
-
+        progressDialog = progressDialog.show(GameActivity.this, "", "Please wait");
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(lockCam) {
+                    lockCam = false;
+                }
+                else {
+                    lockCam = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -274,6 +286,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
+
             List<Location> locationList = locationResult.getLocations();
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
@@ -325,13 +338,19 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(location.getLatitude(), location.getLongitude(), currentAssigment.getLat(), currentAssigment.getLon()));
                 txtCurrentAssignment.setText(currentAssigment.getName());
                 txtCurrentDistance.setText(bearingCalc.getDistance(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(currentAssigment.getLat(), currentAssigment.getLon())));
-
+                bearing = bearingCalc.getBearingInString(location.getLatitude(), location.getLongitude(), currentAssigment.getLat(), currentAssigment.getLon());
+                distance = (bearingCalc.getDistance(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(currentAssigment.getLat(), currentAssigment.getLon())));
+                if(progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    openAssignmentStartDialog();
+                }
                 // zooms to player
-             /*   CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(15.0f);
-                mMap.moveCamera(center);
-                mMap.animateCamera(zoom);*/
-
+                if(!lockCam) {
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15.0f);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
+                }
 
             }
         }
@@ -340,6 +359,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Assignment getRandomAssignment() {
         currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
         txtCurrentAssignment.setText(currentAssigment.getName());
+        for(int i = 0; i < assignments.size(); i++) {
+            if(assignments.get(i) != currentAssigment) {
+                assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
+            }
+            else {
+                assignments.get(i).drawCurrentHouse(mMap, getApplicationContext(), assignments.get(i).getName());
+            }
+        }
         return currentAssigment;
     }
 
@@ -436,7 +463,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //hide dev options
         if (ApiHelper.player.getId() == 21 ){
             Menu nav_menu = NavigationMenu.getNav_Menu();
-            nav_menu.findItem(R.id.nav_dev).setVisible(true);}
+            nav_menu.findItem(R.id.nav_dev).setVisible(true);
+        }
+        progressDialog = new ProgressDialog(GameActivity.this);
+        fab = findViewById(R.id.fab);
+        fab.setAlpha(0.5f);
 
     }
 
@@ -451,10 +482,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //Blinky draw and dummy movement
         Blinky.Draw(mMap, getApplicationContext());
         //draw assignments
-        for(int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
-
-        }
         //hide dots on certain zoom levels
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
@@ -479,9 +506,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void drawPlayer(){
         playerpos.removeMarker();
-        int hallo;
         playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
-        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         playerpos.getMarker().setPosition(currentLocation);
         playerpos.setRotations(playerpos.getMarker());
         playerpos.setDraggable(playerpos.getMarker());
@@ -516,7 +542,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onPodClick(int position) {
                 speed = SetSpeed(position);
-                Log.d("speed",Integer.toString(speed));
+                Log.d("Speed",Integer.toString(speed));
                 txt_speed.setText(addKm(speed));
             }
         });
@@ -533,7 +559,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txt_distance.setText(distance);
         txt_bearing.setText(bearing);
         txt_speed.setText(addKm(speed));
-
+        //dialog1.setCancelable(false);
 
         dialog1.show();
         return startDialogEnded;
@@ -543,8 +569,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         final Dialog dialog = new Dialog(GameActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_counter);
+       // dialog.setCancelable(false);
         final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
-        //dialog.show();
         new CountDownTimer(6000, 1000) {
 
             public void onTick(long millisUntilFinished) {
