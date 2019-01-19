@@ -62,7 +62,8 @@ import java.util.List;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener{
 
-    private Ghost Blinky;
+    private ArrayList<Ghost> Ghosts;
+    private Ghost Blinky, Inky, Pinky, Clyde;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
     private List<Assignment> assignments;
     private List<Dot> correctedDots;
@@ -388,7 +389,21 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //objects init
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         pinnedLocation = new LatLng(51.230663, 4.407146);
+
         Blinky = new Ghost(new LatLng(51.229796, 4.418413));
+        Inky = new Ghost(new LatLng(51.219429, 4.395858));
+        Pinky = new Ghost(new LatLng(51.206207, 4.387096));
+        Clyde = new Ghost(new LatLng(51.212186, 4.408376));
+        Ghosts = new ArrayList<>();
+        Ghosts.add(Blinky);
+        Ghosts.add(Inky);
+        Ghosts.add(Pinky);
+        Ghosts.add(Clyde);
+
+        for (int i = 0; i < Ghosts.size(); i++) {
+            Ghosts.get(i).id = i;
+        }
+
         apiHelper = new ApiHelper();
         NavigationMenu navigationMenu = new NavigationMenu(this);
         gunmenu = new Gunmenu(this);
@@ -439,13 +454,16 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw player
         dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
         playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
-        //Blinky draw and dummy movement
-        Blinky.Draw(mMap, getApplicationContext());
         //draw assignments
         for(int i = 0; i < assignments.size(); i++) {
             assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
 
         }
+        //Draw Ghosts
+        for (Ghost ghost:Ghosts) {
+            ghost.Draw(mMap, getApplicationContext());
+        }
+
         //hide dots on certain zoom levels
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
@@ -507,17 +525,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onPodClick(int position) {
                 speed = SetSpeed(position);        handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("Steps", "Getting steps...");
-                        Blinky.getSteps(ApiHelper.assignments.get(1).getLatLng());
-                    }
-                });
-                Log.d("Movement", "Ik ben non-blocking");
                 Log.d("speed",Integer.toString(speed));
                 txt_speed.setText(addKm(speed));
-                Blinky.setSpeed((int)(speed/3.6));
+                for (Ghost ghost:Ghosts) {
+                    ghost.setSpeed((int)(speed/3.6));
+                }
+
             }
         });
         btnGo.setOnClickListener(new View.OnClickListener() {
@@ -558,7 +571,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void run() {
                             Log.d("Steps", "Getting steps...");
-                            Blinky.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                            for (Ghost ghost:Ghosts) {
+                                ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                            }
                         }
                     });
                     Log.d("Movement", "Ik ben non-blocking");
