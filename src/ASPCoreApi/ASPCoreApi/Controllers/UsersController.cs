@@ -192,10 +192,10 @@ namespace ASP.Dtos
 
             return Ok(jsonUser);
         }
-        [HttpGet("gettop10")]
-        public IActionResult GetTop10()
+        [HttpGet("gettop10/{orderBy}")]
+        public IActionResult GetTop10([FromRoute]string orderBy)
         {
-            var users = _userService.getTop10();
+            var users = _userService.getTop10(orderBy);
             var highscores = new List<HighscoresProfile>();
             if(users.Count > 10)
             {

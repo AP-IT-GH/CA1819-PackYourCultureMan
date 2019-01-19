@@ -15,7 +15,7 @@ namespace ASP.Services
         Users Create(Users user, string password);
         Users Update(Users user, string password = null);              
         void Delete(int id);
-        List<Users> getTop10();
+        List<Users> getTop10(string orderBy);
     }
 
     public class UserService : IUserService
@@ -121,7 +121,7 @@ namespace ASP.Services
             if (userParam.LastName != null && userParam.LastName != "string"&& userParam.LastName != "") user.LastName = userParam.LastName;
             if (userParam.Username != null && userParam.Username != "string" && userParam.Username != "") user.Username = userParam.Username;
             if (userParam.Email != null && userParam.Email != "string" && userParam.Email != "") user.Email = userParam.Email;
-            if (userParam.skinId != null)user.skinId = userParam.skinId;
+            if (userParam.skinId != 0)user.skinId = userParam.skinId;
             
             if (!string.IsNullOrWhiteSpace(password)&& password != "string")
             {
@@ -204,10 +204,18 @@ namespace ASP.Services
             return true;
         }
 
-        public List<Users> getTop10()
+        public List<Users> getTop10(string orderBy)
         {
             IQueryable<Users> top10Query = _context.users;
-            top10Query = top10Query.OrderByDescending(d => d.Stats.highestScore);
+            switch (orderBy)
+            {
+                case "high":
+                    top10Query = top10Query.OrderByDescending(d => d.Stats.highestScore);
+                    break;
+                case "total":
+                    top10Query = top10Query.OrderByDescending(d => d.Stats.totalScore);
+                    break;
+            }           
             var top10List = top10Query.ToList();
 
             foreach (var user in top10List)

@@ -171,3 +171,11 @@ END;
 
 GO
 
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20190119203826_highscores')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20190119203826_highscores', N'2.1.4-rtm-31024');
+END;
+
+GO
+

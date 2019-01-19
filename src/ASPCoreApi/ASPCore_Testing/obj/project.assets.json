@@ -14102,11 +14102,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCore_Testing\\ASPCore_Testing.csproj",
+      "projectUniqueName": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCore_Testing\\ASPCore_Testing.csproj",
       "projectName": "ASPCore_Testing",
-      "projectPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCore_Testing\\ASPCore_Testing.csproj",
+      "projectPath": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCore_Testing\\ASPCore_Testing.csproj",
       "packagesPath": "C:\\Users\\Gebruiker\\.nuget\\packages\\",
-      "outputPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCore_Testing\\obj\\",
+      "outputPath": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCore_Testing\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -14125,8 +14125,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj": {
-              "projectPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj"
+            "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj": {
+              "projectPath": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj"
             }
           }
         }

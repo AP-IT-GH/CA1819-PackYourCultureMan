@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.ap.pacyourcultureman.DevOptions;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
+import com.ap.pacyourcultureman.Highscores;
 import com.ap.pacyourcultureman.Login;
 import com.ap.pacyourcultureman.R;
 import com.ap.pacyourcultureman.Settings;
@@ -59,8 +60,10 @@ public class NavigationMenu  {
                         intent = new Intent(activity.getBaseContext(),Skins.class);
                         activity.startActivity(intent);
                         break;
-
-
+                    case R.id.nav_hiscores:
+                        intent = new Intent(activity.getBaseContext(), Highscores.class);
+                        activity.startActivity(intent);
+                        break;
                     case R.id.nav_shop:
                         intent = new Intent(activity.getBaseContext(),Shop.class);
 

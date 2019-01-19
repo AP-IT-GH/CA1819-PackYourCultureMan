@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.ap.pacyourcultureman.Assignment;
 import com.ap.pacyourcultureman.Dot;
+import com.ap.pacyourcultureman.HighscoreProfile;
 import com.ap.pacyourcultureman.Player;
 import com.ap.pacyourcultureman.PlayerGameStats;
 import com.ap.pacyourcultureman.PlayerStats;
@@ -92,6 +93,24 @@ public class JSONDeserializer {
             }
         }
         return assignments;
+    }
+    public List<HighscoreProfile> getTop10(JSONArray reply){
+        List<HighscoreProfile> top10 = new ArrayList<>();
+        for (int i = 0; i < reply.length();i++){
+            try {
+                JSONObject jsonObject = reply.getJSONObject(i);
+                int totalScore = jsonObject.getInt("totalScore");
+                int totalSucces = jsonObject.getInt("totalSucces");
+                int totalFailed = jsonObject.getInt("totalFailed");
+                int totalLost = jsonObject.getInt("totalLost");
+                int highestScore = jsonObject.getInt("highestScore");
+                String username = jsonObject.getString("userName");
+                top10.add(new HighscoreProfile(username,highestScore,totalScore,totalFailed,totalSucces,totalLost));
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return top10;
     }
 
     public List<Dot> getDots(JSONArray reply) {

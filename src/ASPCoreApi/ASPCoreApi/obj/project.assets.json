@@ -12767,11 +12767,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
+      "projectUniqueName": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
       "projectName": "ASPCoreApi",
-      "projectPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
+      "projectPath": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\ASPCoreApi.csproj",
       "packagesPath": "C:\\Users\\Gebruiker\\.nuget\\packages\\",
-      "outputPath": "D:\\School\\CloudApplications\\ASPBackend\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\obj\\",
+      "outputPath": "D:\\School\\CloudApplications\\CA1819-PackYourCultureMan\\src\\ASPCoreApi\\ASPCoreApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

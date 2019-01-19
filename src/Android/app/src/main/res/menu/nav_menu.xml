@@ -18,6 +18,10 @@
         android:id="@+id/nav_skins"
         android:title="Skins"
         android:icon="@drawable/pacman"/>
+    <item android:id="@+id/nav_hiscores"
+        android:icon="@drawable/settings"
+        android:title="Highscores"
+        />
     <item android:id="@+id/nav_settings"
         android:icon="@drawable/settings"
         android:title="Settings"
