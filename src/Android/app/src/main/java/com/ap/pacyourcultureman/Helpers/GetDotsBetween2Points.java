@@ -47,7 +47,7 @@ public class GetDotsBetween2Points {
 
 
 
-      /*returns every coordinate pair in between two coordinate pairs given the desired interval*/
+    /*returns every coordinate pair in between two coordinate pairs given the desired interval*/
 
     private static ArrayList<MockLocation> getLocations( double azimuth, MockLocation start, MockLocation end) {
 
@@ -68,7 +68,7 @@ public class GetDotsBetween2Points {
     }
 
 
-   /*  calculates the distance between two lat, long coordinate pairs*/
+    /*  calculates the distance between two lat, long coordinate pairs*/
 
     private static double getPathLength(MockLocation start, MockLocation end) {
         double lat1Rads = Math.toRadians(start.lat);
@@ -83,7 +83,7 @@ public class GetDotsBetween2Points {
     }
 
 
-   /*   returns the lat and long of destination point given the start lat, long, azimuth, and distance*/
+    /*   returns the lat and long of destination point given the start lat, long, azimuth, and distance*/
 
     private static MockLocation getDestinationLatLng(double lat, double lng, double azimuth, double distance) {
         double radiusKm = RADIUS_OF_EARTH / 1000; //Radius of the Earth in km
@@ -100,7 +100,7 @@ public class GetDotsBetween2Points {
     }
 
 
-/*     calculates the azimuth in degrees from start point to end point */
+    /*     calculates the azimuth in degrees from start point to end point */
 
     private static double calculateBearing(MockLocation start, MockLocation end) {
         double startLat = Math.toRadians(start.lat);
