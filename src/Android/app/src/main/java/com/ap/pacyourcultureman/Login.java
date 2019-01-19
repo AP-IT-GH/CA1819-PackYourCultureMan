@@ -88,9 +88,8 @@ public class Login extends Activity {
                             jwt = apiHelper.getJwt();
                         }
                         else {
+                            Log.d("Test", apiHelper.getResponse());
                             errorSetter(apiHelper.getResponse());
-                            btn_login.setEnabled(true);
-                            btn_register.setEnabled(true);
                         }
                     }
                 });
@@ -163,6 +162,10 @@ public class Login extends Activity {
             public void run() {
                 errorChecker.setVisibility(View.VISIBLE);
                 errorChecker.setText(errormsg);
+                if(errormsg != "Fetching data") {
+                    btn_login.setEnabled(true);
+                    btn_register.setEnabled(true);
+                }
             }
         });
     }
