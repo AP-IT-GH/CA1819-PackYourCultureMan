@@ -28,7 +28,7 @@ import static com.ap.pacyourcultureman.Helpers.GetBitmap.getBitmapFromDrawable;
 
 
 public class Ghost {
-    private int id;
+    public int id;
     LatLng initLoc;
     public Marker marker;
     public List<Step> steps = new ArrayList<>();
@@ -47,16 +47,24 @@ public class Ghost {
         initLoc = location;
     }
 
-    public int setColor() {
-        return 1;
-    }
-    // we moeten hier waarschijnlijk ook een soort van AI programmeren anders gaan de spookjes
-    // op 1 rechte lijn terecht komen achter de speler.
-
     public void Draw(GoogleMap mMap, Context context) {
         int height = 80;
         int width = 80;
         Bitmap bitmap = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.mipmap.ic_launcher_foreground, null));
+        switch (id){
+            case 0:
+                bitmap = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.mipmap.ic_launcher_foreground, null));
+                break;
+            case 1:
+                bitmap = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.inky, null));
+                break;
+            case 2:
+                bitmap = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.pinky, null));
+                break;
+            case 3:
+                bitmap = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.clyde, null));
+                break;
+        }
         Bitmap smallerblinky = Bitmap.createScaledBitmap(bitmap, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
                 .position(initLoc)

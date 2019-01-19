@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
@@ -41,7 +43,7 @@ public class Skins extends Activity {
     private ApiHelper apiHelper;
     private Marker marker;
     private Button btnOk;
-
+    private Boolean skinSelect = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,17 +56,14 @@ public class Skins extends Activity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alertDialog = new AlertDialog.Builder(Skins.this).create();
-                alertDialog.setTitle("Skin updated");
-                alertDialog.setMessage("Application needs to be restarted for effect to occur.");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                alertDialog.show();
+                if(!skinSelect) {
+                    Toast.makeText(Skins.this, "No new skin selected", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else {
+                    Toast.makeText(Skins.this, "Skin updated", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
         NavigationMenu navigationMenu = new NavigationMenu(this);
@@ -82,6 +81,7 @@ public class Skins extends Activity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 int id = radioGroup.getCheckedRadioButtonId();
+                skinSelect = true;
                 switch (id) {
                     case R.id.pacmanY:
                         skinId = 1;
@@ -115,6 +115,7 @@ public class Skins extends Activity {
         apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updateuser/" + Integer.toString(player.getId()), jsonObject, new VolleyCallBack() {
             @Override
             public void onSuccess() {
+                ApiHelper.player.setSkinId(skinId);
             }
         });
     }
@@ -170,6 +171,16 @@ public class Skins extends Activity {
     }
 
     public void DrawPlayer(GoogleMap mMap, Context context, int width, int height ){
+        switch (ApiHelper.player.getSkinId()) {
+            case 1: player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_top, null));
+            break;
+            case 2: player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_red_top, null));
+            break;
+            case 3: player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_green_top, null));
+            break;
+            case 4: player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_blue_top, null));
+            break;
+        }
         Bitmap scaledPacman = Bitmap.createScaledBitmap( player_pacman, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
                 .position(GameActivity.currentPos)
