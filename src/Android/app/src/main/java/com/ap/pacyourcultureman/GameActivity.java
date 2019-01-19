@@ -166,7 +166,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 Log.d("Steps", "Getting steps...");
-                Blinky.getSteps(new LatLng(51.223949, 4.407599));
+                Blinky.getSteps(ApiHelper.assignments.get(1).getLatLng());
             }
         });
         Log.d("Movement", "Ik ben non-blocking");
@@ -352,8 +352,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
         if(marker.equals(Blinky.marker)) {
-                GunHandler gunHandler = new GunHandler(Blinky, this);
-                gunHandler.gunHandler();
+                GunHandler gunHandler = new GunHandler(Blinky, playerpos, this);
+                gunHandler.gunHandler(Blinky.marker);
                 gunmenu.gunUpdater();
             return true;
         }

@@ -29,14 +29,16 @@ public class Ghost {
     private int id;
     LatLng initLoc;
     public Marker marker;
-    List<Step> steps = new ArrayList<>();
-    private int iter;
-    Handler handler;
+    public List<Step> steps = new ArrayList<>();
+    public int iter;
+    public Handler handler = new Handler();
     ApiHelper apiHelper;
-    int speed = 10;
-
+    int speed = 40;
+    public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
-
+    public Runnable r;
+    public Boolean isFrozen = false;
+    public Boolean isDead = false;
     public Ghost(LatLng location) {
         apiHelper = new ApiHelper();
         initLoc = location;
@@ -61,15 +63,17 @@ public class Ghost {
 
     public void getSteps(LatLng destination) {
         steps = new ArrayList<>();
+        markerAnimation = new MarkerAnimation();
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&mode=walking&key=" + BuildConfig.GoogleSecAPIKEY;
         Log.d("Steps", baseUrl);
         final JSONDeserializer jsonDeserializer = new JSONDeserializer();
         apiHelper.get(baseUrl, new VolleyCallBack() {
             @Override
             public void onSuccess() {
+                steps.clear();
                 steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());
                 newDirections = true;
-                marker.setPosition(steps.get(0).start);
+                //marker.setPosition(steps.get(0).start);
                 Log.d("Movement", "newdirections: " + newDirections);
 
                 FollowPath();
@@ -78,13 +82,9 @@ public class Ghost {
 
     }
 
-
     public void FollowPath() {
-        handler = new Handler();
         final long start = SystemClock.uptimeMillis();
-
-
-        handler.post(new Runnable() {
+        handler.post(r = new Runnable() {
             long elapsed;
             long time = 30000;
 
@@ -94,7 +94,7 @@ public class Ghost {
                     elapsed = SystemClock.uptimeMillis() - start;
                     Log.d("Movement", "Moving to point: " + iter);
                     time = (steps.get(0).distance * 1000)/(speed);
-                    Log.d("Movement" ,"Step: " + steps.get(0));
+                    Log.d("Movement" ,"Step: " + steps.get(1));
                     Log.d("Movement", "Time for this step: " + time);
                     Move(steps.get(1).start, marker, time);
                     iter++;
@@ -108,7 +108,7 @@ public class Ghost {
 
     public void Move(LatLng dest, Marker mrkr, long time) {
         Log.d("Movement", "MarkerLocation: " + mrkr.getPosition());
-        MarkerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
+        markerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
 
     }
 
