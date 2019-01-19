@@ -198,7 +198,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/darkgrey">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -221,15 +222,9 @@
                 android:textColor="#ffffff"/>
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:id="@+id/txtWebsite"
-                    android:autoLink="web"
-                    android:gravity="center"/>
-                <TextView
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtShortDesc"
-                    android:textColor="#ffffff"/>
+                    android:textColor="@android:color/holo_orange_light"/>
             </LinearLayout>
         </LinearLayout>
         <TextView

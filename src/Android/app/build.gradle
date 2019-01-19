@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.mcxiaoke.volley:library-aar:1.0.0'
+    implementation 'com.github.bhargavms:PodSLider:1.2.0'
 
 
 

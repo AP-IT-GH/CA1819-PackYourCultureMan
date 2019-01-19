@@ -6,4 +6,6 @@
     <color name="darkgrey">#44433b</color>
     <color name="lightgrey">#5c5d60</color>
     <color name="totalPrice">#6aff00</color>
+    <color name="sliderColor"> #756E66</color>
+    <color name="countdown"></color>
 </resources>
