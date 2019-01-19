@@ -62,6 +62,8 @@
         <activity android:name=".DevOptions" />
         <activity android:name=".Skins"
             android:noHistory="true"></activity>
+        <activity android:name=".Highscores"
+            android:noHistory="true"></activity>
     </application>
 
 </manifest>

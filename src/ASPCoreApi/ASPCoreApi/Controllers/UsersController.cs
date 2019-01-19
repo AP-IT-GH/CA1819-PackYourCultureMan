@@ -192,6 +192,41 @@ namespace ASP.Dtos
 
             return Ok(jsonUser);
         }
+        [HttpGet("gettop10")]
+        public IActionResult GetTop10()
+        {
+            var users = _userService.getTop10();
+            var highscores = new List<HighscoresProfile>();
+            if(users.Count > 10)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    highscores[i].highestScore = users[i].Stats.highestScore;
+                    highscores[i].userName = users[i].Username;
+                    highscores[i].totalFailed = users[i].Stats.totalFailed;
+                    highscores[i].totalLost = users[i].Stats.totalLost;
+                    highscores[i].totalScore = users[i].Stats.totalScore;
+                    highscores[i].totalSucces = users[i].Stats.totalSucces;
+                }
+            }
+            if(users.Count < 10)
+            {
+                for (int i = 0; i < users.Count; i++)
+                {
+                    var highscore = new HighscoresProfile();
+                    highscores.Add(highscore);
+                    highscores[i].highestScore = users[i].Stats.highestScore;
+                    highscores[i].userName = users[i].Username;
+                    highscores[i].totalFailed = users[i].Stats.totalFailed;
+                    highscores[i].totalLost = users[i].Stats.totalLost;
+                    highscores[i].totalScore = users[i].Stats.totalScore;
+                    highscores[i].totalSucces = users[i].Stats.totalSucces;
+                }
+            }
+            
+            return Ok(highscores);
+        }
+
         [AllowAnonymous]
         [HttpPut("updateuser/{id}")]
         public IActionResult Update(int id,[FromBody]UserDto userDto)
