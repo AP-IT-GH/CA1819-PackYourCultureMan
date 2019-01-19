@@ -30,8 +30,7 @@ import com.ap.pacyourcultureman.Helpers.BearingCalc;
 import com.ap.pacyourcultureman.Helpers.CollisionDetection;
 import com.ap.pacyourcultureman.Helpers.CollisionHandler;
 import com.ap.pacyourcultureman.Helpers.GunHandler;
-import com.ap.pacyourcultureman.Helpers.JSONSerializer;
-import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
+import com.ap.pacyourcultureman.Menus.BottomSlideMenu;
 import com.ap.pacyourcultureman.Menus.Gunmenu;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.bhargavms.podslider.OnPodClickListener;
@@ -71,9 +70,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationRequest mLocationRequest;
     private Marker mCurrLocationMarker;
     private FusedLocationProviderClient mFusedLocationClient;
-    private SlidingUpPanelLayout bottomPanel;
-    private TextView txtName, txtWebsite, txtShortDesc, txtLongDesc, txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
-    private ImageView imgSight;
+    private TextView txtCurrentScore, txtCurrentLifePoints, txtCurrentAssignment, txtCurrentHeading, txtCurrentDistance;
     private Marker selectedMarker;
     private Location location;
     private List<Circle> circles;
@@ -98,7 +95,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static Assignment currentAssigment;
     public static float rotation;
     public static Location mLastLocation;
-
+    BottomSlideMenu bottomSlideMenu;
 
 
     @Override
@@ -134,11 +131,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onPause() {
         super.onPause();
         // Stops Location Updates if activity is paused
-        if (mFusedLocationClient != null) {
+       /* if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
         // to stop the listener and save battery
-        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(this);*/
     }
 
 
@@ -192,7 +189,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng arg0) {
-                bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+                bottomSlideMenu.getBottomPanel().setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
         });
 
@@ -286,8 +283,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
+                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 10)) {
+                    collisionHandler.currentAssigmentCollision();
+                    collisionHandler.visitedSightsSetBoolean();
+                    collisionHandler.visitedSightsPut();
+                    currentAssigment = getRandomAssignment();
+                    txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
+                }
                 drawPlayer();
-                LatLng markableP = playerpos.getMarker().getPosition();
+              /*  LatLng markableP = playerpos.getMarker().getPosition();
                 for(int i = 0; i < assignments.size(); i++) {
                     collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(assignments.get(i).getLat(), assignments.get(i).getLon()), 10);
                 }
@@ -297,6 +301,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 //dots collision
                 for(int i = 0; i < correctedDots.size(); i++) {
                     collisionDetection.collisionDetect(markableP, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
+                } */
+                for (int i = 0; i < correctedDots.size(); i++) {
+                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
+                        player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
+                        txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
+                        //removerMarkers On collision
+                        correctedDots.get(i).removeMarker();
+                        correctedDots.remove(i);
+                    }
                 }
                 if(ghostCollide) {
                     currentAssigment = getRandomAssignment();
@@ -309,6 +322,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
                 }
+                txtCurrentHeading.setText(bearingCalc.getBearingInString(location.getLatitude(), location.getLongitude(), currentAssigment.getLat(), currentAssigment.getLon()));
+                txtCurrentAssignment.setText(currentAssigment.getName());
+                txtCurrentDistance.setText(bearingCalc.getDistance(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(currentAssigment.getLat(), currentAssigment.getLon())));
 
                 // zooms to player
              /*   CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
@@ -333,17 +349,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i = 0; i < assignments.size(); i++) {
             if (marker.equals(assignments.get(i).getMarker()))
             {
-                bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                bottomPanel.setPanelHeight(400);
-                txtName.setText(assignments.get(i).getName());
-                if(assignments.get(i).getWebsite() != "N/A") {
-                    txtWebsite.setVisibility(View.VISIBLE);
-                    txtWebsite.setText(assignments.get(i).getWebsite());
-                }
-                else txtWebsite.setVisibility(View.INVISIBLE);
-                Picasso.get().load(assignments.get(i).getImgUrl()).into(imgSight);
-                txtShortDesc.setText(assignments.get(i).getShortDescr());
-                txtLongDesc.setText(assignments.get(i).getLongDescr());
+                bottomSlideMenu.setPanel(i);
             }
         }
     }
@@ -371,16 +377,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
-        if (bottomPanel != null &&
-                (bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)) {
-            bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-
+        if (bottomSlideMenu != null &&
+                (bottomSlideMenu.getBottomPanel().getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)) {
+            bottomSlideMenu.getBottomPanel().setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         }
-        else if(bottomPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-            bottomPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        else if(bottomSlideMenu.getBottomPanel().getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED && bottomSlideMenu.getBottomPanel().getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+            bottomSlideMenu.getBottomPanel().setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
         else if(selectedMarker != null) {
+            if (selectedMarker.isInfoWindowShown()){
                 selectedMarker.hideInfoWindow();
+            }
         } else super.onBackPressed();
 
     }
@@ -401,12 +408,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         collisionHandler = new CollisionHandler(GameActivity.this);
         circles = new ArrayList<>();
         //findview
-        bottomPanel = findViewById(R.id.sliding_layout);
-        txtName = findViewById(R.id.txtName);
-        imgSight = findViewById(R.id.imgSight);
-        txtWebsite = findViewById(R.id.txtWebsite);
-        txtShortDesc = findViewById(R.id.txtShortDesc);
-        txtLongDesc = findViewById(R.id.txtLongDesc);
+        bottomSlideMenu = new BottomSlideMenu(this);
         txtCurrentScore = findViewById(R.id.game_txt_currentscore);
         txtCurrentLifePoints = findViewById(R.id.game_txt_currentLifePoints);
         txtCurrentAssignment = findViewById(R.id.game_txt_currentAssginment);
@@ -426,7 +428,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
         //set
         rotation = 0f;
-        bottomPanel.setPanelHeight(0);
         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
         txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
         //skin init
@@ -478,6 +479,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void drawPlayer(){
         playerpos.removeMarker();
+        int hallo;
         playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
         LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         playerpos.getMarker().setPosition(currentLocation);
