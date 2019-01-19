@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="380dp"
+    android:layout_width="280dp"
+    android:background="@drawable/box"
+    >
+
+
+    <TextView
+        android:id="@+id/txt_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="next assignment:"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_assignmentname"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:text="......"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_dist"
+            android:layout_width="12dp"
+            android:layout_height="42dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Distance:"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/dialog_txt_currentDistance"
+            android:layout_width="148dp"
+            android:layout_height="42dp"
+
+            android:gravity="center"
+            android:text="1100.55m"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="direction"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_light" />
+
+    <TextView
+        android:id="@+id/dialog_txt_currentHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:text="N"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="36dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_dist2"
+            android:layout_width="121dp"
+            android:layout_height="42dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Speed:"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/dialog_txt_currentSpeed"
+            android:layout_width="148dp"
+            android:layout_height="42dp"
+
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="5km/h"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <com.bhargavms.podslider.PodSlider
+        android:id="@+id/pod_slider"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_margin="10dp"
+        app:mainSliderColor="@color/sliderColor"
+        app:numberOfPods="5"
+        app:podColor="#4CAF50"
+        app:selectedPodColor="#fff"></com.bhargavms.podslider.PodSlider>
+
+    <Button
+        android:id="@+id/dialog_btn_GO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="GO!"
+        android:layout_margin="10dp"
+        android:textColor="#000000" />
+
+
+</LinearLayout>
