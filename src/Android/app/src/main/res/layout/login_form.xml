@@ -6,13 +6,28 @@
     android:layout_height="match_parent"
     android:background="	#44433b">
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="PacYourCultureMan"
+        android:textSize="25dp"
+        android:textColor="@android:color/holo_orange_light"
+        android:textCursorDrawable="@android:color/holo_orange_light"
+        android:textStyle="bold" />
+
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/pacmanicon" />
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/logo" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -158,9 +173,10 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
             android:background="@drawable/button"
-            android:text="Register" />
+            android:text="Register"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
 

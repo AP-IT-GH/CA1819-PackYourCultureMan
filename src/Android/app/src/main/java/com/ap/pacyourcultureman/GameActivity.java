@@ -24,7 +24,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
@@ -47,17 +46,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -483,8 +476,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw dots on map
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //draw player
-        dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
-        playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+        dragablePlayer.drawPlayer(mMap, getApplicationContext(),100,100);
+        playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         //draw assignments
         for(int i = 0; i < assignments.size(); i++) {
             assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
@@ -519,7 +512,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void drawPlayer(){
         playerpos.removeMarker();
-        playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+        playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         playerpos.getMarker().setPosition(currentLocation);
         playerpos.setRotations(playerpos.getMarker());

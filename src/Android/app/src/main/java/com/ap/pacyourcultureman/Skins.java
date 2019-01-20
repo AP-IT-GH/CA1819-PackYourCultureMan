@@ -170,7 +170,7 @@ public class Skins extends Activity {
         marker.remove();
     }
 
-    public void DrawPlayer(GoogleMap mMap, Context context, int width, int height ){
+    public void drawPlayer(GoogleMap mMap, Context context, int width, int height ){
         switch (ApiHelper.player.getSkinId()) {
             case 1: player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_top, null));
             break;
@@ -185,7 +185,7 @@ public class Skins extends Activity {
         marker = mMap.addMarker(new MarkerOptions()
                 .position(GameActivity.currentPos)
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman))
-                .draggable(true)
+                .draggable(false)
                 .flat(true)
                 .anchor(0.5f,0.5f)
                 .rotation(0f));
