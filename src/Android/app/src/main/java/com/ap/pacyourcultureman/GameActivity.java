@@ -53,9 +53,12 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import org.apache.commons.collections.ClosureUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ap.pacyourcultureman.R.drawable.clyde;
 import static com.ap.pacyourcultureman.R.drawable.openlock;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener{
@@ -227,7 +230,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-
         boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
 
         if (!success) {
@@ -395,11 +397,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
-        if(marker.equals(Blinky.marker)) {
-                GunHandler gunHandler = new GunHandler(Blinky, playerpos, this);
-                gunHandler.gunHandler(Blinky.marker);
+        for(Ghost ghost : Ghosts) {
+            if(marker.equals(ghost.marker)) {
+                GunHandler gunHandler = new GunHandler(ghost, playerpos, this);
+                gunHandler.gunHandler(ghost.marker);
                 gunmenu.gunUpdater();
-            return true;
+                return true;
+            }
         }
         // camera does not move anymore when dot is touched
         for(int i = 0; i < correctedDots.size(); i++) {
@@ -513,7 +517,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for (Ghost ghost:Ghosts) {
             ghost.Draw(mMap, getApplicationContext());
         }
-
         //hide dots on certain zoom levels
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
