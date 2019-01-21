@@ -102,6 +102,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
     private Boolean lockCam = false;
+    private boolean initAssignment = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +203,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if (collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)) {
+                    initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
@@ -309,7 +311,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 10)) {
+                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 30)) {
+                    initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
@@ -329,7 +332,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markableP, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
                 } */
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
+                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 20)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -370,7 +373,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     };
 
     private Assignment getRandomAssignment() {
-        currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
+        if(!initAssignment) {
+            currentAssigment = assignments.get(20);
+        }
+        else {
+            currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
+        }
         txtCurrentAssignment.setText(currentAssigment.getName());
         for(int i = 0; i < assignments.size(); i++) {
             if(assignments.get(i) != currentAssigment) {
@@ -389,6 +397,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i = 0; i < assignments.size(); i++) {
             if (marker.equals(assignments.get(i).getMarker()))
             {
+                Log.d("ASSIGNMENT", Integer.toString(i));
                 bottomSlideMenu.setPanel(i);
             }
         }
@@ -506,7 +515,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw dots on map
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //draw player
-        dragablePlayer.drawPlayer(mMap, getApplicationContext(),100,100);
+        dragablePlayer.drawPlayer(mMap, getApplicationContext(),150,150);
         playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         //draw assignments
         //Draw Ghosts
