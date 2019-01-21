@@ -56,8 +56,7 @@ public class JSONDeserializer {
             int freezeGun = gameStats.getInt("freezeGun");
             int pushBackGun = gameStats.getInt("pushBackGun");
             int coins = gameStats.getInt("coins");
-            boolean accessLevel = false;
-           // boolean accessLevel = jsUser.getBoolean("accessLevel");
+            boolean accessLevel = jsUser.getBoolean("accesLevel");
             JSONArray jsUserSights = jsUser.getJSONArray("visitedSights");
             for(int i = 0; i < jsUserSights.length(); i++) {
                 JSONObject visitedSight = jsUserSights.getJSONObject(i);

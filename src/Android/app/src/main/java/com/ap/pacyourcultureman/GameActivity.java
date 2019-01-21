@@ -347,7 +347,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
                                         openAssignmentStartDialog();
-
                     }
                     txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
                 }
@@ -499,14 +498,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         currentPos = pinnedLocation;
         Skins.SkinInit(getApplicationContext());
         //hide dev options
-        if (ApiHelper.player.getId() == 21 ){
+        if (ApiHelper.player.isAdmin()){
             Menu nav_menu = NavigationMenu.getNav_Menu();
             nav_menu.findItem(R.id.nav_dev).setVisible(true);
         }
         progressDialog = new ProgressDialog(GameActivity.this);
         fab = findViewById(R.id.fab);
         fab.setAlpha(0.5f);
-
     }
 
     private void startDraw(){
@@ -637,7 +635,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
             public void onFinish() {
-
                 dialog.dismiss();
             }
         }.start();
