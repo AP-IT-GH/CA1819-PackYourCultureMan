@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Shop extends AppCompatActivity {
+public class Shop extends Activity {
     TextView freezeguncnt,pushBackcnt,riflecnt,freezeView,pushbackView,rifleView,priceView,coinView,lifepointscnt,lifepointsView;
     Player player;
     ApiHelper apiHelper;

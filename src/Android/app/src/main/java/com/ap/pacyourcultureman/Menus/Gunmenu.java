@@ -1,6 +1,7 @@
 package com.ap.pacyourcultureman.Menus;
 
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,21 +13,19 @@ import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.R;
 
 public class Gunmenu {
-    ImageView dropdownMenu;
     TextView txtRifleAmmo, txtFreezeAmmo, txtPushbackAmmo;
-    Button switchGun;
     LinearLayout layout_rifle, layout_freeze, layout_pushback, dropdownLayout;
     Boolean isMenuDropped = false;
     public static Boolean gunSelected = false;
     public static String selectedGun;
     int rifleammo, freezeammo, pushbackammo;
+    FloatingActionButton fab;
     public Gunmenu(final Activity activity) {
-        dropdownMenu = activity.findViewById(R.id.game_img_dropdown);
+        fab = activity.findViewById(R.id.fabGun);
         dropdownLayout = activity.findViewById(R.id.game_lay_dropdown);
         layout_freeze = activity.findViewById(R.id.game_lay_freeze);
         layout_pushback = activity.findViewById(R.id.game_lay_pushback);
         layout_rifle = activity.findViewById(R.id.game_lay_rifle);
-        switchGun = activity.findViewById(R.id.game_btn_guncancel);
         txtFreezeAmmo = activity.findViewById(R.id.game_txt_freeze);
         txtRifleAmmo = activity.findViewById(R.id.game_txt_rifle);
         txtPushbackAmmo = activity.findViewById(R.id.game_txt_pushback);
@@ -37,17 +36,24 @@ public class Gunmenu {
         txtRifleAmmo.setText("x: " + Integer.toString(rifleammo));
         txtPushbackAmmo.setText("x: " + Integer.toString(pushbackammo));
         gunUpdater();
-        dropdownMenu.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!isMenuDropped) {
                     dropdownLayout.setVisibility(View.VISIBLE);
-                    dropdownMenu.setRotation(180);
+                    layout_freeze.setVisibility(View.VISIBLE);
+                    layout_pushback.setVisibility(View.VISIBLE);
+                    layout_rifle.setVisibility(View.VISIBLE);
+                    fab.setImageResource(R.drawable.gunup);
                     isMenuDropped = true;
+                    gunSelected = false;
                 }
                 else {
                     dropdownLayout.setVisibility(View.GONE);
-                    dropdownMenu.setRotation(0);
+                    layout_freeze.setVisibility(View.GONE);
+                    layout_pushback.setVisibility(View.GONE);
+                    layout_rifle.setVisibility(View.GONE);
+                    fab.setImageResource(R.drawable.gundown);
                     isMenuDropped = false;
                     gunSelected = false;
                 }
@@ -82,22 +88,11 @@ public class Gunmenu {
                 gunSelected = true;
             }
         });
-        switchGun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layout_freeze.setVisibility(View.VISIBLE);
-                layout_pushback.setVisibility(View.VISIBLE);
-                layout_rifle.setVisibility(View.VISIBLE);
-                switchGun.setVisibility(View.GONE);
-                gunSelected = false;
-            }
-        });
     }
     private void layoutHandler(LinearLayout layout) {
             layout_freeze.setVisibility(View.GONE);
             layout_pushback.setVisibility(View.GONE);
             layout_rifle.setVisibility(View.GONE);
-            switchGun.setVisibility(View.VISIBLE);
             layout.setVisibility(View.VISIBLE);
     }
     public void gunUpdater() {

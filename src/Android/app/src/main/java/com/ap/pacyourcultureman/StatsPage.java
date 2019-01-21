@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class StatsPage extends AppCompatActivity {
+public class StatsPage extends Activity {
     TextView txt_highscore,txt_totalfailed,txt_totallost,txt_totalsucces,txt_totalscore;
     int userId;
     String jwt;

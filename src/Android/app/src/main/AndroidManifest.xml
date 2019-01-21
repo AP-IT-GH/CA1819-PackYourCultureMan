@@ -43,8 +43,7 @@
         <activity android:name=".Settings"
             android:noHistory="true"/>
         <activity android:name=".StatsPage"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:noHistory="true" />
         <activity android:name=".Sights"
             android:noHistory="true"/>
         <activity android:name=".SightsDetail"
@@ -54,8 +53,7 @@
             android:required="false" />
         
         <activity android:name=".Shop"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:noHistory="true">
 
         </activity>
 

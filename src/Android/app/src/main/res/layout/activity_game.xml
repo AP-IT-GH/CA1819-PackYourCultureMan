@@ -4,278 +4,306 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
     tools:context=".GameActivity">
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#1b222d"
         android:gravity="bottom"
         sothree:umanoPanelHeight="68dp"
-        sothree:umanoShadowHeight="4dp"
-        android:background="#1b222d">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        sothree:umanoShadowHeight="4dp">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/pacman_dot" />
-
-            <TextView
-                android:id="@+id/game_txt_currentscore"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="x 0"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="11sp" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/heart" />
-
-            <TextView
-                android:id="@+id/game_txt_currentLifePoints"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="x 0"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/game_txt_currentAssginment"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Assignment"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/game_txt_currentDistance"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:text="1100.55m"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/game_txt_currentHeading"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:text="N"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="11sp" />
-
-            <ImageView
-                android:id="@+id/game_img_dropdown"
-                android:layout_width="25dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:src="@android:drawable/arrow_down_float" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/game_lay_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:id="@+id/game_lay_rifle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/imgRifle"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/rifle" />
-
-                <TextView
-                    android:id="@+id/game_txt_rifle"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="x 0"
-                    android:textColor="@android:color/holo_orange_light"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/game_lay_freeze"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/imgFreeze"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/freezeray" />
-
-                <TextView
-                    android:id="@+id/game_txt_freeze"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="x 0"
-                    android:textColor="@android:color/holo_orange_light"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/game_lay_pushback"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/imgPushback"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/pushback" />
-
-                <TextView
-                    android:id="@+id/game_txt_pushback"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="x 0"
-                    android:textColor="@android:color/holo_orange_light"
-                    android:textSize="11sp" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/game_btn_guncancel"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="100dp"
-                android:background="@drawable/button"
-                android:text="Cancel"
-                android:textSize="12sp"
-                android:visibility="gone" />
-        </LinearLayout>
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".GameActivity" />
 
-            <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true">
-
+                android:layout_height="40dp"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/iv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/imageView"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/lock"
-                    app:backgroundTint="#ffff"
-                    app:backgroundTintMode="screen"
-                    app:layout_anchor="@id/iv"
-                    app:layout_anchorGravity="bottom|right|end"/>
-            </android.support.design.widget.CoordinatorLayout>
-        </FrameLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/darkgrey">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:id="@+id/imgSight"
-                android:layout_marginLeft="5dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pacman_dot" />
+
+                <TextView
+                    android:id="@+id/game_txt_currentscore"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="x 0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/heart" />
+
+                <TextView
+                    android:id="@+id/game_txt_currentLifePoints"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="x 0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/game_txt_currentAssginment"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Assignment"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/game_txt_currentDistance"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="1100.55m"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/game_txt_currentHeading"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="N"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+
             <LinearLayout
+                android:id="@+id/game_lay_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/game_lay_rifle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgRifle"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/rifle" />
+
+                    <TextView
+                        android:id="@+id/game_txt_rifle"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="x 0"
+                        android:textColor="@android:color/holo_orange_light"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/game_lay_freeze"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgFreeze"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/freezeray" />
+
+                    <TextView
+                        android:id="@+id/game_txt_freeze"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="x 0"
+                        android:textColor="@android:color/holo_orange_light"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/game_lay_pushback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgPushback"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/pushback" />
+
+                    <TextView
+                        android:id="@+id/game_txt_pushback"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="x 0"
+                        android:textColor="@android:color/holo_orange_light"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/game_btn_guncancel"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="100dp"
+                    android:background="@drawable/button"
+                    android:text="Cancel"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/txtName"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
-                <TextView
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtShortDesc"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@android:color/holo_orange_light"/>
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    tools:context=".GameActivity" />
+                <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true">
+
+
+                    <ImageView
+                        android:id="@+id/iv2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fabGun"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/gundown"
+                        app:backgroundTint="#ffff"
+                        app:backgroundTintMode="screen"
+                        app:layout_anchor="@id/iv2"
+                        app:layout_anchorGravity="top|right|end" />
+                </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true">
+
+
+                    <ImageView
+                        android:id="@+id/iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/lock"
+                        app:backgroundTint="#ffff"
+                        app:backgroundTintMode="screen"
+                        app:layout_anchor="@id/iv"
+                        app:layout_anchorGravity="bottom|right|end" />
+                </android.support.design.widget.CoordinatorLayout>
+            </FrameLayout>
         </LinearLayout>
-        <TextView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/txtLongDesc"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
-            android:textColor="#ffffff"/>
-    </LinearLayout>
+            android:background="@color/darkgrey"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgSight"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtShortDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@android:color/holo_orange_light" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtLongDesc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="30dp"
+                android:textColor="#ffffff" />
+        </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-<android.support.design.widget.NavigationView
-android:id="@+id/menu"
-android:layout_width="200dp"
-android:layout_height="match_parent"
-android:layout_gravity="start"
-    android:background="@android:color/holo_orange_light"
-    app:itemTextColor="@color/darkgrey"
-app:menu="@menu/nav_menu"></android.support.design.widget.NavigationView>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/menu"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/holo_orange_light"
+        app:itemTextColor="@color/darkgrey"
+        app:menu="@menu/nav_menu"></android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +16,11 @@ import android.widget.TextView;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Helpers.JSONDeserializer;
 import com.ap.pacyourcultureman.Helpers.VolleyCallBack;
+import com.ap.pacyourcultureman.Menus.NavigationMenu;
 
 import java.util.List;
 
-public class Highscores extends AppCompatActivity {
+public class Highscores extends Activity {
     ApiHelper apiHelper;
     List<HighscoreProfile> highscoreProfile;
     HighscoreProfile userProfile;
@@ -37,6 +39,7 @@ public class Highscores extends AppCompatActivity {
         txt_rank = findViewById(R.id.HS_txt_rank);
         customAdapter = new CustomAdapter();
         listview_Top10 = findViewById(R.id.list_top10);
+        NavigationMenu navigationMenu = new NavigationMenu(this);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
