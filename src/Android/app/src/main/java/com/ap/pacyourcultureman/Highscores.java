@@ -2,6 +2,7 @@ package com.ap.pacyourcultureman;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,7 +27,7 @@ public class Highscores extends Activity {
     HighscoreProfile userProfile;
     ListView listview_Top10;
     CustomAdapter customAdapter;
-    Button btnHigh,btnTotal;
+    Button btnHigh,btnTotal, btnBack;
     TextView txt_playername,txt_rank;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,14 @@ public class Highscores extends Activity {
         apiHelper = new ApiHelper();
         btnTotal = findViewById(R.id.btn_bytotal);
         btnHigh = findViewById(R.id.btn_byhigh);
-        txt_playername = findViewById(R.id.HS_txt_username);
         txt_rank = findViewById(R.id.HS_txt_rank);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         customAdapter = new CustomAdapter();
         listview_Top10 = findViewById(R.id.list_top10);
         NavigationMenu navigationMenu = new NavigationMenu(this);
@@ -71,8 +78,7 @@ public class Highscores extends Activity {
                         public void onSuccess() {
                             JSONDeserializer jsonDeserializer = new JSONDeserializer();
                             userProfile = jsonDeserializer.getPlayerHsProfile(apiHelper.getJsonObject());
-                            txt_playername.setText(userProfile.getUsername());
-                            txt_rank.setText(Integer.toString(userProfile.getRanking()));
+                            txt_rank.setText("Your current rank: " + Integer.toString(userProfile.getRanking()));
                         }
                     });
 
@@ -87,6 +93,9 @@ public class Highscores extends Activity {
         btnHigh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnHigh.setTextColor(Color.parseColor("#ffffff"));
+                btnTotal.setTextColor(Color.parseColor("#000000"));
+
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -131,6 +140,8 @@ public class Highscores extends Activity {
         btnTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnTotal.setTextColor(Color.parseColor("#ffffff"));
+                btnHigh.setTextColor(Color.parseColor("#000000"));
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
     tools:context=".GameActivity">
 
     <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
@@ -13,6 +12,7 @@
         android:layout_height="match_parent"
         android:background="#1b222d"
         android:gravity="bottom"
+        android:layout_marginTop="20dp"
         sothree:umanoPanelHeight="68dp"
         sothree:umanoShadowHeight="4dp">
 

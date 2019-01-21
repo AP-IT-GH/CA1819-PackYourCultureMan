@@ -18,6 +18,7 @@
             android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:text="Shop"
             android:textAlignment="center"
             android:textColor="@android:color/holo_orange_light"
@@ -25,353 +26,391 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="372dp"
-        android:layout_height="64dp"
-
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageViewcoin1"
-            android:layout_width="25dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/pacman_dot" />
-
-        <TextView
-            android:id="@+id/coinview1"
-            android:layout_width="12dp"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:text="20"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="88dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/freezeray" />
-
-
-        <Button
-            android:id="@+id/minFreeze"
-            android:layout_width="2dp"
-            android:layout_height="62dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#000000"
-            android:text="-" />
-
-        <TextView
-            android:id="@+id/freezeView"
-            android:layout_width="wrap_content"
-            android:layout_height="51dp"
-            android:layout_weight="1"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/plusFreeze"
-            android:layout_width="3dp"
-            android:layout_height="62dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#000000"
-            android:text="+" />
-    </LinearLayout>
-
         <LinearLayout
-            android:layout_width="372dp"
-            android:layout_height="64dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/box"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageViewcoin2"
-                android:layout_width="25dp"
-                android:layout_height="61dp"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/pacman_dot" />
+            <LinearLayout
+                android:layout_width="372dp"
+                android:layout_height="64dp"
 
-            <TextView
-                android:id="@+id/coinview2"
-                android:layout_width="12dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:text="10"
-                android:textAlignment="center"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="20sp" />
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="87dp"
-                android:layout_height="65dp"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/pushback" />
+                <ImageView
+                    android:id="@+id/imageViewcoin1"
+                    android:layout_width="25dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pacman_dot" />
 
-            <Button
-                android:id="@+id/minPushback"
-                android:layout_width="2dp"
-                android:layout_height="62dp"
-                android:layout_weight="1"
-                android:background="@drawable/button"
-                android:textColor="#000000"
-                android:text="-" />
+                <TextView
+                    android:id="@+id/coinview1"
+                    android:layout_width="12dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:text="20"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/pushbackView"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_weight="1"
-                android:text="0"
-                android:textAlignment="center"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="88dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/freezeray" />
 
-            <Button
-                android:id="@+id/plusPushback"
-                android:layout_width="3dp"
-                android:layout_height="62dp"
-                android:layout_weight="1"
-                android:background="@drawable/button"
-                android:textColor="#000000"
-                android:text="+" />
+
+                <Button
+                    android:id="@+id/minFreeze"
+                    android:layout_width="2dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="-"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/freezeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plusFreeze"
+                    android:layout_width="3dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="+"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="372dp"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewcoin2"
+                    android:layout_width="25dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pacman_dot" />
+
+                <TextView
+                    android:id="@+id/coinview2"
+                    android:layout_width="12dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="10"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="87dp"
+                    android:layout_height="65dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/pushback" />
+
+                <Button
+                    android:id="@+id/minPushback"
+                    android:layout_width="2dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="-"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/pushbackView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plusPushback"
+                    android:layout_width="3dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="+"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/_1"
+                android:layout_width="372dp"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewcoin3"
+                    android:layout_width="25dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pacman_dot" />
+
+                <TextView
+                    android:id="@+id/coinview3"
+                    android:layout_width="12dp"
+                    android:layout_height="34dp"
+                    android:layout_weight="1"
+                    android:text="30"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="87dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/rifle" />
+
+                <Button
+                    android:id="@+id/minRifle"
+                    android:layout_width="2dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="-"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/rifleView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plusRifle"
+                    android:layout_width="3dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="+"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/_2"
+                android:layout_width="372dp"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewcoin10"
+                    android:layout_width="25dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pacman_dot" />
+
+                <TextView
+                    android:id="@+id/coinview20"
+                    android:layout_width="13dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:text="50"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView80"
+                    android:layout_width="87dp"
+                    android:layout_height="61dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/heart" />
+
+                <Button
+                    android:id="@+id/minLifepoints"
+                    android:layout_width="2dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="-"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/lifepointsView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/plusLifepoints"
+                    android:layout_width="2dp"
+                    android:layout_height="62dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="+"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="372dp"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="148dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="@color/totalPrice"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="67dp"
+                    android:layout_height="41dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pacman_dot" />
+
+                <TextView
+                    android:id="@+id/_coins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="51dp">
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="49dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/freezeray" />
+
+                <TextView
+                    android:id="@+id/currentFreeze"
+                    android:layout_width="wrap_content"
+                    android:layout_height="39dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView20"
+                    android:layout_width="55dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/pushback" />
+
+                <TextView
+                    android:id="@+id/currentPush"
+                    android:layout_width="wrap_content"
+                    android:layout_height="39dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView30"
+                    android:layout_width="69dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/rifle" />
+
+                <TextView
+                    android:id="@+id/currentRifle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="39dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView90"
+                    android:layout_width="69dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/heart" />
+
+                <TextView
+                    android:id="@+id/currentLifepoints"
+                    android:layout_width="wrap_content"
+                    android:layout_height="39dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/_1"
-        android:layout_width="372dp"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageViewcoin3"
-            android:layout_width="25dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/pacman_dot" />
-
-        <TextView
-            android:id="@+id/coinview3"
-            android:layout_width="12dp"
-            android:layout_height="34dp"
-            android:layout_weight="1"
-            android:text="30"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="87dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/rifle" />
-
-        <Button
-            android:id="@+id/minRifle"
-            android:layout_width="2dp"
-            android:layout_height="62dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#000000"
-            android:text="-" />
-
-        <TextView
-            android:id="@+id/rifleView"
-            android:layout_width="wrap_content"
-            android:layout_height="51dp"
-            android:layout_weight="1"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/plusRifle"
-            android:layout_width="3dp"
-            android:layout_height="62dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#000000"
-            android:text="+" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/_2"
-        android:layout_width="372dp"
-        android:layout_height="70dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageViewcoin10"
-            android:layout_width="25dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/pacman_dot" />
-
-        <TextView
-            android:id="@+id/coinview20"
-            android:layout_width="13dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:text="50"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/imageView80"
-            android:layout_width="87dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/heart" />
-
-        <Button
-            android:id="@+id/minLifepoints"
-            android:layout_width="2dp"
-            android:layout_height="62dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#000000"
-            android:text="-" />
-
-        <TextView
-            android:id="@+id/lifepointsView"
-            android:layout_width="wrap_content"
-            android:layout_height="51dp"
-            android:layout_weight="1"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/plusLifepoints"
-            android:layout_width="2dp"
-            android:layout_height="62dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:textColor="#000000"
-            android:text="+" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="372dp"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="148dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="0"
-            android:textAlignment="center"
-            android:textColor="@color/totalPrice"
-            android:textSize="30sp" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="67dp"
-            android:layout_height="41dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/pacman_dot" />
-
-        <TextView
-            android:id="@+id/_coins"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_weight="1"
-            android:text="0"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="51dp">
-
-        <TextView
-            android:id="@+id/currentFreeze"
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="49dp"
-            android:layout_height="43dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/freezeray" />
-
-        <TextView
-            android:id="@+id/currentPush"
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-        <ImageView
-            android:id="@+id/imageView20"
-            android:layout_width="55dp"
-            android:layout_height="43dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/pushback" />
-
-        <TextView
-            android:id="@+id/currentRifle"
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-        <ImageView
-            android:id="@+id/imageView30"
-            android:layout_width="69dp"
-            android:layout_height="43dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/rifle" />
-        <TextView
-            android:id="@+id/currentLifepoints"
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="20sp" />
-        <ImageView
-            android:id="@+id/imageView90"
-            android:layout_width="69dp"
-            android:layout_height="43dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/heart" />
-
-    </LinearLayout>
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/btn_buy"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:textColor="#000000"
+            android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="BUY!" />
+            android:width="2dp"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:text="Buy"
+            android:textColor="#000000" />
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:width="2dp"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:text="Back"
+            android:textColor="#000000" />
     </LinearLayout>
     </LinearLayout>
     <android.support.design.widget.NavigationView

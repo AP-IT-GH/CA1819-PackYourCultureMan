@@ -144,19 +144,18 @@
     <TextView
         android:id="@+id/txt_errorchecker"
         android:layout_width="300dp"
-        android:layout_height="30dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="TextView"
-        android:textColor="@android:color/holo_orange_dark"
         android:textSize="14sp"
+        android:textColor="@android:color/holo_orange_light"
         android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <Button
@@ -172,10 +171,10 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/button"
-            android:text="Register"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
+            android:text="Register" />
 
     </LinearLayout>
 

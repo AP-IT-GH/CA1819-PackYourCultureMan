@@ -23,7 +23,7 @@ public class Shop extends Activity {
     TextView freezeguncnt,pushBackcnt,riflecnt,freezeView,pushbackView,rifleView,priceView,coinView,lifepointscnt,lifepointsView;
     Player player;
     ApiHelper apiHelper;
-    Button minFreeze,plusFreeze,minPushback,plusPushback,minRifle,plusRifle,buybtn,minLifepoints,plusLifePoints;
+    Button minFreeze,plusFreeze,minPushback,plusPushback,minRifle,plusRifle,buybtn,minLifepoints,plusLifePoints, btnBack;
     int cntfreezegunBullets,cntpushbackBullets,cntrifleBullets,cntLifepoints,_FreezegunBullets,_PushbackGunBullets,_RifleBullets,_lifePoints,_coins,_totalprice;
     int totPriceRifle,totPriceFreeze,totPricePushback,totPriceLifepoints;
     PlayerGameStats _playerGameStats,playerGameStats;
@@ -50,6 +50,7 @@ public class Shop extends Activity {
         plusLifePoints = findViewById(R.id.plusLifepoints);
         lifepointscnt = findViewById(R.id.lifepointsView);
         lifepointsView = findViewById(R.id.currentLifepoints);
+        btnBack = findViewById(R.id.btn_back);
         NavigationMenu navigationMenu = new NavigationMenu(this);
         player = ApiHelper.player;
         apiHelper = new ApiHelper();
@@ -184,11 +185,14 @@ public class Shop extends Activity {
             @Override
             public void onClick(View v) {
                 openResetDialog();
-
-
             }
         });
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
     private void openResetDialog(){
 

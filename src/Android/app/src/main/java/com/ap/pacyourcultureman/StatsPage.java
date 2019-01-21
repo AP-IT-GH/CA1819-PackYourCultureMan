@@ -26,7 +26,7 @@ public class StatsPage extends Activity {
     Intent iin;
     Bundle b;
     Player player;
-    Button btn_resetStats;
+    Button btn_resetStats, btnBack;
     PlayerStats zeroPlayerStats;
     ApiHelper apiHelper;
     @Override
@@ -40,6 +40,13 @@ public class StatsPage extends Activity {
         txt_totalsucces = findViewById(R.id.txt_totalsucces);
         txt_totalscore = findViewById(R.id.txt_totalscore);
         btn_resetStats = findViewById(R.id.btn_resetStats);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         player = ApiHelper.player;
         apiHelper = new ApiHelper();
         zeroPlayerStats = new PlayerStats(0,0,0,0,0);
