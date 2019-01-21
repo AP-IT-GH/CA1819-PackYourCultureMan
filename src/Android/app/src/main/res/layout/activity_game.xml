@@ -216,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_margin="16dp"
-                    android:src="@drawable/settings"
+                    android:src="@drawable/lock"
                     app:backgroundTint="#ffff"
                     app:backgroundTintMode="screen"
                     app:layout_anchor="@id/iv"

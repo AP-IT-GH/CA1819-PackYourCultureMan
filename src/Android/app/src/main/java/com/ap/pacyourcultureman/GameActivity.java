@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -54,6 +55,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ap.pacyourcultureman.R.drawable.openlock;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener{
 
@@ -140,10 +143,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 16));
         mMap.setMinZoomPreference(14.0f);
         mMap.setMaxZoomPreference(17.0f);
-        //mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setOnMarkerClickListener(this);
@@ -235,9 +237,29 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 if(lockCam) {
                     lockCam = false;
+                    fab.setImageResource(R.drawable.lock);
+                    mMap.resetMinMaxZoomPreference();
+                    mMap.setMinZoomPreference(14.0f);
+                    mMap.setMaxZoomPreference(17.0f);
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(16f);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
+
                 }
                 else {
                     lockCam = true;
+                    fab.setImageResource(R.drawable.openlock);
+                    mMap.resetMinMaxZoomPreference();
+                    mMap.setMinZoomPreference(14.0f);
+                    mMap.setMaxZoomPreference(16.0f);
+                    for (Dot item : correctedDots ) {
+                        item.setMarkerVisible(item.getMarker(),false);
+                    }
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(14f);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
                 }
             }
         });
@@ -329,14 +351,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     progressDialog.dismiss();
                     openAssignmentStartDialog();
                 }
+
                 // zooms to player
                 if(!lockCam) {
                     CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
-                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15.0f);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(16f);
                     mMap.moveCamera(center);
                     mMap.animateCamera(zoom);
                 }
-
             }
         }
     };
@@ -495,7 +517,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Dot item : correctedDots ) {
                     item.setMarkerVisible(item.getMarker(),false);
                 }
-                if (mMap.getCameraPosition().zoom <= 16){
+                if (mMap.getCameraPosition().zoom <= 15.9){
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
                     }
@@ -620,7 +642,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             case 0:
                 speed = 2;
                 break;
-
             case 1:
                 speed = 3;
                 break;

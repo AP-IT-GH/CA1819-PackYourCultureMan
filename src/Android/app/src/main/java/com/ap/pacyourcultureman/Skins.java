@@ -185,7 +185,7 @@ public class Skins extends Activity {
         marker = mMap.addMarker(new MarkerOptions()
                 .position(GameActivity.currentPos)
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman))
-                .draggable(false)
+                .draggable(true)
                 .flat(true)
                 .anchor(0.5f,0.5f)
                 .rotation(0f));
