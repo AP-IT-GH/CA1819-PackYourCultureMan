@@ -509,10 +509,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         dragablePlayer.drawPlayer(mMap, getApplicationContext(),100,100);
         playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         //draw assignments
-        for(int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
-
-        }
         //Draw Ghosts
         for (Ghost ghost:Ghosts) {
             ghost.Draw(mMap, getApplicationContext());
