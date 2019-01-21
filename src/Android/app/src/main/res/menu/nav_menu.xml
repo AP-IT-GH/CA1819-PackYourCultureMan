@@ -5,11 +5,14 @@
         android:id="@+id/nav_shop"
         android:title="Shop"
         android:icon="@drawable/shop"/>
+    <item android:id="@+id/nav_hiscores"
+        android:icon="@drawable/leaderboard"
+        android:title="Leaderboard"
+        />
     <item
         android:id="@+id/nav_stats"
         android:icon="@drawable/score"
-        android:title="Statistics" />
-
+        android:title="Score" />
     <item
         android:id="@+id/nav_sights"
         android:title="Sights"
@@ -18,10 +21,6 @@
         android:id="@+id/nav_skins"
         android:title="Skins"
         android:icon="@drawable/pacman"/>
-    <item android:id="@+id/nav_hiscores"
-        android:icon="@drawable/settings"
-        android:title="Highscores"
-        />
     <item android:id="@+id/nav_settings"
         android:icon="@drawable/settings"
         android:title="Settings"
@@ -32,5 +31,6 @@
     <item
         android:id="@+id/nav_dev"
         android:title="Dev"
+        android:icon="@drawable/dev"
         android:visible="false"/>
 </menu>

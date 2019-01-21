@@ -11,6 +11,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView_sightName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/darkgrey"
+            android:gravity="center"
+            android:text="Skins"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="36sp"
+            android:textStyle="bold" />
         <RadioGroup
             android:id="@+id/radiogroup_skins"
             android:layout_width="match_parent"
@@ -20,77 +33,115 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
-            <TextView
-                android:id="@+id/txt_selectedskin"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="20dp" />
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/box"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imgv_selectedskin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="40dp" />
+                <TextView
+                    android:id="@+id/txt_selectedskin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/txt_skins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:text="@string/choose_your_pacman_skin"
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="20dp" />
+                <ImageView
+                    android:id="@+id/imgv_selectedskin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp" />
+            </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/pacmanY"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:drawableRight="@drawable/pacman_yellow_right"
-                android:buttonTint="@android:color/holo_orange_light"/>
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/box"
+                android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/pacmanR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:drawableRight="@drawable/pacman_red_right"
-                android:buttonTint="@android:color/holo_orange_light"/>
+                <TextView
+                    android:id="@+id/txt_skins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/choose_your_pacman_skin"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="20dp" />
 
-            <RadioButton
-                android:id="@+id/pacmanG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:drawableRight="@drawable/pacman_green_right"
-                android:buttonTint="@android:color/holo_orange_light"/>
+                <RadioButton
+                    android:id="@+id/pacmanY"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:buttonTint="@android:color/holo_orange_light"
+                    android:drawableRight="@drawable/pacman_yellow_right" />
 
-            <RadioButton
-                android:id="@+id/pacmanB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableRight="@drawable/pacman_blue_right"
-                android:buttonTint="@android:color/holo_orange_light"/>
+                <RadioButton
+                    android:id="@+id/pacmanR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:buttonTint="@android:color/holo_orange_light"
+                    android:drawableRight="@drawable/pacman_red_right" />
+
+                <RadioButton
+                    android:id="@+id/pacmanG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:buttonTint="@android:color/holo_orange_light"
+                    android:drawableRight="@drawable/pacman_green_right" />
+
+                <RadioButton
+                    android:id="@+id/pacmanB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:buttonTint="@android:color/holo_orange_light"
+                    android:drawableRight="@drawable/pacman_blue_right" />
+            </LinearLayout>
         </RadioGroup>
-
         <Button
             android:id="@+id/skins_btn_ok"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@drawable/button"
             android:text="Ok"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:width="2dp"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:text="Back"
             android:textColor="#000000" />
     </LinearLayout>
 

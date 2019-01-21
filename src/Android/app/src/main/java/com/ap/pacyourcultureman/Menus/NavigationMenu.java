@@ -1,12 +1,17 @@
 package com.ap.pacyourcultureman.Menus;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+
 import com.ap.pacyourcultureman.DevOptions;
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
 import com.ap.pacyourcultureman.Highscores;
@@ -22,6 +27,7 @@ import com.ap.pacyourcultureman.StatsPage;
 public class NavigationMenu  {
     NavigationView navigationView;
     static Menu nav_Menu;
+    Intent intent;
     public NavigationMenu(final Activity activity) {
         navigationView = activity.findViewById(R.id.menu);
         nav_Menu = navigationView.getMenu();
@@ -29,12 +35,9 @@ public class NavigationMenu  {
         {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.nav_logout:
-                        intent = new Intent(activity.getBaseContext(), Login.class);
-                        activity.startActivity(intent);
-                        resetStaticLists();
+                        openResetDialog(activity);
                         break;
                     case R.id.nav_stats:
                         intent = new Intent(activity.getBaseContext(),StatsPage.class);
@@ -90,5 +93,29 @@ public class NavigationMenu  {
         Skins.skinId = null;
         Log.d("clearLists", "Static list are cleared");
 
+    }
+    private void openResetDialog(final Activity activity) {
+
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_logout);
+        dialog.setCancelable(true);
+        final Button btn_dialog_no = dialog.findViewById(R.id.btn_dialog_no);
+        final Button btn_dialog_yes = dialog.findViewById(R.id.btn_dialog_yes);
+        btn_dialog_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(activity.getBaseContext(), Login.class);
+                activity.startActivity(intent);
+                resetStaticLists();
+            }
+        });
+        btn_dialog_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

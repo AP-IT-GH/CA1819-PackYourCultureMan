@@ -71,6 +71,8 @@ public class SightsDetail extends Activity implements View.OnClickListener {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent1 = new Intent(getApplicationContext(), Sights.class);
+                startActivity(intent1);
                 finish();
             }
         });

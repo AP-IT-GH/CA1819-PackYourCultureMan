@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,7 +25,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ap.pacyourcultureman.Helpers.ApiHelper;
@@ -47,20 +47,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-import org.w3c.dom.Text;
+import org.apache.commons.collections.ClosureUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ap.pacyourcultureman.R.drawable.clyde;
+import static com.ap.pacyourcultureman.R.drawable.openlock;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener{
 
@@ -103,6 +102,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
     private Boolean lockCam = false;
+    private boolean initAssignment = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,12 +147,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 15));
-        mMap.setMinZoomPreference(14.0f);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 16));
+        mMap.setMinZoomPreference(16.0f);
         mMap.setMaxZoomPreference(17.0f);
-        //mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setTiltGesturesEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
 
@@ -202,6 +203,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                 if (collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)) {
+                    initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
@@ -230,7 +232,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-
         boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
 
         if (!success) {
@@ -242,9 +243,31 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 if(lockCam) {
                     lockCam = false;
+                    fab.setImageResource(R.drawable.lock);
+                    mMap.resetMinMaxZoomPreference();
+                    mMap.setMinZoomPreference(16.0f);
+                    mMap.setMaxZoomPreference(17.0f);
+                    mMap.getUiSettings().setScrollGesturesEnabled(false);
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(16f);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
+
                 }
                 else {
                     lockCam = true;
+                    fab.setImageResource(R.drawable.openlock);
+                    mMap.resetMinMaxZoomPreference();
+                    mMap.setMinZoomPreference(14.0f);
+                    mMap.setMaxZoomPreference(17.0f);
+                    mMap.getUiSettings().setScrollGesturesEnabled(true);
+                    for (Dot item : correctedDots ) {
+                        item.setMarkerVisible(item.getMarker(),false);
+                    }
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(14f);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
                 }
             }
         });
@@ -288,7 +311,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 10)) {
+                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 30)) {
+                    initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
@@ -308,7 +332,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markableP, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
                 } */
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
+                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 20)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -336,20 +360,25 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     progressDialog.dismiss();
                     openAssignmentStartDialog();
                 }
+
                 // zooms to player
                 if(!lockCam) {
                     CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
-                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15.0f);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(16f);
                     mMap.moveCamera(center);
                     mMap.animateCamera(zoom);
                 }
-
             }
         }
     };
 
     private Assignment getRandomAssignment() {
-        currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
+        if(!initAssignment) {
+            currentAssigment = assignments.get(20);
+        }
+        else {
+            currentAssigment = currentAssigment.getRandomAssignment(GameActivity.this, mMap, currentAssigment, assignments, circles);
+        }
         txtCurrentAssignment.setText(currentAssigment.getName());
         for(int i = 0; i < assignments.size(); i++) {
             if(assignments.get(i) != currentAssigment) {
@@ -368,6 +397,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i = 0; i < assignments.size(); i++) {
             if (marker.equals(assignments.get(i).getMarker()))
             {
+                Log.d("ASSIGNMENT", Integer.toString(i));
                 bottomSlideMenu.setPanel(i);
             }
         }
@@ -376,11 +406,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("Pushed", "pushed");
-        if(marker.equals(Blinky.marker)) {
-                GunHandler gunHandler = new GunHandler(Blinky, playerpos, this);
-                gunHandler.gunHandler(Blinky.marker);
+        for(Ghost ghost : Ghosts) {
+            if(marker.equals(ghost.marker)) {
+                GunHandler gunHandler = new GunHandler(ghost, playerpos, this);
+                gunHandler.gunHandler(ghost.marker);
                 gunmenu.gunUpdater();
-            return true;
+                return true;
+            }
         }
         // camera does not move anymore when dot is touched
         for(int i = 0; i < correctedDots.size(); i++) {
@@ -483,18 +515,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw dots on map
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //draw player
-        dragablePlayer.DrawPlayer(mMap, getApplicationContext(),100,100);
-        playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+        dragablePlayer.drawPlayer(mMap, getApplicationContext(),150,150);
+        playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         //draw assignments
-        for(int i = 0; i < assignments.size(); i++) {
-            assignments.get(i).DrawHouses(mMap, getApplicationContext(),assignments.get(i).getName());
-
-        }
         //Draw Ghosts
         for (Ghost ghost:Ghosts) {
             ghost.Draw(mMap, getApplicationContext());
         }
-
         //hide dots on certain zoom levels
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
@@ -502,7 +529,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Dot item : correctedDots ) {
                     item.setMarkerVisible(item.getMarker(),false);
                 }
-                if (mMap.getCameraPosition().zoom <= 16){
+                if (mMap.getCameraPosition().zoom <= 15.9){
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
                     }
@@ -519,7 +546,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void drawPlayer(){
         playerpos.removeMarker();
-        playerpos.DrawPlayer(mMap, getApplicationContext(),100,100);
+        playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         playerpos.getMarker().setPosition(currentLocation);
         playerpos.setRotations(playerpos.getMarker());
@@ -627,7 +654,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             case 0:
                 speed = 2;
                 break;
-
             case 1:
                 speed = 3;
                 break;

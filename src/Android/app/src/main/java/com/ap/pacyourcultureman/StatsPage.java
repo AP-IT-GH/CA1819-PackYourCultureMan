@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,14 +19,14 @@ import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class StatsPage extends AppCompatActivity {
+public class StatsPage extends Activity {
     TextView txt_highscore,txt_totalfailed,txt_totallost,txt_totalsucces,txt_totalscore;
     int userId;
     String jwt;
     Intent iin;
     Bundle b;
     Player player;
-    Button btn_resetStats;
+    Button btn_resetStats, btnBack;
     PlayerStats zeroPlayerStats;
     ApiHelper apiHelper;
     @Override
@@ -39,6 +40,13 @@ public class StatsPage extends AppCompatActivity {
         txt_totalsucces = findViewById(R.id.txt_totalsucces);
         txt_totalscore = findViewById(R.id.txt_totalscore);
         btn_resetStats = findViewById(R.id.btn_resetStats);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         player = ApiHelper.player;
         apiHelper = new ApiHelper();
         zeroPlayerStats = new PlayerStats(0,0,0,0,0);

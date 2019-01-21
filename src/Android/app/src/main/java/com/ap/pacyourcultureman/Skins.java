@@ -42,7 +42,7 @@ public class Skins extends Activity {
     private ImageView imageView;
     private ApiHelper apiHelper;
     private Marker marker;
-    private Button btnOk;
+    private Button btnOk, btnBack;
     private Boolean skinSelect = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,13 @@ public class Skins extends Activity {
         radioGroup= findViewById(R.id.radiogroup_skins);
         textView = findViewById(R.id.txt_selectedskin);
         imageView = findViewById(R.id.imgv_selectedskin);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         apiHelper = new ApiHelper();
         btnOk = findViewById(R.id.skins_btn_ok);
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +177,7 @@ public class Skins extends Activity {
         marker.remove();
     }
 
-    public void DrawPlayer(GoogleMap mMap, Context context, int width, int height ){
+    public void drawPlayer(GoogleMap mMap, Context context, int width, int height ){
         switch (ApiHelper.player.getSkinId()) {
             case 1: player_pacman = getBitmapFromDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.pacman_yellow_top, null));
             break;

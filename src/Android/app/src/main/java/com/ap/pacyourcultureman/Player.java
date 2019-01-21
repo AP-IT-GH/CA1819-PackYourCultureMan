@@ -5,7 +5,8 @@ public class Player {
     private String userName, firstName, lastName, email,jwt;
     private PlayerStats playerStats;
     private PlayerGameStats playerGameStats;
-    public Player(int id,String userName, String firstName, String lastName, String email,PlayerStats playerstats,PlayerGameStats playerGameStats,String jwt,int skinId) {
+    private boolean admin;
+    public Player(int id,String userName, String firstName, String lastName, String email,PlayerStats playerstats,PlayerGameStats playerGameStats,String jwt,int skinId, boolean admin) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -15,7 +16,7 @@ public class Player {
         this.playerGameStats = playerGameStats;
         this.jwt = jwt;
         this.skinId = skinId;
-
+        this.admin = admin;
     }
     public String getJwt(){
         return jwt;
@@ -81,5 +82,9 @@ public class Player {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 }

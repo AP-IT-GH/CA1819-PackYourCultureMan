@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,11 +19,11 @@ import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Shop extends AppCompatActivity {
+public class Shop extends Activity {
     TextView freezeguncnt,pushBackcnt,riflecnt,freezeView,pushbackView,rifleView,priceView,coinView,lifepointscnt,lifepointsView;
     Player player;
     ApiHelper apiHelper;
-    Button minFreeze,plusFreeze,minPushback,plusPushback,minRifle,plusRifle,buybtn,minLifepoints,plusLifePoints;
+    Button minFreeze,plusFreeze,minPushback,plusPushback,minRifle,plusRifle,buybtn,minLifepoints,plusLifePoints, btnBack;
     int cntfreezegunBullets,cntpushbackBullets,cntrifleBullets,cntLifepoints,_FreezegunBullets,_PushbackGunBullets,_RifleBullets,_lifePoints,_coins,_totalprice;
     int totPriceRifle,totPriceFreeze,totPricePushback,totPriceLifepoints;
     PlayerGameStats _playerGameStats,playerGameStats;
@@ -49,6 +50,7 @@ public class Shop extends AppCompatActivity {
         plusLifePoints = findViewById(R.id.plusLifepoints);
         lifepointscnt = findViewById(R.id.lifepointsView);
         lifepointsView = findViewById(R.id.currentLifepoints);
+        btnBack = findViewById(R.id.btn_back);
         NavigationMenu navigationMenu = new NavigationMenu(this);
         player = ApiHelper.player;
         apiHelper = new ApiHelper();
@@ -183,11 +185,14 @@ public class Shop extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openResetDialog();
-
-
             }
         });
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
     private void openResetDialog(){
 

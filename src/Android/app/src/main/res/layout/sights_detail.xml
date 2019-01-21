@@ -20,24 +20,25 @@
                 android:id="@+id/textView_sightName_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5sp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="sight name"
                 android:textColor="@android:color/holo_orange_light"
-                android:textSize="20sp" />
+                android:textSize="30sp"
+                android:textStyle="bold"/>
 
     <ImageView
         android:id="@+id/imageView_sight_detail"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_margin="5dp"
         android:src="@mipmap/ic_launcher"/>
 
             <TextView
                 android:id="@+id/textView_short_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_margin="5dp"
                 android:text="Museum exhibition based on the 3 million who emigrated to America using this historic shipping line."
                 android:textColor="@android:color/holo_orange_light"
                 android:textSize="15sp" />
@@ -46,12 +47,21 @@
                 android:id="@+id/textView_long_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:text="The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935.  Of course, you will also find art in its more traditional form. For example, the Red Star Line and Antwerp, as a migration hub, inspired artists like Eugeen Van Mieghem and Louis van Engelen. What makes this museum even more special is the fact that it adopts a very modern approach in the original Red Star Line buildings. The port warehouses that were used for passengers’ administrative and medical checks are the very highlight of the collection. The Red Star Line Museum is not just a museum. The observation tower that rises above the warehouses, in the shape of a ship's smokestack, affords an amazing panoramic view. And you can visit The Shed, a cozy café and nice museum shop, up to an hour after the museum closes. Be touched by the testimonies of people who have boarded the Red Star Line - for pleasure, for business or in the hope to find a better life - and enjoy a unique view of the Scheldt and the centre of Antwerp. And sit down and talk about it afterwards in The Shed. After a visit to the Red Star Line Museum, it is definitely worth walking through the trendy Eilandje and enjoy a meal at one of the many restaurants located nearby. From Eilandje, you can also see the Port House, famously designed by the world-renowned architect Zaha Hadid Architects."
-                android:textColor="@android:color/holo_orange_light"
-                android:textSize="10sp" />
+                android:layout_margin="5dp"
 
+                android:text="The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935.  Of course, you will also find art in its more traditional form. For example, the Red Star Line and Antwerp, as a migration hub, inspired artists like Eugeen Van Mieghem and Louis van Engelen. What makes this museum even more special is the fact that it adopts a very modern approach in the original Red Star Line buildings. The port warehouses that were used for passengers’ administrative and medical checks are the very highlight of the collection. The Red Star Line Museum is not just a museum. The observation tower that rises above the warehouses, in the shape of a ship's smokestack, affords an amazing panoramic view. And you can visit The Shed, a cozy café and nice museum shop, up to an hour after the museum closes. Be touched by the testimonies of people who have boarded the Red Star Line - for pleasure, for business or in the hope to find a better life - and enjoy a unique view of the Scheldt and the centre of Antwerp. And sit down and talk about it afterwards in The Shed. After a visit to the Red Star Line Museum, it is definitely worth walking through the trendy Eilandje and enjoy a meal at one of the many restaurants located nearby. From Eilandje, you can also see the Port House, famously designed by the world-renowned architect Zaha Hadid Architects."
+                android:textColor="#ffffff"
+                android:textSize="10sp" />
+            <Button
+                android:id="@+id/buttonBack"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button"
+                android:gravity="center"
+                android:text="Back"
+                android:textColor="#000000" />
             <Button
                 android:id="@+id/buttonGoogle_detail"
                 style="@style/Widget.AppCompat.Button.Colored"
@@ -63,7 +73,6 @@
                 android:gravity="center"
                 android:text="Open in google maps"
                 android:textColor="#000000" />
-
             <Button
                 android:id="@+id/buttonWeb_detail"
                 android:layout_width="200dp"
@@ -73,16 +82,6 @@
                 android:background="@drawable/button"
                 android:gravity="center"
                 android:text="Go to website"
-                android:textColor="#000000" />
-            <Button
-                android:id="@+id/buttonBack"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button"
-                android:gravity="center"
-                android:text="Back"
                 android:textColor="#000000" />
         </LinearLayout>
     </ScrollView>
