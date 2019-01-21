@@ -119,7 +119,7 @@ namespace ASP.Dtos
             };
             user.skinId = 1;
             user.gameStats = gameStats;
-
+            user.accesLevel = false;
             var _visitedSights = new List<VisitedSights>();
             for (int i = 0; i < 23; i++)
             {

@@ -15,11 +15,11 @@ namespace ASPCoreApi.Models
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }       
-        public int accessLevel { get; set; }
         public int skinId { get; set; }       
         public Statistics Stats { get; set; }      
         public GameStats gameStats { get; set; }
         public ICollection<VisitedSights> visitedSights { get; set; }
+        public bool accesLevel { get; set; }
 
 
     }

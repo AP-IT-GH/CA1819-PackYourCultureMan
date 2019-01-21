@@ -18,5 +18,7 @@ namespace ASPCoreApi.Models
         public Statistics Stats { get; set; }       
         public GameStats gameStats { get; set; }
         public ICollection<VisitedSights> visitedSights { get; set; }
+        public bool accesLevel { get; set; }
+
     }
 }
