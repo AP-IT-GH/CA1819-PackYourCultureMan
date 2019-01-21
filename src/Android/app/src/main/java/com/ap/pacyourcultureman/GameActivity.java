@@ -144,10 +144,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 16));
-        mMap.setMinZoomPreference(14.0f);
+        mMap.setMinZoomPreference(16.0f);
         mMap.setMaxZoomPreference(17.0f);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setTiltGesturesEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
 
@@ -239,8 +241,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     lockCam = false;
                     fab.setImageResource(R.drawable.lock);
                     mMap.resetMinMaxZoomPreference();
-                    mMap.setMinZoomPreference(14.0f);
+                    mMap.setMinZoomPreference(16.0f);
                     mMap.setMaxZoomPreference(17.0f);
+                    mMap.getUiSettings().setScrollGesturesEnabled(false);
                     CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
                     CameraUpdate zoom = CameraUpdateFactory.zoomTo(16f);
                     mMap.moveCamera(center);
@@ -252,7 +255,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     fab.setImageResource(R.drawable.openlock);
                     mMap.resetMinMaxZoomPreference();
                     mMap.setMinZoomPreference(14.0f);
-                    mMap.setMaxZoomPreference(16.0f);
+                    mMap.setMaxZoomPreference(17.0f);
+                    mMap.getUiSettings().setScrollGesturesEnabled(true);
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
                     }
