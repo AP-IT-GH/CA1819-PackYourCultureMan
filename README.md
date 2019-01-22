@@ -4,7 +4,7 @@
 
 ### PacYourCultureMan
 
-![logo](https://github.com/AP-Elektronica-ICT/infsec1819-cedricvanbroek/blob/master/Images/logo.png?raw%20=%20true)
+![logo](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/logo.PNG?raw%20=%20true)
 
 PacYourCultureMan is een map-based city-explorer dat zicht afspeelt in de stad Antwerpen.
 De naam van het spel geeft een hint naar het populaire pacman, je zal dus ook door een aantal vijanden achtervolgd worden, die je op slinkse wijze om de tuin zal moeten leiden.
@@ -15,6 +15,17 @@ Je kan jezelf verdedigen door ammo te kopen voor de powerups en je zo verweren t
 Uiteraard zal het spel je score en de locaties waar je al geweest bent onthouden en zullen deze zichtbaar zijn in de app zelf. hier kun je uiteraard ook de scores van je vrienden opzoeken en kijken wie er bovenaan staat en wat je huidige ranking is. 
 
 Je zal als User een account moeten maken waarmee je in het spel kan inloggen. nadat je dit hebt gedaan zal er een ‘random’ locatie in antwerpen gezocht worden waar je nog nooit geweest bent. ja zal met je character op een map (gebaseerd op google maps) gezet worden. Bovenaan de app staat er wat je random locatie is, hoeveel meter je verwijderd bent van de locatie en in welke richting je moet wandelen om bij je locatie te geraken.Wanneer jij op ‘go’ drukt zal er een timer afgaan, wanneer deze timer ten einde loopt zullen er vijanden op de kaart gezet worden die jij zal moeten ontwijken of doden. Wanneer je je bezienswaardigheid hebt gevonden, heb je je punten verdiend en kan je deze inzetten in de shop. Je zal bijkomende informatie krijgen bij elke bezienswaardigheid die je bezoekt.
+
+### Screens
+![screen1](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/login.jpg?raw%20=%20true)![screen2](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/register.jpg?raw%20=%20true)![screen3](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/startUp.jpg?raw%20=%20true)
+
+![screen4](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/zoomedOut.jpg?raw%20=%20true)![screen5](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/zoomedInAndGuns.jpg?raw%20=%20true)![screen6](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/shop.jpg?raw%20=%20true)
+
+![screen7](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/leaderboard.jpg?raw%20=%20true)![screen8](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/score.jpg?raw%20=%20true)![screen9](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sights.jpg?raw%20=%20true)
+
+
+![screen10](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/detailSight.jpg?raw%20=%20true)![screen11](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/settings.jpg?raw%20=%20true)![screen12](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/shop.jpg?raw%20=%20true)
+
 
 ## Installatie Backend
 
