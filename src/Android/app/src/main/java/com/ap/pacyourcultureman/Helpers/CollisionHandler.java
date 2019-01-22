@@ -1,5 +1,6 @@
 package com.ap.pacyourcultureman.Helpers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,15 +26,14 @@ public class CollisionHandler {
     public static LatLng playerLatLng;
     public static LatLng ghostLatLng;
     CollisionDetection collisionDetection = new CollisionDetection();
-    public CollisionHandler(Context context) {
+    GameActivity gameActivity;
+    public CollisionHandler(Context context, GameActivity gameActivity) {
         this.context = context;
         apiHelper = new ApiHelper();
+        this.gameActivity = gameActivity;
     }
-    public void ghostCollision() {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+    public void ghostCollision(int id) {
         if(player.getPlayerGameStats().getLifePoints() == 0) {
-            alertDialog.setTitle("Game over");
-            alertDialog.setMessage("Press OK to start over");
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();
             try {
@@ -45,18 +45,18 @@ public class CollisionHandler {
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
                 @Override
                 public void onSuccess() {
-
+                    Toast.makeText(context, "No lifepoints left, resetting to a new game", Toast.LENGTH_SHORT).show();
+                    ApiHelper.player.getPlayerStats().setCurrentScore(0);
+                    gameActivity.killGhosts();
+                    gameActivity.resetAllGhosts();
                 }
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
         }
         else {
+            int newScore = Integer.valueOf(ApiHelper.player.getPlayerStats().getCurrentScore() / 2);
+            ApiHelper.player.getPlayerStats().setCurrentScore(newScore);
+            Log.d("Score", Integer.toString(newScore));
+            gameActivity.resetGhost(id);
             ApiHelper.player.getPlayerGameStats().setLifePoints(ApiHelper.player.getPlayerGameStats().getLifePoints() - 1);
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();

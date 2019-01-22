@@ -91,13 +91,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Bundle b;
     private String jwt,distance,bearing;
     private BearingCalc bearingCalc;
-    private CollisionHandler collisionHandler;
+    public static CollisionHandler collisionHandler;
     private Gunmenu gunmenu;
     private Handler handler;
     private GoogleMap mMap;
     private SensorManager mSensorManager;
     private Skins dragablePlayer, playerpos;
-    private LatLng currentLocation;
+    public static LatLng currentLocation;
     private boolean startDialogEnded;
     public static LatLng currentPos;
     public static Boolean ghostCollide = false;
@@ -109,7 +109,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
     private Boolean lockCam = false;
-    private boolean initAssignment = false;
+    private boolean initAssignment = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -349,7 +349,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if(ghostCollide) {
                     currentAssigment = getRandomAssignment();
                     ghostCollide = false;
-                    collisionHandler.ghostCollision();
+                //    collisionHandler.ghostCollision();
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
                                         openAssignmentStartDialog();
@@ -378,6 +378,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     };
 
     private Assignment getRandomAssignment() {
+        Log.d("Assignment size", Integer.toString(assignments.size()));
         if(!initAssignment) {
             currentAssigment = assignments.get(20);
         }
@@ -475,7 +476,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         playerpos = new Skins();
         collisionDetection = new CollisionDetection();
         bearingCalc = new BearingCalc();
-        collisionHandler = new CollisionHandler(GameActivity.this);
+        collisionHandler = new CollisionHandler(GameActivity.this, this);
         circles = new ArrayList<>();
         //findview
         bottomSlideMenu = new BottomSlideMenu(this);
@@ -511,6 +512,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         progressDialog = new ProgressDialog(GameActivity.this);
         fab = findViewById(R.id.fab);
         fab.setAlpha(0.5f);
+
     }
 
     private void startDraw(){
@@ -570,7 +572,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-    private boolean openAssignmentStartDialog(){
+    public boolean openAssignmentStartDialog(){
         for (Ghost ghost:Ghosts) {
             ghost.setSpeed((int)(speed/3.6));
         }
@@ -659,7 +661,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         int speed = 5;
         switch(position) {
             case 0:
-                speed = 2;
+                speed = 20;
                 break;
             case 1:
                 speed = 3;
@@ -678,4 +680,78 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         return speed;
     }
 
+    public void resetGhost(int id){
+        switch (id){
+            case 0:
+                Blinky.stopGhost();
+                Blinky.marker.remove();
+                Blinky = new Ghost(new LatLng(51.229796, 4.418413));
+                break;
+            case 1:
+                Inky.marker.remove();
+                Inky.stopGhost();
+                Inky = new Ghost(new LatLng(51.219429, 4.395858));
+                break;
+            case 2:
+                Pinky.stopGhost();
+                Pinky.marker.remove();
+                Pinky = new Ghost(new LatLng(51.206207, 4.387096));
+                break;
+            case 3:
+                Clyde.stopGhost();
+                Clyde.marker.remove();
+                Clyde = new Ghost(new LatLng(51.212186, 4.408376));
+                break;
+        }
+    }
+    public void killGhosts() {
+      /*  Blinky.stopGhost();
+        Inky.stopGhost();
+        Pinky.stopGhost();
+        Clyde.stopGhost();
+        Blinky.markerAnimation.isFrozen = true;
+        Blinky.isFrozen = true;
+        Blinky.stopGhost();
+        Blinky.marker.remove();
+        Inky.marker.remove();
+        Clyde.marker.remove();
+        Clyde.marker.remove(); */
+       for(Ghost ghost : Ghosts) {
+           ghost.markerAnimation.isFrozen = true;
+           ghost.isFrozen = true;
+           ghost.stopGhost();
+           ghost.marker.remove();
+       }
+        Blinky = null;
+        Inky = null;
+        Pinky = null;
+        Clyde = null;
+        Ghosts.clear();
+    }
+    public void resetAllGhosts() {
+        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
+        Blinky.id = 0;
+        //Blinky.marker.setPosition(new LatLng(51.229796, 4.418413));
+        Blinky.Draw(mMap, getApplicationContext());
+        Blinky.getSteps(currentPos);
+        Inky = new Ghost(new LatLng(51.219429, 4.395858));
+        Inky.id = 1;
+        //Inky.marker.setPosition(new LatLng(51.219429, 4.395858));
+        Inky.Draw(mMap, getApplicationContext());
+        Inky.getSteps(currentPos);
+        Pinky = new Ghost(new LatLng(51.206207, 4.387096));
+        Pinky.id = 2;
+        Pinky.Draw(mMap, getApplicationContext());
+      //  Pinky.marker.setPosition(new LatLng(51.206207, 4.387096));
+        Pinky.getSteps(currentPos);
+        Clyde = new Ghost(new LatLng(51.212186, 4.408376));
+        Clyde.id = 3;
+        Clyde.Draw(mMap, getApplicationContext());
+        //Clyde.marker.setPosition(new LatLng(51.212186, 4.408376));
+        Clyde.getSteps(currentPos);
+        Ghosts.add(Blinky);
+        Ghosts.add(Inky);
+        Ghosts.add(Pinky);
+        Ghosts.add(Clyde);
+    }
 }

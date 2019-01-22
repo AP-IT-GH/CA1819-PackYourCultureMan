@@ -129,7 +129,7 @@ public class Ghost {
 
     public void Move(LatLng dest, Marker mrkr, long time) {
         Log.d("Movement", "MarkerLocation: " + mrkr.getPosition());
-        markerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
+        markerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time, id);
 
     }
 

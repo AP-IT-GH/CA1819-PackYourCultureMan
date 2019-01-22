@@ -18,7 +18,7 @@ public class MarkerAnimation {
     public Runnable r;
     public Boolean isFrozen = false;
     public MarkerAnimation() {}
-    public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time) {
+    public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time, final int id) {
         final LatLng startPosition = marker.getPosition();
         final long start = SystemClock.uptimeMillis();
         final Interpolator interpolator = new AccelerateDecelerateInterpolator();
@@ -41,6 +41,12 @@ public class MarkerAnimation {
                         CollisionHandler.ghostLatLng = marker.getPosition();
                         if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
                             GameActivity.ghostCollide = true;
+                            Log.d("Ghost hit", "Ghost hit");
+                            GameActivity.collisionHandler.ghostCollision(id);
+                        }
+                        if(collisionDetection.collisionDetect(GameActivity.currentLocation, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
+                            GameActivity.ghostCollide = true;
+                            GameActivity.collisionHandler.ghostCollision(id);
                             Log.d("Ghost hit", "Ghost hit");
                         }
                         // Repeat till progress is complete.
