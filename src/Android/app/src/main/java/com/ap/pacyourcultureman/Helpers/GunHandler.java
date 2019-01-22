@@ -48,7 +48,7 @@ public class GunHandler {
         }
     }
     private void rifleHandler(Marker marker) {
-        if(ApiHelper.player.getPlayerGameStats().getRifle() != 0) {
+        if(ApiHelper.player.getPlayerGameStats().getRifle() > 0) {
             ApiHelper.player.getPlayerGameStats().setRifle(ApiHelper.player.getPlayerGameStats().getRifle() - 1);
             Log.d("Ghost", "hit with rifle");
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats(), new VolleyCallBack() {
@@ -59,16 +59,14 @@ public class GunHandler {
             });
             ghost.handler.removeCallbacks(ghost.r);
             ghost.markerAnimation.handler.removeCallbacks(ghost.markerAnimation.r);
+            marker.remove();
         }
         else {
             Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
-            ghost.handler.removeCallbacks(ghost.r);
-            ghost.markerAnimation.handler.removeCallbacks(ghost.markerAnimation.r);
-            marker.remove();
         }
     }
     private void freezeHandler() {
-        if(ApiHelper.player.getPlayerGameStats().getFreezeGun() != 0) {
+        if(ApiHelper.player.getPlayerGameStats().getFreezeGun() > 0) {
             ApiHelper.player.getPlayerGameStats().setFreezeGun(ApiHelper.player.getPlayerGameStats().getFreezeGun() - 1);
             Log.d("Ghost", "hit with Freeze");
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats(), new VolleyCallBack() {
@@ -77,12 +75,6 @@ public class GunHandler {
 
                 }
             });
-            ghost.handler.postDelayed(ghost.r, 5000);
-            ghost.markerAnimation.handler.postDelayed(ghost.markerAnimation.r, 5000);
-
-        }
-        else {
-            Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
             ghost.markerAnimation.isFrozen = true;
             ghost.isFrozen = true;
             ghost.stopGhost();
@@ -95,16 +87,20 @@ public class GunHandler {
                     Log.d("Assignment", ApiHelper.assignments.get(1).getName());
                     ghost.markerAnimation.isFrozen = false;
                     ghost.isFrozen = false;
-          //          ghost.handler = new Handler();
+                    //          ghost.handler = new Handler();
                     ghost.markerAnimation.handler = new Handler();
                     ghost.handler.postDelayed(ghost.r, 100);
                     ghost.markerAnimation.handler.postDelayed(ghost.markerAnimation.r, 100);
                 }
-            }, 5000);
+            }, 60000);
+
+        }
+        else {
+            Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
         }
     }
     private void pushBackHandler() {
-        if(ApiHelper.player.getPlayerGameStats().getPushBackGun() == -1) {
+        if(ApiHelper.player.getPlayerGameStats().getPushBackGun() > 0) {
             //ApiHelper.player.getPlayerGameStats().setPushBackGun(ApiHelper.player.getPlayerGameStats().getPushBackGun() - 1);
             Log.d("Ghost", "hit with pushback");
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats(), new VolleyCallBack() {

@@ -35,7 +35,7 @@ public class Ghost {
     public int iter;
     public Handler handler = new Handler();
     ApiHelper apiHelper;
-    private int speed = 40;
+    private float speed = 40;
     public MarkerAnimation markerAnimation = new MarkerAnimation();
     Boolean newDirections = false;
     public Runnable r;
@@ -114,7 +114,7 @@ public class Ghost {
                 if (steps.size() > 1) {
                     elapsed = SystemClock.uptimeMillis() - start;
                     Log.d("Movement", "Moving to point: " + iter);
-                    time = (steps.get(0).distance * 1000)/(speed);
+                    time = (long)Math.round((steps.get(0).distance) * 1000/(speed));
                     Log.d("Movement" ,"Step: " + steps.get(1));
                     Log.d("Movement", "Time for this step: " + time);
                     Move(steps.get(1).start, marker, time);
@@ -137,7 +137,7 @@ public class Ghost {
         return marker.getPosition();
     }
 
-    public void setSpeed(int _speed){
+    public void setSpeed(float _speed){
         speed = _speed;
     }
 

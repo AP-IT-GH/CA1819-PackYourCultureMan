@@ -259,7 +259,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     fab.setImageResource(R.drawable.openlock);
                     mMap.resetMinMaxZoomPreference();
                     mMap.setMinZoomPreference(14.0f);
-                    mMap.setMaxZoomPreference(17.0f);
+                    mMap.setMaxZoomPreference(20.0f);
                     mMap.getUiSettings().setScrollGesturesEnabled(true);
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
@@ -565,7 +565,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     private boolean openAssignmentStartDialog(){
-
+        for (Ghost ghost:Ghosts) {
+            ghost.setSpeed((int)(speed/3.6));
+        }
         final Dialog dialog1 = new Dialog(GameActivity.this);
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setContentView(R.layout.dialog_startassignment);
@@ -582,8 +584,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 speed = SetSpeed(position);        handler = new Handler();
                 Log.d("speed",Integer.toString(speed));
                 txt_speed.setText(addKm(speed));
+                float ghostSpeed = (float)(speed/3.6);
+                Log.d("ghostspeed", Float.toString(ghostSpeed));
                 for (Ghost ghost:Ghosts) {
-                    ghost.setSpeed((int)(speed/3.6));
+                    ghost.setSpeed(ghostSpeed);
                 }
 
             }
