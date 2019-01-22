@@ -73,9 +73,13 @@ public class Shop extends Activity {
         rifleView.setText(Integer.toString(_RifleBullets));
         lifepointsView.setText(Integer.toString(_lifePoints));
 
+        final int pricePushBack = 20;
+        final int priceRifle = 30;
+        final int priceFreeze = 10;
+        final int priceLife = 50;
 
         //test coins
-        _coins = 500;
+        _coins = ApiHelper.player.getPlayerGameStats().getCoins();
 
         coinView.setText(Integer.toString(_coins));
         minFreeze.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +89,7 @@ public class Shop extends Activity {
                 if(cntfreezegunBullets < 0){
                     cntfreezegunBullets = 0;
                 }
-                totPriceFreeze = 20 * cntfreezegunBullets;
+                totPriceFreeze = priceFreeze * cntfreezegunBullets;
 
                 freezeguncnt.setText(Integer.toString(cntfreezegunBullets));
                 _totalprice = calcTotalPrice();
@@ -96,7 +100,7 @@ public class Shop extends Activity {
             @Override
             public void onClick(View v) {
                 cntfreezegunBullets = cntfreezegunBullets + 1;
-                totPriceFreeze = 20 * cntfreezegunBullets;
+                totPriceFreeze = priceFreeze * cntfreezegunBullets;
                 freezeguncnt.setText(Integer.toString(cntfreezegunBullets));
                 _totalprice = calcTotalPrice();
                 priceView.setText(Integer.toString(_totalprice));
@@ -110,7 +114,7 @@ public class Shop extends Activity {
                     cntpushbackBullets = 0;
 
                 }
-                totPricePushback = 10 * cntpushbackBullets;
+                totPricePushback = pricePushBack * cntpushbackBullets;
 
                 pushBackcnt.setText(Integer.toString(cntpushbackBullets));
                 _totalprice = calcTotalPrice();
@@ -121,7 +125,7 @@ public class Shop extends Activity {
             @Override
             public void onClick(View v) {
                 cntpushbackBullets = cntpushbackBullets +1;
-                totPricePushback = 10 * cntpushbackBullets;
+                totPricePushback = pricePushBack * cntpushbackBullets;
                 pushBackcnt.setText(Integer.toString(cntpushbackBullets));
                 _totalprice = calcTotalPrice();
                 priceView.setText(Integer.toString(_totalprice));
@@ -135,7 +139,7 @@ public class Shop extends Activity {
                     cntrifleBullets = 0;
 
                 }
-                totPriceRifle = 30 * cntrifleBullets;
+                totPriceRifle = priceRifle * cntrifleBullets;
 
 
                 riflecnt.setText(Integer.toString(cntrifleBullets));
@@ -147,7 +151,7 @@ public class Shop extends Activity {
             @Override
             public void onClick(View v) {
                 cntrifleBullets = cntrifleBullets +1 ;
-                totPriceRifle = 30 * cntrifleBullets;
+                totPriceRifle = priceRifle * cntrifleBullets;
 
                 riflecnt.setText(Integer.toString(cntrifleBullets));
                 _totalprice = calcTotalPrice();
@@ -162,7 +166,7 @@ public class Shop extends Activity {
                     cntLifepoints = 0;
 
                 }
-                totPriceLifepoints = 50 * cntLifepoints;
+                totPriceLifepoints = priceLife * cntLifepoints;
 
 
                 lifepointscnt.setText(Integer.toString(cntLifepoints));
@@ -174,7 +178,7 @@ public class Shop extends Activity {
             @Override
             public void onClick(View v) {
                 cntLifepoints = cntLifepoints +1 ;
-                totPriceLifepoints = 50 * cntLifepoints;
+                totPriceLifepoints = priceLife * cntLifepoints;
 
                 lifepointscnt.setText(Integer.toString(cntLifepoints));
                 _totalprice = calcTotalPrice();
@@ -224,14 +228,14 @@ public class Shop extends Activity {
 
                     playerGameStats = new PlayerGameStats(_lifePoints, _RifleBullets, _FreezegunBullets, _PushbackGunBullets,_coins);
                     player.setPlayerGameStats(playerGameStats);
-
+                    _coins = _coins - _totalprice;
                     freezeView.setText(Integer.toString(player.getPlayerGameStats().getFreezeGun()));
                     pushbackView.setText(Integer.toString(player.getPlayerGameStats().getPushBackGun()));
                     rifleView.setText(Integer.toString(player.getPlayerGameStats().getRifle()));
                     lifepointsView.setText(Integer.toString(player.getPlayerGameStats().getLifePoints()));
 
 
-                    _coins = _coins - _totalprice;
+                    
 
                     JSONSerializer jsonSerializer = new JSONSerializer();
                     JSONObject jsonObject = jsonSerializer.jsonPutGameStats(_lifePoints,_RifleBullets,_FreezegunBullets,_PushbackGunBullets,_coins);
@@ -239,6 +243,7 @@ public class Shop extends Activity {
                         @Override
                         public void onSuccess() {
                             Toast.makeText(Shop.this, "Thank you!", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     });
 
