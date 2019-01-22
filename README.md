@@ -74,7 +74,9 @@ Als dit allemaal in orde is kan je op publish drukken. Je api is nu gelinkt met 
 Omdat we de Sights hardcoded in de Database toevoegen. Zullen deze eerst door de admin moeten worden geinitialiseerd.
 Ga hiervoor naar het destination URL, dit kan je vinden bij de configure dialoog uit vorig deel en plaatst hier in de browser /swagger achter.
 Je ziet hier alle endpoints.
-Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de map data in de github repo. Plak deze in het value veld en druk op execute. De sights zijn nu toegevoegd.
+Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de map doc in de github repo. Plak deze in het value veld en druk op execute. De sights zijn nu toegevoegd.
+
+![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.jpg?raw%20=%20true)
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc10.PNG?raw%20=%20true)
 
@@ -84,5 +86,18 @@ Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de
 
 ### Streets inladen
 
+Omdat we de Streets hardcoded in de Database toevoegen. Zullen deze eerst door de admin moeten worden geinitialiseerd.
+Ga hiervoor naar het destination URL, dit kan je vinden bij de configure dialoog uit vorig deel en plaatst hier in de browser /swagger achter.
+Je ziet hier alle endpoints.
+Selecteer het post Streets/postarray en kopieer de Streets JSON die je vindt in de map doc in de github repo. Plak deze in het value veld en druk op execute. De streets zijn nu toegevoegd.
 
-![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devoptions.jpg?raw%20=%20true)
+Nu dat je de streets hebt ingeladen kunnen de dots gemaakt worden. De dots worden gegenereerd door middel van punt a en b en om de 30 meter wordt er een nieuw punt tussen deze 2 punten aangemaakt, deze worden door Google Roads Api gecorrigeerd en op de weg gezet.
+
+Om deze dots te genereren moet je in de database onder user het acceslevel op true (1) plaatsen en dan zal in het gameMenu de optie dev beschikbaar zijn.
+
+Als je de streets hebt ingeladen zal de update knop in de devoptions alles updaten en zal de lijst dots volgende keer als je inlogd worden ingeladen.
+
+![acceslevel](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/acceslevel.png?raw%20=%20true)
+![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.jpg?raw%20=%20true)
+![swagger](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/swaggerstreet.jpg?raw%20=%20true)
+![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devOptions.jpg?raw%20=%20true)
