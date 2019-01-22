@@ -245,8 +245,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     lockCam = false;
                     fab.setImageResource(R.drawable.lock);
                     mMap.resetMinMaxZoomPreference();
-                    mMap.setMinZoomPreference(18.0f);
-                    mMap.setMaxZoomPreference(18.0f);
+                    mMap.setMinZoomPreference(14.0f);
+                    mMap.setMaxZoomPreference(19.0f);
                     mMap.getUiSettings().setScrollGesturesEnabled(false);
                     CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
                     CameraUpdate zoom = CameraUpdateFactory.zoomTo(17f);
