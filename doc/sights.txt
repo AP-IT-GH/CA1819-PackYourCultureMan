@@ -1,0 +1,209 @@
+[
+  {
+    "Name": "Red Star Line Museum",
+    "shortDescription": "Museum exhibition based on the 3 million who emigrated to America using this historic shipping line.",
+    "longDescription": "The Red Star Line Museum does not have a typical museum collection. Do not expect endless rows of glass cabinets full of 19th-century trinkets or ship’s parts. No, the Red Star Line Museum has a very unusual collection. Above all, it collects and archives stories. Audiovisual testimonies and written documents. The museum is still looking for stories from the period between 1873 and 1935.  Of course, you will also find art in its more traditional form. For example, the Red Star Line and Antwerp, as a migration hub, inspired artists like Eugeen Van Mieghem and Louis van Engelen. What makes this museum even more special is the fact that it adopts a very modern approach in the original Red Star Line buildings. The port warehouses that were used for passengers’ administrative and medical checks are the very highlight of the collection. The Red Star Line Museum is not just a museum. The observation tower that rises above the warehouses, in the shape of a ship's smokestack, affords an amazing panoramic view. And you can visit The Shed, a cozy café and nice museum shop, up to an hour after the museum closes. Be touched by the testimonies of people who have boarded the Red Star Line - for pleasure, for business or in the hope to find a better life - and enjoy a unique view of the Scheldt and the centre of Antwerp. And sit down and talk about it afterwards in The Shed. After a visit to the Red Star Line Museum, it is definitely worth walking through the trendy Eilandje and enjoy a meal at one of the many restaurants located nearby. From Eilandje, you can also see the Port House, famously designed by the world-renowned architect Zaha Hadid Architects.",
+    "Longitude": "51.2329543",
+    "Latitude": "4.4034171",
+    "sightImage": "https://gdurl.com/65Om",
+    "Website": "https://www.redstarline.be/nl"
+  },
+  {
+    "Name": "Museum aan de Stroom",
+    "shortDescription": "Striking red sandstone museum with high-tech exhibitions exploring Antwerp's place in the world.",
+    "longDescription": "Antwerp is the city on the Scheldt, the city on the river, facilitating encounters and exchanges between people from all over the world for several centuries. The MAS museum collects proof of these encounters, using this to tell new stories. About the city, the river and the port on the one hand. But also about the world. The MAS has many facets, and is teeming with stories and surprises. The MAS has a phenomenally large collection, which to date comprises about 500,000 items, including artworks and utensils. New objects are constantly being added to the collection. The museum uses its entire collection to weave a new narrative, based on five universal themes, on just as many floors. The MAS takes a closer look at power politics and world ports. At how food shaped and will shape today’s metropolises in the past, present and future. And at life and death, of people and gods, in the upper and under world. Moreover, the third floor and the walking boulevard host some fascinating and highly diverse temporary exhibitions. But above all, the MAS excels at connecting all these stories. This is not your typical museum, where you walk from display case to display case. Instead all the stories engage with each other, thanks to the way in which the floors have been arranged and are connected with each other. Ensuring you understand Antwerp and the world a bit better at the end of your visit.",
+    "Longitude": "51.2289219",
+    "Latitude": "4.4047576",
+    "sightImage": "https://gdurl.com/Vr-n",
+    "Website": "https://www.mas.be"
+  },
+  {
+    "Name": "Saint Paul’s Church",
+    "shortDescription": "This restored Gothic church with a Baroque tower houses works by Antwerp painters Rubens & van Dyck.",
+    "longDescription": "Originally, Saint Paul’s Church was part of a large Dominican abbey. It was consecrated in 1571 as a replacement for another church. A new Baroque steeple was built after a ravaging fire destroyed the church in 1679. The church's striking interior hosts fifty paintings by renowned Antwerp masters, Rubens, Van Dyck and Jordaens, over 200 sculptures, beautiful Baroque altars and sculpted church furniture, widely considered to be amongst the most beautiful in the world. The organ was built in the 17th century, but has been repeatedly restored and expanded. An eye-catching feature is the 18th century Calvary with sixty life-sized figures, next to the church on the corner of Veemarkt and Zwartzustersstraat.",
+    "Longitude": "51.224159",
+    "Latitude": "4.400701",
+    "sightImage": "https://gdurl.com/M8BG",
+    "Website": "http://www.sint-paulusparochie.be/"
+  },
+  {
+    "Name": "Stadswaag",
+    "shortDescription": "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students.",
+    "longDescription": "At the Stadswaag, merchants had their goods weighed - until a bombing raided the city map. Then hippies and punks took over this square and it became the nightlife district. Today families here live fraternally alongside blocking students. In the past, the goods of merchants were weighed here, but a Zeppelin bombardment unfortunately caused a total disappearance of the actual weigh house. In the sixties this square was the entertainment district par excellence. Today it is not only populated by terrace people and students, but many families have also found a permanent home here.",
+    "Longitude": "51.223943",
+    "Latitude": "4.407262",
+    "sightImage": "https://gdurl.com/qAAB",
+    "Website": "N/A"
+  },
+  {
+    "Name": "Beguinage",
+    "shortDescription": "You may feel like an intruder in this sacred, quiet space, but don’t worry – you are welcome. The Beguinage reminds us of a secret garden, nestled in the city centre next to the university, it is a surprise for those exploring. The tiny houses and charming St Catherine’s Church offers a haven of silence to busy souls, the beautiful garden, orchard and pond in the inner courtyard replenish and rejuvenate. Walk along the cobbled streets in this sixteenth-century garden of peace and quiet.",
+    "longDescription": "Beguines were devout women who lived in a community, without taking religious vows. As a consequence of this particular religious life they were neither laywomen nor nuns. The first beguinage in Antwerp (1240-1542), Het Hof Sion, was situated to the south of the city, rather far outside the city walls. After the destruction of Het Hof Sion the beguines acquired land within the city walls, where they rebuilt their beguinage in 1545. Despite a difficult period under French and Dutch rule at the end of the eighteenth century and in the early nineteenth century beguines lived here well into the twentieth century. The last Antwerp beguine, Virginia Laeremans, died in 1986. Today the beguinage has a residential function. Initially the houses were built around a square, but as a result of the growing number of beguines an alley was added. The original character and tranquillity of the beguinage have been preserved. The original church was destroyed in 1799; it was replaced by the current St. Catherine's Church in 1827.",
+    "Longitude": "51.222241",
+    "Latitude": "4.413673",
+    "sightImage": "https://gdurl.com/dc5t",
+    "Website": "https://www.visitantwerpen.be/en/sightseeing/unique-places/beguinage"
+  },
+  {
+    "Name": "House of Literature",
+    "shortDescription": "Non-profit featuring a large archive of of Flemish literature & a museum with famous manuscripts.",
+    "longDescription": "The door to the treasure chambers opens invitingly in the museum. You can set off in search of the great stories, but also find the little ones about how literature arises, how a text is refined and polished, how things are discussed and how differences of opinion occur. But you will not just discover how writers work, how texts arise and grow. The Letterenhuis also tells the story of a changing world and how literature relates to that. Both what is happening in the immediate environment and everything taking place in the wide world inspires authors. It is therefore a story about the relationship between literature and reality, about art and engagement, about tradition and innovation, about protest and avant-garde, about old and new values. The Letterenhuis regularly organises activities such as book presentations, seminars, poetry readings, small or big events. The Letterenhuis is the largest literature archive in Flanders. Its mission is to safeguard the literary heritage. You can visit the reading room to consult the extensive collection for research. In the museum there is a permanent exhibition about 200 years of literature in Flanders.",
+    "Longitude": "51.222718",
+    "Latitude": "4.404706",
+    "sightImage": "https://gdurl.com/Hb76",
+    "Website": "https://www.letterenhuis.be/en"
+  },
+  {
+    "Name": "Butchers’ Hall",
+    "shortDescription": "Museum with exhibits on Antwerp's dance & music history in an early-1500s guildhall for butchers.",
+    "longDescription": "This museum tells the story of a city, from respectable bourgeois chamberconcerts to dancing tents and café-chantants. The Vleeshuis Museum illustrates 600 years of sound, music and dance. A thrilling tale of street musicians, tower trumpeters, carillon players and elegant ladies who loved music. The Vleeshuis Museum has succeeded in evoking memories and emotions with the sounds of the city, using multimedia and sound fragments in an impressive manner. Visitor’s senses are heightened by the music of the streets, in towers, in dance halls, churches and theatres and in bandstands. Next to the mechanics of playing music, 'Sounds of the City' highlights the origin of music printing, the traditions of instrument builders as well as the concerts and operas in the concert halls of the past.",
+    "Longitude": "51.222594",
+    "Latitude": "4.399188",
+    "sightImage": "https://gdurl.com/W7YWv",
+    "Website": "https://www.museumvleeshuis.be/en"
+  },
+  {
+    "Name": "Saint Carolus Borromeus Church",
+    "shortDescription": "1600s church with ornate baroque art & architecture & 4 altar paintings that are rotated seasonally.",
+    "longDescription": "As the church with the most Rubens influence in Antwerp, the painter’s contribution to the decorations on the facade and top of the steeple was considerable. The Jesuit order commissioned the construction of this typically Baroque church, built between 1615 and 1621. The main altar's apse, Mary's chapel, the many sculptures and the elaborate wooden carvings bear testimony to the church's former glory. A unique feature of this church is the original, functioning mechanism above the main altar used to switch paintings: an impressive spectacle.",
+    "Longitude": "51.220964",
+    "Latitude": "4.405244",
+    "sightImage": "https://gdurl.com/z9gB",
+    "Website": "http://carolusborromeus.com/"
+  },
+  {
+    "Name": "Steen Castle",
+    "shortDescription": "Youth educational center running creative workshops & activities, plus family-friendly cafe.",
+    "longDescription": "Het Steen is the oldest building in Antwerp - the first stones date from the 11th century - and over the centuries it has fulfilled several functions. It is located along the Scheldt River, near a former peninsula called De Werf. The first settlement with earth walls appeared on De Werf in the 9th century. It became a fortress. Around the turn of the century, between the 12th and 13th centuries, a stone fortress wall and Het Steen, one of three gatehouses in the fortress, were constructed here. Het Steen was substantially refurbished under Charles V at the beginning of the 16th century. You can still see the colour difference in the façade. Het Steen was used as a prison until 1823. After serving shortly as a residence, sawmill and fish depot, Het Steen opened as a museum in 1862. Initially it was the Museum of Antiquities and from 1952 to 2008 it served as the National Maritime Museum. Now you can admire that collection in the MAS | Museum aan de Stroom.  Het Steen will undergo a substantial renovation starting in 2018. Het Steen will be the gateway to Antwerp in 2020 and serve as a cruise terminal, welcome centre and interactive experience route. The main focus of the experience centre will be Antwerp and its history.  Be sure to walk past Het Steen when you visit Antwerp. You'll feel like a knight or a lady in the castle setting. It's the perfect background for a fairy-tale photo along the Scheldt River.",
+    "Longitude": "51.222344",
+    "Latitude": "4.397307",
+    "sightImage": "https://gdurl.com/tlkJ",
+    "Website": "https://www.visitantwerpen.be/en/steen-castle"
+  },
+  {
+    "Name": "City Hall",
+    "shortDescription": "Erected between 1561 and 1565 after designs made by Cornelis Floris de Vriendt and several other architects and artists, this Renaissance building incorporates both Flemish and Italian influences.",
+    "longDescription": "In the 16th century Antwerp became one of the busiest trading ports and most prosperous cities in Northern Europe. The municipal authorities wished to replace Antwerp's small medieval town hall with a more imposing structure befitting the prosperity of the great port city. Antwerp architect Domien de Waghemakere drafted a plan (c. 1540) for a new building in a style typical of the monumental Gothic town halls of Flanders and Brabant. But the threat of war prevented any progress on the project. The building materials intended for the Stadhuis were instead used to shore up the city defenses. Not until about 1560 new plans were developed. In the meantime Gothic architecture had gone out of fashion. The new designs for the Stadhuis were in the new Renaissance style. Completed in 1565, the building lasted hardly a decade before being burnt to a shell in the Spanish Fury of 1576. It was restored three years later.",
+    "Longitude": "51.221220",
+    "Latitude": "4.399420",
+    "sightImage": "https://gdurl.com/wSKn",
+    "Website": "https://www.antwerpen.be"
+  },
+  {
+    "Name": "Cathedral of Our Lady Antwerp",
+    "shortDescription": "A landmark spire tops this Gothic-style cathedral, known for its Baroque masterpieces by Rubens.",
+    "longDescription": "It took 169 years (1352-1521) of labour to raise the 123m heavenward-reaching steeple of the Cathedral, the highest Gothic building in the Low Countries. The Cathedral is an iconic treasury, with an impressive collection of major art works, including a series of paintings by Rubens. Now, after twenty years, the seven-naved church has been restored to its former architectural glory. Fascinating features include Rubens’ ‘Elevation of the Cross’ and his ‘Descent from the Cross’.",
+    "Longitude": "51.220447",
+    "Latitude": "4.400258",
+    "sightImage": "https://gdurl.com/hjUH",
+    "Website": "http://www.dekathedraal.be/"
+  },
+  {
+    "Name": "Saint James's church",
+    "shortDescription": "Monumental, lavishly decorated Gothic church, home to the tomb of artist Peter Paul Rubens.",
+    "longDescription": "St James‘ Church is the starting point for pilgrims journeying to the burial place of St James the Greater in Santiago de Compostela. The church is also known for the resting place of Rubens. This church, which is within short walking distance from Antwerp’s main shopping street Meir, is one of the largest churches in Antwerp. Like so many other European cities Antwerp also has a sanctuary for St. James. In the early fifteenth century there was a hospice here, which welcomed Northern European pilgrims travelling to the tomb of the apostle James in Santiago de Compostela. In 1413 a chapel, dedicated to St. James, was added to the hospice. Soon the chapel proved too small. As a consequence construction started on the current church in Brabant Gothic style in 1491. It would take no less than 175 years to complete the church. St. James’s Church served as parish church for several smaller crafts and guilds and religious brotherhoods. The choir was completed during the Baroque period with the tombs and chapels of wealthy families. The most famous memorial chapel is that of the Antwerp Baroque master Peter Paul Rubens. He painted the altarpiece Madonna Surrounded by Saints in the chapel. Elsewhere in the church you can admire a masterpiece by Jacob Jordaens. ",
+    "Longitude": "51.220214",
+    "Latitude": "4.409719",
+    "sightImage": "https://gdurl.com/L49S",
+    "Website": "https://www.sintjacobantwerpen.be"
+  },
+  {
+    "Name": "Plantin-Moretus Museum",
+    "shortDescription": "Mansion museum housing the world's oldest printing presses, plus books, antiques, tapestries & art.",
+    "longDescription": "Welcome to the authentic home and studio of the Plantin-Moretus printing family. This is where the age-long history of the book, printing and entrepreneurship really comes to life. It is home to the oldest printing presses in the world. There are tens of thousands of books about pretty much everything people find fascinating and a great fine art collection. This UNESCO word heritage offers you a unique historical experience as it takes you back to Antwerp’s golden sixteenth century.",
+    "Longitude": "51.218404",
+    "Latitude": "4.398318",
+    "sightImage": "https://gdurl.com/k8wv",
+    "Website": "https://www.museumplantinmoretus.be/en"
+  },
+  {
+    "Name": "MoMu",
+    "shortDescription": "Museum of quirky & elegant fashion couture, plus historical clothing in sleek, contemporary spaces.",
+    "longDescription": "A world away from the stiff and stuffy glass-fronted presentations of the traditional costume display, MoMu’s interdisciplinary exhibits tend to the adventurous and iconoclastic. As well as exquisite couture and historical pieces, over the years, the galleries have paid host to a tweed-covered vintage Porsche during the Veronique Branquinho exhibition, design masterpieces left design masterpieces exposed to the elements in courtyard for Yohji Yamamoto’s Dreamshop, and shown pioneering works of fashion film made in association with SHOWstudio for BLACK, Paper Fashion and Walter Van Beirendonck. MoMu sees its archive of fashion and costume as a collective memory of the city of Antwerp, a reflection of the changing mores and humours of its inhabitants. The historical foundation of its archive came from the former Textile and Costume Museum and it has been augmented by bequests of historical pieces by collectors and by an ever-expanding collection of pieces by contemporary Antwerp designers from the 1980s to the present day.",
+    "Longitude": "51.217101",
+    "Latitude": "4.399747",
+    "sightImage": "https://gdurl.com/rZFz",
+    "Website": "https://www.momu.be/en"
+  },
+  {
+    "Name": "The Rubens House",
+    "shortDescription": "Museum in Rubens' 17th-century former home, showcasing his paintings, plus sculptures & tapestries.",
+    "longDescription": "Rubens was a fan of Rafael’s, the Italian painter. It is hardly surprising, therefore, that in 1610, just as his idol, Rubens designed his own city palace. Near the Meir, which has always been a sought-after part of the city. This is the house where Rubens created his masterpieces, his children played in the garden and he received his high, noble and even royal guests. And in the meantime, a team were working hard on his paintings in the studio. At his peak, Rubens could not cope alone and led a team of professional artists. The Rubens House has not always been used as a house or museum. After Rubens' death, his second wife rented the property to Mr and Mrs Cavendish, who ran a popular equestrian centre in the painter’s home. After the departure of the Cavendishes, Rubens’s heirs sold the house.",
+    "Longitude": "51.217071",
+    "Latitude": "4.408834",
+    "sightImage": "https://gdurl.com/y_A2",
+    "Website": "https://www.rubenshuis.be/en"
+  },
+  {
+    "Name": "Police Station Oudaan",
+    "shortDescription": "This Police Tower is a building in Antwerp located in the Oudaan and designed by Renaat Braem. Several administrative services of the police are located in the building.",
+    "longDescription": "Mayor Lode Craeybeckx was looking for a concept for a large administrative center for the city of Antwerp. Renaat Braem, Juul De Roover and Maxime Wynants started working on the first plans in 1950. In addition to the high - completed tower, the master plans also included lower office buildings. These have never been realized. The place where the other parts of the building were to be erected remained lying idle for a long time, but was later filled up with the shopping center 'De Bijenkorf'. The construction of the tower began in 1958. In 1965 the administrative center was awarded the SBUAM architecture prize (Société Belge des Urbanistes et Architectes Modernistes). In 2002 the building was protected as a monument.",
+    "Longitude": "51.215766",
+    "Latitude": "4.402824",
+    "sightImage": "https://gdurl.com/hxjX",
+    "Website": "https://www.politieantwerpen.be"
+  },
+  {
+    "Name": "Den Botaniek",
+    "shortDescription": "Serene botanical garden offering winding paths amid labeled flowerbeds, trees & herb plantings.",
+    "longDescription": "It is a world in one garden, exceptional trees and shrubs, 2000 herbs, cactuses and foreign plants will inspire the plant fundi. Built almost 200 years ago, it grew only medicinal plants to supply the St Elisabeth’s hospital next door. The city has managed the garden since 1926 and in 1950 the Botanical Garden was listed as a valuable landscape for the city of Antwerp and its inhabitants. Indeed it is not to be missed!",
+    "Longitude": "51.214774",
+    "Latitude": "4.406907",
+    "sightImage": "https://gdurl.com/sRlI",
+    "Website": "https://www.visitantwerpen.be/en/parken-en/botanical-garden"
+  },
+  {
+    "Name": "Institute of Tropical Medicine",
+    "shortDescription": "ITM is one of the world's leading institutes for training and research in tropical medicine and the organisation of health care in developing countries. It also delivers outpatient, clinical and preventive services in tropical pathologies and sexually transmitted diseases. ",
+    "longDescription": "The institute has a strong reputation in biomedical, clinical and public health research, advanced education, travel medicine and care for HIV and Sexually Transmitted Infections, as well as capacity-building in developing countries. Peter Piot and colleagues at the institute were the first to demonstrate that AIDS was a tropical African disease. ITM has been recognized by the World Health Organization as a reference centre for AIDS research. ITM also is a national and international reference centre for a series of diseases and pathogens (such as the Ebola virus). At ITM, some 450 scientists and technicians do research on pathogens, patients and populations. Yearly, an average of 500 medical doctors, nurses and scientists follow advanced courses; some 120 young researchers are completing their PhD. Each year, the medical services handle around 35 000 consultations.",
+    "Longitude": "51.211934",
+    "Latitude": "4.398240",
+    "sightImage": "https://gdurl.com/sM4F",
+    "Website": "https://www.itg.be/E"
+  },
+  {
+    "Name": "Saint George's Church Antwerp",
+    "shortDescription": "Neo-Gothic church (1853) designed by architect Léon Suys. West to east orientation.",
+    "longDescription": "Two strikingly beautiful openwork eastern towers with gilded crowning. On the façade there are statues of Saint George and the 12 apostles.  Nice cycle of moralizing mural paintings (1871) by G. Guffens and J. Swerts.  Furniture and ornaments make up a stylistic whole.  From the former church, which was pulled down during the French Revolution, a few altar pieces and epitaphs (including that of Frans I Francken) have survived.  From the church of the Spanish Citadel there is the devotional statue of “Our Lady of the castle” in her stately gown (1867).  A reliquary (1878) devoted to no few than 40 (patron) saints reminds of the cholera epidemic of 1859.",
+    "Longitude": "51.212706",
+    "Latitude": "4.405112",
+    "sightImage": "https://gdurl.com/1_uW",
+    "Website": "https://www.sint-jorisparochie.be"
+  },
+  {
+    "Name": "Museum of Modern Art",
+    "shortDescription": "Imposing museum displaying works from contemporary Belgian artists, including films & installations.",
+    "longDescription": "The Museum of Contemporary Art in Antwerp (commonly abbreviated as M HKA, previously MuHKA) is the contemporary art museum of the city of Antwerp, Belgium, and it is one of the most important art museums in Belgium.  The museum holds a permanent collection of contemporary art from Belgian and international artists, an arthouse cinema and an extensive library of books on contemporary art.  The architect responsible for the creation of the museum from an old grain storage space (1987) was Michel Grandsard who also designed the extension of the museum (1997). The director of the museum since 1992 is Bart de Baere. ",
+    "Longitude": "51.210798",
+    "Latitude": "4.390122",
+    "sightImage": "https://gdurl.com/z4AJ",
+    "Website": "https://www.muhka.be"
+  },
+  {
+    "Name": "De Waterpoort",
+    "shortDescription": "De Waterpoort (also often referred to as Porta Regia or Coninckxpoort) was a city gate on the Scheldt in Antwerp. ",
+    "longDescription": "De Waterpoort (also often referred to as Porta Regia or Coninckxpoort) was a city gate on the Scheldt in Antwerp.  In 1624 it was established as an arch of honor for King Philip IV.  Originally she was built on the Vlasmarkt after a design attributed to Rubens.  As a result of work on the Scheldt quays, the gate was relocated to the Sint-Jansvliet in the 1880s.  When at that location in 1933 the entrance building of the new Sint-Annavoetganger tunnel had to appear, the gate was moved again.  In 1936 it was eventually rebuilt at the Gillisplaats in Het Zuid, at the subdued Zuiderdokken. Because she has already stood at two other places, she got the nickname 'the walking gate'.",
+    "Longitude": "51.208178",
+    "Latitude": "4.388743",
+    "sightImage": "https://gdurl.com/M6GB",
+    "Website": "N/A"
+  },
+  {
+    "Name": "Royal Museum of Fine Arts Antwerp",
+    "shortDescription": "Landmark neoclassical museum closed for renovation until 2020, with art from 14th to 20th centuries.",
+    "longDescription": "The Royal Museum of Fine Arts Antwerp (Dutch: Koninklijk Museum voor Schone Kunsten Antwerpen) is a museum in Antwerp, Belgium, founded in 1810, houses a collection of paintings, sculptures and drawings from the fourteenth to the twentieth centuries.  This collection is representative of the artistic production and the taste of art enthusiasts in Antwerp, Belgium and the Northern and Southern Netherlands since the 15th century.",
+    "Longitude": "51.208840",
+    "Latitude": "4.394134",
+    "sightImage": "https://gdurl.com/FcB6",
+    "Website": "https://www.kmska.be/en/index.html?_language=en"
+  },
+  {
+    "Name": "Monument Schelde Vrij",
+    "shortDescription": "Centraal op het ronde, gekasseide Marnixplein domineert een twintig meter hoge beeldengroep 'Schelde Vrij'",
+    "longDescription": " Het beeld is een realisatie van Jean-Jacques Winders, die samenwerkte met de beeldhouwers Louis Dupuis (leeuwen en medaillons), Jaak de Braekeleer (Neptunus en Mercurius) en Frans Floris (schrijvend figuurtje).  In 1873 schreef de stad een ontwerpwedstrijd uit voor een herdenkingsmonument gewijd aan de vrijmaking van de Schelde in 1863. Deze gebeurtenis had de handel in Antwerpen sterk aangewakkerd en is een centraal thema in straatnamen en monumenten op het Zuid. Alle straten rondom het Marnixplein werden eveneens naar de vrijmaking van de Schelde genoemd. Uit de twaalf inzendingen, koos de jury het ontwerp van Winders. Het was de bedoeling dat het monument een jaar later werd ingehuldigd; technische problemen verschoven de afwerking naar 1883. In 1884 werd een smeedijzeren hek rond het monument geplaatst, uitgevoerd door Leopold van Suetendael naar ontwerp van Winders. Het werd een monumentale blikvanger, die midden op de Marnixplaats werd opgericht en vanuit alle omringende straten, tot aan de Schelde, zichtbaar is. J.J. Winders koos voor het monument een zeer fantasierijke eclectische stijl met neo-Vlaamse renaissance-elementen. Winders trachtte deze laatste stijl te promoten als de enige echte stijl die de eigenheid van België kon vertegenwoordigen. In een wijk als het Zuid, waar de neoclassicistische, verregaand gestandaardiseerde burgerhuizen in de absolute meerderheid zijn, springt de architectenwoning van Winders sterk in het oog door de exuberante gevel in neo-Vlaamse renaissance. Het was de wens van Winders om ook de architectuur die het monument Schelde Vrij zou omringen, in een passende stijl te ontwerpen. Hij tekende ontwerpen met zeer fantasierijke neo-Vlaamse renaissancegevels. Omdat hij zelf niet in staat was de nodige percelen op de Marnixplaats aan te kopen, en de Compagnie du Sud d’Anvers, hier blijkbaar ook geen prioriteit aan gaf, kreeg een plein een totaal ander, veel klassieker uitzicht dan Winders had gedroomd.",
+    "Longitude": "51.210506",
+    "Latitude": "4.397193",
+    "sightImage": "https://gdurl.com/yokn",
+    "Website": "N/A"
+  }
+]
