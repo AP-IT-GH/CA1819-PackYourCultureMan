@@ -113,6 +113,7 @@ public class Ghost {
             public void run() {
                 if (steps.size() > 1) {
                     elapsed = SystemClock.uptimeMillis() - start;
+                    Log.d("Movement", "Logging for : " + id);
                     Log.d("Movement", "Moving to point: " + iter);
                     time = (long)Math.round((steps.get(0).distance) * 1000/(speed));
                     Log.d("Movement" ,"Step: " + steps.get(1));
@@ -143,6 +144,7 @@ public class Ghost {
 
     public void stopGhost(){
         handler.removeCallbacksAndMessages(r);
+        handler = new Handler();
         markerAnimation.handler.removeCallbacksAndMessages(markerAnimation.r);
         markerAnimation.r = null;
         steps = new ArrayList<>();
