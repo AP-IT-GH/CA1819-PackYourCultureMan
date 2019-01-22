@@ -4,7 +4,8 @@
 
 ### PacYourCultureMan
 
-![logo](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/logo.PNG?raw%20=%20true)
+![logo](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/logo.png?raw%20=%20true)
+
 PacYourCultureMan is een map-based city-explorer dat zicht afspeelt in de stad Antwerpen.
 De naam van het spel geeft een hint naar het populaire pacman, je zal dus ook door een aantal vijanden achtervolgd worden, die je op slinkse wijze om de tuin zal moeten leiden.
 Het doel van het spel is zoveel mogelijk locaties bezoeken en onderweg de juist route nemen om zo alle ‘bolletjes’ (punten) te verzamelen en niet te sterven door de spookjes.
@@ -23,7 +24,7 @@ Je zal als User een account moeten maken waarmee je in het spel kan inloggen. na
 ![screen7](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/leaderboard.jpg?raw%20=%20true)![screen8](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/score.jpg?raw%20=%20true)![screen9](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sights.jpg?raw%20=%20true)
 
 
-![screen10](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/detailSight.jpg?raw%20=%20true)![screen11](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/settings.jpg?raw%20=%20true)![screen12](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/shop.jpg?raw%20=%20true)
+![screen10](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/detailSight.jpg?raw%20=%20true)![screen11](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/skins.jpg?raw%20=%20true)![screen12](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/settings.jpg?raw%20=%20true)
 
 
 ## Installatie Backend
@@ -80,5 +81,8 @@ Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc11.PNG?raw%20=%20true)
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc12.PNG?raw%20=%20true)
+
 ### Streets inladen
 
+
+![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devoptions.jpg?raw%20=%20true)
