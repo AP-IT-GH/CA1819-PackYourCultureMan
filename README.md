@@ -76,7 +76,7 @@ Ga hiervoor naar het destination URL, dit kan je vinden bij de configure dialoog
 Je ziet hier alle endpoints.
 Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de map doc in de github repo. Plak deze in het value veld en druk op execute. De sights zijn nu toegevoegd.
 
-![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.jpg?raw%20=%20true)
+![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.png?raw%20=%20true)
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc10.PNG?raw%20=%20true)
 
@@ -98,6 +98,6 @@ Om deze dots te genereren moet je in de database onder user het acceslevel op tr
 Als je de streets hebt ingeladen zal de update knop in de devoptions alles updaten en zal de lijst dots volgende keer als je inlogd worden ingeladen.
 
 ![acceslevel](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/acceslevel.png?raw%20=%20true)
-![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.jpg?raw%20=%20true)
-![swagger](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/swaggerstreet.jpg?raw%20=%20true)
+![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.png?raw%20=%20true)
+![swagger](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/swaggerstreet.png?raw%20=%20true)
 ![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devOptions.jpg?raw%20=%20true)
