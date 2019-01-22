@@ -79,7 +79,7 @@ public class Shop extends Activity {
         final int priceLife = 50;
 
         //test coins
-        _coins = 500;
+        _coins = ApiHelper.player.getPlayerGameStats().getCoins();
 
         coinView.setText(Integer.toString(_coins));
         minFreeze.setOnClickListener(new View.OnClickListener() {
@@ -228,14 +228,14 @@ public class Shop extends Activity {
 
                     playerGameStats = new PlayerGameStats(_lifePoints, _RifleBullets, _FreezegunBullets, _PushbackGunBullets,_coins);
                     player.setPlayerGameStats(playerGameStats);
-
+                    _coins = _coins - _totalprice;
                     freezeView.setText(Integer.toString(player.getPlayerGameStats().getFreezeGun()));
                     pushbackView.setText(Integer.toString(player.getPlayerGameStats().getPushBackGun()));
                     rifleView.setText(Integer.toString(player.getPlayerGameStats().getRifle()));
                     lifepointsView.setText(Integer.toString(player.getPlayerGameStats().getLifePoints()));
 
 
-                    _coins = _coins - _totalprice;
+                    
 
                     JSONSerializer jsonSerializer = new JSONSerializer();
                     JSONObject jsonObject = jsonSerializer.jsonPutGameStats(_lifePoints,_RifleBullets,_FreezegunBullets,_PushbackGunBullets,_coins);

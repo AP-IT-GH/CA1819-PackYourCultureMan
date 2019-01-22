@@ -147,7 +147,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 16));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinnedLocation, 18));
         mMap.setMinZoomPreference(16.0f);
         mMap.setMaxZoomPreference(17.0f);
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -168,7 +168,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(false);
+            mMap.setMyLocationEnabled(true);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -245,11 +245,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     lockCam = false;
                     fab.setImageResource(R.drawable.lock);
                     mMap.resetMinMaxZoomPreference();
-                    mMap.setMinZoomPreference(16.0f);
-                    mMap.setMaxZoomPreference(17.0f);
+                    mMap.setMinZoomPreference(18.0f);
+                    mMap.setMaxZoomPreference(18.0f);
                     mMap.getUiSettings().setScrollGesturesEnabled(false);
                     CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
-                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(16f);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(17f);
                     mMap.moveCamera(center);
                     mMap.animateCamera(zoom);
 
