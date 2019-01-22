@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.hardware.Sensor;
@@ -15,6 +16,8 @@ import android.location.Location;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -37,6 +40,11 @@ import com.ap.pacyourcultureman.Menus.Gunmenu;
 import com.ap.pacyourcultureman.Menus.NavigationMenu;
 import com.bhargavms.podslider.OnPodClickListener;
 import com.bhargavms.podslider.PodSlider;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -62,7 +70,6 @@ import static com.ap.pacyourcultureman.R.drawable.clyde;
 import static com.ap.pacyourcultureman.R.drawable.openlock;
 
 public class GameActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, SensorEventListener{
-
     private ArrayList<Ghost> Ghosts;
     private Ghost Blinky, Inky, Pinky, Clyde;
     private static final int MY_PERMISSIONS_REQUEST_ACCES_FINE_LOCATION = 1;
@@ -156,11 +163,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
-
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(500); // 0.5 second interval
-        mLocationRequest.setFastestInterval(500);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setInterval(1000); // 0.5 second interval
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         currentAssigment = getRandomAssignment();
         //draw ghost assignements players
         startDraw();
@@ -245,8 +251,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     lockCam = false;
                     fab.setImageResource(R.drawable.lock);
                     mMap.resetMinMaxZoomPreference();
-                    mMap.setMinZoomPreference(18.0f);
-                    mMap.setMaxZoomPreference(18.0f);
+                    mMap.setMinZoomPreference(14.0f);
+                    mMap.setMaxZoomPreference(19.0f);
                     mMap.getUiSettings().setScrollGesturesEnabled(false);
                     CameraUpdate center = CameraUpdateFactory.newLatLng(currentLocation);
                     CameraUpdate zoom = CameraUpdateFactory.zoomTo(17f);
@@ -259,7 +265,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     fab.setImageResource(R.drawable.openlock);
                     mMap.resetMinMaxZoomPreference();
                     mMap.setMinZoomPreference(14.0f);
-                    mMap.setMaxZoomPreference(17.0f);
+                    mMap.setMaxZoomPreference(20.0f);
                     mMap.getUiSettings().setScrollGesturesEnabled(true);
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
@@ -301,7 +307,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-
+            Log.d("UPDATE", "UPDATE");
             List<Location> locationList = locationResult.getLocations();
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
@@ -565,7 +571,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     private boolean openAssignmentStartDialog(){
-
+        for (Ghost ghost:Ghosts) {
+            ghost.setSpeed((int)(speed/3.6));
+        }
         final Dialog dialog1 = new Dialog(GameActivity.this);
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setContentView(R.layout.dialog_startassignment);
@@ -582,8 +590,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 speed = SetSpeed(position);        handler = new Handler();
                 Log.d("speed",Integer.toString(speed));
                 txt_speed.setText(addKm(speed));
+                float ghostSpeed = (float)(speed/3.6);
+                Log.d("ghostspeed", Float.toString(ghostSpeed));
                 for (Ghost ghost:Ghosts) {
-                    ghost.setSpeed((int)(speed/3.6));
+                    ghost.setSpeed(ghostSpeed);
                 }
 
             }
@@ -667,6 +677,5 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return speed;
     }
-
 
 }
