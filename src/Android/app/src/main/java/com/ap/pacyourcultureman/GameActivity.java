@@ -223,7 +223,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     openAssignmentStartDialog();
                 }
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
+                    if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 20)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -322,7 +322,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 30)) {
+                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 20)) {
                     initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
@@ -548,7 +548,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Dot item : correctedDots ) {
                     item.setMarkerVisible(item.getMarker(),false);
                 }
-                if (mMap.getCameraPosition().zoom <= 16.9){
+                if (mMap.getCameraPosition().zoom <= 15.9){
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
                     }
