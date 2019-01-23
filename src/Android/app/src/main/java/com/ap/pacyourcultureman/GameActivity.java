@@ -113,9 +113,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean lockCam = false;
     private boolean initAssignment = true;
     Handler collisionTimerHandler;
-    public static int dist_dots = 0;
-    public static int dist_assignment = 0;
-    public static int dist_coins = 0;
+    public static int dist_dots = 30;
+    public static int dist_assignment = 30;
+    public static int dist_coins = 20;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,7 +215,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Draggable Marker loc: ", "latitude : " + marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-                if (collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)) {
+                if (collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), GameActivity.dist_assignment)) {
                     initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
@@ -226,7 +226,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     openAssignmentStartDialog();
                 }
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 20)) {
+                    if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), GameActivity.dist_coins)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -325,7 +325,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 20)) {
+                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), GameActivity.dist_assignment)) {
                     initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
@@ -347,7 +347,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markableP, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
                 } */
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 20)) {
+                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), GameActivity.dist_coins)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -467,7 +467,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private void initializer(Context context) {
         //objects init
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        pinnedLocation = new LatLng(51.230663, 4.407146);
+        pinnedLocation = new LatLng(51.2363848, 4.4121432);
 
         Blinky = new Ghost(new LatLng(51.228925, 4.417244), this);
         Inky = new Ghost(new LatLng(51.219429, 4.395858), this);
@@ -537,7 +537,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw dots on map
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //draw player
-        dragablePlayer.drawPlayer(mMap, getApplicationContext(),150,150);
+        dragablePlayer.drawPlayer(mMap, getApplicationContext(),120,120);
         playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         //draw assignments
         //Draw Ghosts
