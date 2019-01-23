@@ -67,7 +67,7 @@ public class GunHandler {
                 public void run() {
                     Log.d("Hello There", "General Kenobi!");
                     ghost.Draw(GameActivity.mMap, activity.getApplicationContext());
-                    ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                    ghost.getSteps(GameActivity.currentLocation);
                 }
             }, 5000);
         }
