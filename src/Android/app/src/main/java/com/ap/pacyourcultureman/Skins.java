@@ -44,6 +44,7 @@ public class Skins extends Activity {
     private Marker marker;
     private Button btnOk, btnBack;
     private Boolean skinSelect = false;
+    GameActivity gameActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,7 +196,7 @@ public class Skins extends Activity {
         }
         Bitmap scaledPacman = Bitmap.createScaledBitmap( player_pacman, width, height, false);
         marker = mMap.addMarker(new MarkerOptions()
-                .position(GameActivity.currentPos)
+                .position(gameActivity.getCurrentPos())
                 .icon(BitmapDescriptorFactory.fromBitmap(scaledPacman))
                 .draggable(true)
                 .flat(true)
@@ -229,7 +230,7 @@ public class Skins extends Activity {
     }
     public void setRotations(Marker marker) {
         float rot = 0;
-        float rota = GameActivity.rotation - 45;
+        float rota = gameActivity.getRotation() - 45;
         if (rota >= 0 && rota<= 90){
             rot = 90;
         }
@@ -250,6 +251,9 @@ public class Skins extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+    public void setActivity(GameActivity activity) {
+        this.gameActivity = activity;
     }
 
 }

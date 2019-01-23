@@ -42,14 +42,14 @@ public class MarkerAnimation {
                         marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
                         CollisionDetection collisionDetection = new CollisionDetection();
                         CollisionHandler.ghostLatLng = marker.getPosition();
-                        if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && !gameActivity.ghostCollide) {
+                        if(collisionDetection.collisionDetect(gameActivity.getCurrentPos(), marker.getPosition(), 15) && !gameActivity.ghostCollide) {
                             gameActivity.ghostCollide = true;
                             Log.d("Ghost hit", "Ghost hit");
-                            GameActivity.collisionHandler.ghostCollision(id);
+                            gameActivity.getCollisionHandler().ghostCollision(id);
                         }
-                        if(collisionDetection.collisionDetect(GameActivity.currentLocation, marker.getPosition(), 15) && !gameActivity.ghostCollide) {
+                        if(collisionDetection.collisionDetect(gameActivity.getCurrentLocation(), marker.getPosition(), 15) && !gameActivity.ghostCollide) {
                             gameActivity.ghostCollide = true;
-                            GameActivity.collisionHandler.ghostCollision(id);
+                            gameActivity.getCollisionHandler().ghostCollision(id);
                             Log.d("Ghost hit", "Ghost hit");
                         }
                         // Repeat till progress is complete.

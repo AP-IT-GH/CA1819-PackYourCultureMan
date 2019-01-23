@@ -92,21 +92,21 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean timer1 = false;
     private String jwt,distance,bearing;
     private BearingCalc bearingCalc;
-    public static CollisionHandler collisionHandler;
+    private CollisionHandler collisionHandler;
     private Gunmenu gunmenu;
     private Handler handler;
-    public static GoogleMap mMap;
+    private GoogleMap mMap;
     private SensorManager mSensorManager;
     private Skins dragablePlayer, playerpos;
-    public static LatLng currentLocation;
+    private LatLng currentLocation;
     private boolean startDialogEnded;
-    public static LatLng currentPos;
+    private LatLng currentPos;
     public Boolean ghostCollide = false;
     public Boolean ghostCollideTimer = false;
-    public static LatLng pinnedLocation;
-    public static Assignment currentAssigment;
-    public static float rotation;
-    public static Location mLastLocation;
+    private LatLng pinnedLocation;
+    private Assignment currentAssigment;
+    private float rotation;
+    private Location mLastLocation;
     BottomSlideMenu bottomSlideMenu;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
@@ -171,6 +171,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         currentAssigment = getRandomAssignment();
+        playerpos.setActivity(this);
         //draw ghost assignements players
         startDraw();
 
@@ -357,12 +358,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                         ghostCollideTimer = true;
                         collisionTimerHandler.postDelayed(ghostTimer, 11000);
-                    collisionHandler.ghostCollision(0);
+                 //   collisionHandler.ghostCollision(0);
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
                                         openAssignmentStartDialog();
                     }
-                    txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
+                    txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
                 }
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(location.getLatitude(), location.getLongitude(), currentAssigment.getLat(), currentAssigment.getLon()));
                 txtCurrentAssignment.setText(currentAssigment.getName());
@@ -485,6 +486,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         gunmenu = new Gunmenu(this);
         dragablePlayer = new Skins();
         playerpos = new Skins();
+        playerpos.setActivity(this);
+        dragablePlayer.setActivity(this);
         collisionDetection = new CollisionDetection();
         bearingCalc = new BearingCalc();
         collisionHandler = new CollisionHandler(GameActivity.this, this);
@@ -716,7 +719,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 Log.d("Hello There", "General Kenobi!");
-                victim.Draw(GameActivity.mMap, getApplicationContext());
+                victim.Draw(mMap, getApplicationContext());
                 victim.getSteps(currentLocation);
             }
         }, 5000);
@@ -732,7 +735,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public void run() {
                     Log.d("Hello There", "General Kenobi!");
-                    ghost.Draw(GameActivity.mMap, getApplicationContext());
+                    ghost.Draw(mMap, getApplicationContext());
                     ghost.getSteps(currentLocation);
                 }
             }, 5000);
@@ -744,4 +747,33 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             ghostCollideTimer = false;
         }
     };
+    public CollisionHandler getCollisionHandler() {
+        return collisionHandler;
+    }
+    public Assignment getCurrentAssigment() {
+        return currentAssigment;
+    }
+    public Float getRotation() {
+        return rotation;
+    }
+
+    public LatLng getCurrentLocation() {
+        return currentLocation;
+    }
+    public LatLng getCurrentPos() {
+        return currentPos;
+    }
+
+    public LatLng getPinnedLocation() {
+        return pinnedLocation;
+    }
+    public Location getmCurrentLocation() {
+        return mCurrentLocation;
+    }
+    public void setRotation(Float rotation) {
+        this.rotation = rotation;
+    }
+    public GoogleMap getmMap() {
+        return mMap;
+    }
 }
