@@ -43,6 +43,7 @@ public class CollisionHandler {
             JSONObject jsonParam = new JSONObject();
             try {
                 jsonParam.put("totalFailed", player.getPlayerStats().getTotalFailed());
+                jsonParam.put("lifePoints", -1);
                 jsonObject.put("stats", jsonParam);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -66,7 +67,7 @@ public class CollisionHandler {
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();
             try {
-                jsonParam.put("lifePoint", Integer.toString(player.getPlayerGameStats().getLifePoints()));
+                jsonParam.put("lifePoints", Integer.toString(player.getPlayerGameStats().getLifePoints()));
                 jsonObject.put("gameStats", jsonParam);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -89,6 +89,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private CollisionDetection collisionDetection;
     private Intent iin;
     private Bundle b;
+    private Boolean timer1 = false;
     private String jwt,distance,bearing;
     private BearingCalc bearingCalc;
     public static CollisionHandler collisionHandler;
@@ -351,8 +352,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if(ghostCollide && !ghostCollideTimer) {
                     currentAssigment = getRandomAssignment();
                     ghostCollide = false;
-                    ghostCollideTimer = true;
-                    collisionTimerHandler.postDelayed(ghostTimer, 11000);
+
+                        ghostCollideTimer = true;
+                        collisionTimerHandler.postDelayed(ghostTimer, 11000);
                     collisionHandler.ghostCollision(0);
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
@@ -385,6 +387,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Assignment getRandomAssignment() {
         Log.d("Assignment size", Integer.toString(assignments.size()));
+        currentAssigment = assignments.get(0);
         if(!initAssignment) {
             currentAssigment = assignments.get(20);
         }
