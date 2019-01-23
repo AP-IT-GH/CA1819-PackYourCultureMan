@@ -691,7 +691,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         int speed = 2;
         switch(position) {
             case 0:
-                speed = 40;
+                speed = 2;
                 break;
             case 1:
                 speed = 3;
