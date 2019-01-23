@@ -357,12 +357,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
 
                         ghostCollideTimer = true;
                         collisionTimerHandler.postDelayed(ghostTimer, 11000);
-                    collisionHandler.ghostCollision(0);
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
                                         openAssignmentStartDialog();
                     }
-                    txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
+                    txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
                 }
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(location.getLatitude(), location.getLongitude(), currentAssigment.getLat(), currentAssigment.getLon()));
                 txtCurrentAssignment.setText(currentAssigment.getName());
@@ -634,7 +633,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         final Dialog dialog = new Dialog(GameActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_counter);
-        resetAllGhosts();
        // dialog.setCancelable(false);
         final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
         new CountDownTimer(6000, 1000) {
@@ -687,7 +685,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         int speed = 2;
         switch(position) {
             case 0:
-                speed = 2;
+                speed = 40;
                 break;
             case 1:
                 speed = 3;
