@@ -217,6 +217,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
                     currentAssigment = getRandomAssignment();
+                    resetAllGhosts();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                     openAssignmentStartDialog();
                 }
@@ -326,6 +327,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
                     currentAssigment = getRandomAssignment();
+                    resetAllGhosts();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
                 drawPlayer();
@@ -632,6 +634,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         final Dialog dialog = new Dialog(GameActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_counter);
+        resetAllGhosts();
        // dialog.setCancelable(false);
         final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
         new CountDownTimer(6000, 1000) {
@@ -684,7 +687,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         int speed = 2;
         switch(position) {
             case 0:
-                speed = 10;
+                speed = 2;
                 break;
             case 1:
                 speed = 3;
@@ -714,7 +717,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             public void run() {
                 Log.d("Hello There", "General Kenobi!");
                 victim.Draw(GameActivity.mMap, getApplicationContext());
-                victim.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                victim.getSteps(currentLocation);
             }
         }, 5000);
     }
@@ -730,7 +733,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 public void run() {
                     Log.d("Hello There", "General Kenobi!");
                     ghost.Draw(GameActivity.mMap, getApplicationContext());
-                    ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                    ghost.getSteps(currentLocation);
                 }
             }, 5000);
         }
