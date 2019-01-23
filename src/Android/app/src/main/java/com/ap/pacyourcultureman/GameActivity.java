@@ -113,7 +113,6 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean lockCam = false;
     private boolean initAssignment = true;
     Handler collisionTimerHandler;
-    private boolean initAssignment = false;
     public static int dist_dots = 0;
     public static int dist_assignment = 0;
     public static int dist_coins = 0;
@@ -182,7 +181,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(false);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -630,7 +629,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txt_distance.setText(distance);
         txt_bearing.setText(bearing);
         txt_speed.setText(addKm(speed));
-        //dialog1.setCancelable(false);
+        dialog1.setCancelable(false);
 
         dialog1.show();
         return startDialogEnded;
@@ -640,7 +639,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         final Dialog dialog = new Dialog(GameActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_counter);
-       // dialog.setCancelable(false);
+        dialog.setCancelable(false);
         final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
         new CountDownTimer(6000, 1000) {
 

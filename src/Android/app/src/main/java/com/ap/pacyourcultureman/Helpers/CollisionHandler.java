@@ -36,7 +36,7 @@ public class CollisionHandler {
         apiHelper = new ApiHelper();
         this.gameActivity = gameActivity;
     }
-    public void ghostCollision() {
+    public void ghostCollision(int id) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         if(player.getPlayerGameStats().getLifePoints() == 0) {
             lifePointsSet0 = -1;
