@@ -1,0 +1,28 @@
+
+// extra sight toevoegen voor demo
+{
+    "Name": "TestLocatie",
+    "shortDescription": "TEST TEST TEST TEST",
+    "longDescription": "test test test test test test test test test test test test test test test testtest test test test",
+    "Longitude": "51.228304",
+    "Latitude": "4.416430",
+    "sightImage": "https://gdurl.com/M8BG",
+    "Website": "http://www.sint-paulusparochie.be/"
+  }
+
+// extra dots toevoegen voor demo
+
+[
+{
+    "latitudeA": "51.228795",
+    "longitudeA": "4.415595",
+    "latitudeB": "51.227766",
+    "longitudeB": "4.415996",
+  },
+{
+    "latitudeA": "51.228107",
+    "longitudeA": "4.414391",
+    "latitudeB": "51.228397",
+    "longitudeB": "4.417163",
+  }
+]
