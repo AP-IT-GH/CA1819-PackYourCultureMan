@@ -10,11 +10,11 @@ PacYourCultureMan is een map-based city-explorer dat zicht afspeelt in de stad A
 De naam van het spel geeft een hint naar het populaire pacman, je zal dus ook door een aantal vijanden achtervolgd worden, die je op slinkse wijze om de tuin zal moeten leiden.
 Het doel van het spel is zoveel mogelijk locaties bezoeken en onderweg de juist route nemen om zo alle ‘bolletjes’ (punten) te verzamelen en niet te sterven door de spookjes.
  
-Des te meer bolletjes je verzameld, des te hoger zal je score zijn. Je kan je punten gebruiken om powerups en levens te kopen in de shop.
+Des te meer bolletjes je verzamelt, des te hoger zal je score zijn. Je kan je punten gebruiken om powerups en levens te kopen in de shop.
 Je kan jezelf verdedigen door ammo te kopen voor de powerups en je zo verweren tegen de spookjes.
-Uiteraard zal het spel je score en de locaties waar je al geweest bent onthouden en zullen deze zichtbaar zijn in de app zelf. hier kun je uiteraard ook de scores van je vrienden opzoeken en kijken wie er bovenaan staat en wat je huidige ranking is. 
+Uiteraard zal het spel je score en de locaties waar je al geweest bent onthouden en zullen deze zichtbaar zijn in de app zelf. Hier kun je uiteraard ook de scores van je vrienden opzoeken en kijken wie er bovenaan staat en wat je huidige ranking is. 
 
-Je zal als User een account moeten maken waarmee je in het spel kan inloggen. nadat je dit hebt gedaan zal er een ‘random’ locatie in antwerpen gezocht worden waar je nog nooit geweest bent. ja zal met je character op een map (gebaseerd op google maps) gezet worden. Bovenaan de app staat er wat je random locatie is, hoeveel meter je verwijderd bent van de locatie en in welke richting je moet wandelen om bij je locatie te geraken.Wanneer jij op ‘go’ drukt zal er een timer afgaan, wanneer deze timer ten einde loopt zullen er vijanden op de kaart gezet worden die jij zal moeten ontwijken of doden. Wanneer je je bezienswaardigheid hebt gevonden, heb je je punten verdiend en kan je deze inzetten in de shop. Je zal bijkomende informatie krijgen bij elke bezienswaardigheid die je bezoekt.
+Je zal als User een account moeten maken waarmee je in het spel kan inloggen. nadat je dit hebt gedaan zal er een ‘random’ locatie in antwerpen gezocht worden waar je nog nooit geweest bent. Je zal met je character op een map (gebaseerd op google maps) gezet worden. Bovenaan de app staat er wat je random locatie is, hoeveel meter je verwijderd bent van de locatie en in welke richting je moet wandelen om bij je locatie te geraken. Wanneer jij op ‘go’ drukt zal er een timer afgaan, wanneer deze timer ten einde loopt zullen er vijanden op de kaart gezet worden die jij zal moeten ontwijken of doden. Wanneer je je bezienswaardigheid hebt gevonden, heb je je punten verdiend en kan je deze inzetten in de shop. Je zal bijkomende informatie krijgen bij elke bezienswaardigheid die je bezoekt.
 
 ### Screens
 ![screen1](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/login.jpg?raw%20=%20true)![screen2](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/register.jpg?raw%20=%20true)![screen3](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/startUp.jpg?raw%20=%20true)
@@ -54,7 +54,7 @@ Om het server password te krijgen ga je naar je azure dashboard en ga je naar de
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc6.PNG?raw%20=%20true)
 
-![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc7.PNG?raw%20=%20true)
+![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc7.jpg?raw%20=%20true)
 
 ### ASP deploy configure
 
@@ -91,13 +91,15 @@ Ga hiervoor naar het destination URL, dit kan je vinden bij de configure dialoog
 Je ziet hier alle endpoints.
 Selecteer het post Streets/postarray en kopieer de Streets JSON die je vindt in de map doc in de github repo. Plak deze in het value veld en druk op execute. De streets zijn nu toegevoegd.
 
+![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.png?raw%20=%20true)
+![swagger](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/swaggerStreet.png?raw%20=%20true)
+
 Nu dat je de streets hebt ingeladen kunnen de dots gemaakt worden. De dots worden gegenereerd door middel van punt a en b en om de 30 meter wordt er een nieuw punt tussen deze 2 punten aangemaakt, deze worden door Google Roads Api gecorrigeerd en op de weg gezet.
 
 Om deze dots te genereren moet je in de database onder user het acceslevel op true (1) plaatsen en dan zal in het gameMenu de optie dev beschikbaar zijn.
 
+![acceslevel](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/acceslevel.png?raw%20=%20true)
+
 Als je de streets hebt ingeladen zal de update knop in de devoptions alles updaten en zal de lijst dots volgende keer als je inlogd worden ingeladen.
 
-![acceslevel](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/acceslevel.png?raw%20=%20true)
-![doc](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/doc.png?raw%20=%20true)
-![swagger](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/swaggerstreet.png?raw%20=%20true)
 ![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devOptions.jpg?raw%20=%20true)
