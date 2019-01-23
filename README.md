@@ -82,6 +82,10 @@ Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc11.PNG?raw%20=%20true)
 
+![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc13.PNG?raw%20=%20true)
+
+![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc14.PNG?raw%20=%20true)
+
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc12.PNG?raw%20=%20true)
 
 ### Streets inladen
@@ -103,3 +107,4 @@ Om deze dots te genereren moet je in de database onder user het acceslevel op tr
 Als je de streets hebt ingeladen zal de update knop in de devoptions alles updaten en zal de lijst dots volgende keer als je inlogd worden ingeladen.
 
 ![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devOptions.jpg?raw%20=%20true)
+
