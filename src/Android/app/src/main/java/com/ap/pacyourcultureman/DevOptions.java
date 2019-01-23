@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class DevOptions extends Activity{
     private ProgressBar progressBar;
     private Intent intent;
     private TextView textView,txtDeleted,txtPosted,txtGenerated,txtCorrected;
+    private EditText set_distDots,set_distAssign,set_distCoins;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,9 @@ public class DevOptions extends Activity{
     txtGenerated.setVisibility(View.INVISIBLE);
     txtPosted =findViewById(R.id.txt_posted);
     txtPosted.setVisibility(View.INVISIBLE);
+    set_distAssign = findViewById(R.id.dev_txt_assignments);
+    set_distCoins = findViewById(R.id.dev_txt_coins);
+    set_distDots = findViewById(R.id.dev_txt_distdots);
     addListenerOnButton(); }
 
     private void addListenerOnButton() {
@@ -220,6 +225,9 @@ public class DevOptions extends Activity{
         txtGenerated.setVisibility(View.VISIBLE);
         txtDeleted.setVisibility(View.VISIBLE);
         txtPosted.setVisibility(View.VISIBLE);
+        GameActivity.dist_assignment = Integer.parseInt(set_distAssign.getText().toString());
+        GameActivity.dist_dots = Integer.parseInt(set_distDots.getText().toString());
+        GameActivity.dist_coins = Integer.parseInt(set_distCoins.getText().toString());
     }
 
     @Override
@@ -228,6 +236,7 @@ public class DevOptions extends Activity{
         NavigationMenu.resetStaticLists();
         intent = new Intent(this.getBaseContext(),Login.class);
         this.startActivity(intent);
+
     }
 
 }

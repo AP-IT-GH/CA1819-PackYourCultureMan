@@ -27,6 +27,7 @@ public class CollisionHandler {
     ApiHelper apiHelper;
     public static LatLng playerLatLng;
     public static LatLng ghostLatLng;
+    private int lifePointsSet0;
     CollisionDetection collisionDetection = new CollisionDetection();
     GameActivity gameActivity;
     Handler mHandler = new Handler();
@@ -35,10 +36,12 @@ public class CollisionHandler {
         apiHelper = new ApiHelper();
         this.gameActivity = gameActivity;
     }
-    public void ghostCollision(int id) {
-
-        if(player.getPlayerGameStats().getLifePoints() == 0 ) {
-     //       gameActivity.ghostCollideTimer = true;
+    public void ghostCollision() {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        if(player.getPlayerGameStats().getLifePoints() == 0) {
+            lifePointsSet0 = -1;
+            alertDialog.setTitle("Game over");
+            alertDialog.setMessage("Press OK to start over");
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();
             try {
@@ -67,7 +70,7 @@ public class CollisionHandler {
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();
             try {
-                jsonParam.put("lifePoints", Integer.toString(player.getPlayerGameStats().getLifePoints()));
+                jsonParam.put("lifePoints", lifePointsSet0);
                 jsonObject.put("gameStats", jsonParam);
             } catch (JSONException e) {
                 e.printStackTrace();

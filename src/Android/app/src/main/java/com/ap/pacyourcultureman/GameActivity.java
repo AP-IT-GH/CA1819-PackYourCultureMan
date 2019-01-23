@@ -113,6 +113,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean lockCam = false;
     private boolean initAssignment = true;
     Handler collisionTimerHandler;
+    private boolean initAssignment = false;
+    public static int dist_dots = 0;
+    public static int dist_assignment = 0;
+    public static int dist_coins = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
