@@ -42,11 +42,18 @@ namespace ASPCoreApi.Services
                 throw new AppException("gamestats not found");
 
             //update stats
-            gameStats.lifePoints = userParam.gameStats.lifePoints;
-            gameStats.rifle = userParam.gameStats.rifle;
-            gameStats.freezeGun = userParam.gameStats.freezeGun;
-            gameStats.pushBackGun = userParam.gameStats.pushBackGun;
-            gameStats.coins = userParam.gameStats.coins;
+            if (userParam.gameStats.lifePoints != 0) gameStats.lifePoints = userParam.gameStats.lifePoints;
+            if (userParam.gameStats.rifle != 0) gameStats.rifle = userParam.gameStats.rifle;
+            if (userParam.gameStats.freezeGun != 0) gameStats.freezeGun = userParam.gameStats.freezeGun;
+            if (userParam.gameStats.pushBackGun != 0) gameStats.pushBackGun = userParam.gameStats.pushBackGun;
+            if (userParam.gameStats.coins != 0) gameStats.coins = userParam.gameStats.coins;
+
+            if (userParam.gameStats.lifePoints == -1) gameStats.lifePoints = 0;
+            if (userParam.gameStats.rifle == -1) gameStats.rifle = 0;
+            if (userParam.gameStats.freezeGun == -1) gameStats.freezeGun = 0;
+            if (userParam.gameStats.pushBackGun == -1) gameStats.pushBackGun = 0;
+            if (userParam.gameStats.coins == -1) gameStats.coins = 0;
+
 
             _context.gameStats.Update(gameStats);
             _context.users.Update(user);
