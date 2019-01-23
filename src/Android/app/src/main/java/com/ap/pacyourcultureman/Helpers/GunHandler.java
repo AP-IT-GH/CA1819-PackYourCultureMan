@@ -199,8 +199,7 @@ public class GunHandler {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
-                    Log.d("Assignment", ApiHelper.assignments.get(1).getName());
+                    ghost.getSteps(GameActivity.currentLocation);
                     ghost.markerAnimation.isFrozen = false;
                     ghost.isFrozen = false;
                     //          ghost.handler = new Handler();

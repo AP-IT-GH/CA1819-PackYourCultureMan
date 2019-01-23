@@ -110,10 +110,10 @@ namespace ASP.Dtos
             user.Stats = stats;
             var gameStats = new GameStats
             {
-                lifePoints = 2,
-                rifle = 0,
-                freezeGun = 0,
-                pushBackGun = 0,
+                lifePoints = 3,
+                rifle = 1,
+                freezeGun = 1,
+                pushBackGun = 1,
                 coins = 0,
 
             };

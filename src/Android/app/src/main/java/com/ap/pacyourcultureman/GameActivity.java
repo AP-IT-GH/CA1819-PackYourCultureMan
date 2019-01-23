@@ -455,7 +455,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         pinnedLocation = new LatLng(51.230663, 4.407146);
 
-        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
+        Blinky = new Ghost(new LatLng(51.228925, 4.417244));
         Inky = new Ghost(new LatLng(51.219429, 4.395858));
         Pinky = new Ghost(new LatLng(51.206207, 4.387096));
         Clyde = new Ghost(new LatLng(51.212186, 4.408376));
@@ -638,9 +638,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void run() {
                             Log.d("Steps", "Getting steps...");
-                            for (Ghost ghost:Ghosts) {
-                                ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
-                            }
+                            Handler locupdate = new Handler();
+                            locupdate.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (Ghost ghost:Ghosts) {
+                                        ghost.stopGhost();
+                                        ghost.getSteps(currentLocation);
+                                    }
+                                }
+                            });
+                            locupdate.postDelayed(this, 180000);
                         }
                     });
                     Log.d("Movement", "Ik ben non-blocking");
@@ -658,7 +666,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         return speedStr + "km/h";
     }
     private int SetSpeed(int position){
-        int speed = 5;
+        int speed = 2;
         switch(position) {
             case 0:
                 speed = 20;

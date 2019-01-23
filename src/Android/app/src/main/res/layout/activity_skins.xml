@@ -24,14 +24,7 @@
             android:textColor="@android:color/holo_orange_light"
             android:textSize="36sp"
             android:textStyle="bold" />
-        <RadioGroup
-            android:id="@+id/radiogroup_skins"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,6 +63,14 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/box"
                 android:orientation="vertical">
+                <RadioGroup
+                    android:id="@+id/radiogroup_skins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
                 <TextView
                     android:id="@+id/txt_skins"
@@ -120,8 +121,9 @@
                     android:layout_marginBottom="10dp"
                     android:buttonTint="@android:color/holo_orange_light"
                     android:drawableRight="@drawable/pacman_blue_right" />
+                </RadioGroup>
             </LinearLayout>
-        </RadioGroup>
+
         <Button
             android:id="@+id/skins_btn_ok"
             android:layout_width="150dp"

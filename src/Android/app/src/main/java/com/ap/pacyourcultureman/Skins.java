@@ -63,6 +63,7 @@ public class Skins extends Activity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(!skinSelect) {
                     Toast.makeText(Skins.this, "No new skin selected", Toast.LENGTH_SHORT).show();
                     finish();
@@ -88,22 +89,26 @@ public class Skins extends Activity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 int id = radioGroup.getCheckedRadioButtonId();
-                skinSelect = true;
                 switch (id) {
                     case R.id.pacmanY:
                         skinId = 1;
-                       selectSkin(getApplicationContext());
+                        skinSelect = true;
+                        selectSkin(getApplicationContext());
                         break;
                     case R.id.pacmanR:
                         skinId = 2;
-                       selectSkin(getApplicationContext());
+                        skinSelect = true;
+                        selectSkin(getApplicationContext());
                         break;
                     case R.id.pacmanG:
                         skinId = 3;
+                        skinSelect = true;
                         selectSkin(getApplicationContext());
                         break;
                     case R.id.pacmanB:
                         skinId = 4;
+                        Log.d("skinid","skin4");
+                        skinSelect = true;
                         selectSkin(getApplicationContext());
                         break;
                 }
