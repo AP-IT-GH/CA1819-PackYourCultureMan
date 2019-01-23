@@ -10,11 +10,9 @@ public class GetDotsBetween2Points {
 
     private static final long RADIUS_OF_EARTH = 6371000; // radius of earth in m
 
-
-    public static void GetDotsBetweenAanB(Double latA, Double lngA, Double latB, Double lngB, List<Dot> list){
+    public static void GetDotsBetweenAanB(Double latA, Double lngA, Double latB, Double lngB, List<Dot> list, int distance){
         ArrayList<Dot> tempList = new ArrayList<>();
         // distance between points
-        int meters = 30;
         // start and end position
         GetDotsBetween2Points.MockLocation start = new GetDotsBetween2Points.MockLocation(latA, lngA);
         GetDotsBetween2Points.MockLocation end = new GetDotsBetween2Points.MockLocation(latB, lngB);
@@ -24,7 +22,7 @@ public class GetDotsBetween2Points {
         for (GetDotsBetween2Points.MockLocation mockLocation : coords) {
             tempList.add(new Dot(mockLocation.lat , mockLocation.lng));
         }
-        for(int i = 0; i < tempList.size()  ; i+=meters) {
+        for(int i = 0; i < tempList.size()  ; i+=distance) {
             list.add(new Dot(tempList.get(i).getLat() , tempList.get(i).getLon()));
         }
     }

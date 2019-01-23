@@ -36,15 +36,17 @@ public class Ghost {
     public Handler handler = new Handler();
     ApiHelper apiHelper;
     private float speed = 40;
-    public MarkerAnimation markerAnimation = new MarkerAnimation();
+    public MarkerAnimation markerAnimation;
     Boolean newDirections = false;
     public Runnable r;
     public Boolean isFrozen = false;
     public Boolean isDead = false;
-
-    public Ghost(LatLng location) {
+    GameActivity gameActivity;
+    public Ghost(LatLng location, GameActivity gameActivity) {
         apiHelper = new ApiHelper();
         initLoc = location;
+        this.gameActivity = gameActivity;
+        this.markerAnimation = new MarkerAnimation(this.gameActivity);
     }
 
     public void Draw(GoogleMap mMap, Context context) {
@@ -74,7 +76,7 @@ public class Ghost {
 
     public void getSteps(final LatLng destination) {
         steps = new ArrayList<>();
-        markerAnimation = new MarkerAnimation();
+        markerAnimation = new MarkerAnimation(gameActivity);
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&mode=walking&key=" + BuildConfig.GoogleSecAPIKEY;
         Log.d("Steps", baseUrl);
         final JSONDeserializer jsonDeserializer = new JSONDeserializer();
@@ -82,6 +84,7 @@ public class Ghost {
             @Override
             public void onSuccess() {
                 steps.clear();
+                iter = 0;
                 steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());
                 newDirections = true;
                 //marker.setPosition(steps.get(0).start);
@@ -113,6 +116,7 @@ public class Ghost {
             public void run() {
                 if (steps.size() > 1) {
                     elapsed = SystemClock.uptimeMillis() - start;
+                    Log.d("Movement", "Logging for : " + id);
                     Log.d("Movement", "Moving to point: " + iter);
                     time = (long)Math.round((steps.get(0).distance) * 1000/(speed));
                     Log.d("Movement" ,"Step: " + steps.get(1));
@@ -129,7 +133,7 @@ public class Ghost {
 
     public void Move(LatLng dest, Marker mrkr, long time) {
         Log.d("Movement", "MarkerLocation: " + mrkr.getPosition());
-        markerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time);
+        markerAnimation.animateMarkerToGB(marker, dest, new LatLngInterpolator.Spherical(), time, id);
 
     }
 
@@ -143,6 +147,7 @@ public class Ghost {
 
     public void stopGhost(){
         handler.removeCallbacksAndMessages(r);
+        handler = new Handler();
         markerAnimation.handler.removeCallbacksAndMessages(markerAnimation.r);
         markerAnimation.r = null;
         steps = new ArrayList<>();

@@ -84,7 +84,8 @@ public class NavigationMenu  {
     }
 
     public static void resetStaticLists(){
-        ApiHelper.visitedSights.clear();
+        Log.d("TEST", "TEST");
+             ApiHelper.visitedSights.clear();
         ApiHelper.assignments.clear();
         ApiHelper.correctedDots.clear();
         ApiHelper.generatedDots.clear();

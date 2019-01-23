@@ -17,8 +17,11 @@ public class MarkerAnimation {
     public Handler handler = new Handler();
     public Runnable r;
     public Boolean isFrozen = false;
-    public MarkerAnimation() {}
-    public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time) {
+    GameActivity gameActivity;
+    public MarkerAnimation(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
+    }
+    public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time, final int id) {
         final LatLng startPosition = marker.getPosition();
         final long start = SystemClock.uptimeMillis();
         final Interpolator interpolator = new AccelerateDecelerateInterpolator();
@@ -39,8 +42,14 @@ public class MarkerAnimation {
                         marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
                         CollisionDetection collisionDetection = new CollisionDetection();
                         CollisionHandler.ghostLatLng = marker.getPosition();
-                        if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
-                            GameActivity.ghostCollide = true;
+                        if(collisionDetection.collisionDetect(gameActivity.getCurrentPos(), marker.getPosition(), 15) && !gameActivity.ghostCollide) {
+                            gameActivity.ghostCollide = true;
+                            Log.d("Ghost hit", "Ghost hit");
+                            gameActivity.getCollisionHandler().ghostCollision(id);
+                        }
+                        if(collisionDetection.collisionDetect(gameActivity.getCurrentLocation(), marker.getPosition(), 15) && !gameActivity.ghostCollide) {
+                            gameActivity.ghostCollide = true;
+                            gameActivity.getCollisionHandler().ghostCollision(id);
                             Log.d("Ghost hit", "Ghost hit");
                         }
                         // Repeat till progress is complete.

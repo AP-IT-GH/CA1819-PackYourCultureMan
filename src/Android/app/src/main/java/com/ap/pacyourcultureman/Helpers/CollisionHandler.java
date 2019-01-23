@@ -1,8 +1,10 @@
 package com.ap.pacyourcultureman.Helpers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.logging.LogRecord;
 
 public class CollisionHandler {
     Context context;
@@ -26,11 +29,14 @@ public class CollisionHandler {
     public static LatLng ghostLatLng;
     private int lifePointsSet0;
     CollisionDetection collisionDetection = new CollisionDetection();
-    public CollisionHandler(Context context) {
+    GameActivity gameActivity;
+    Handler mHandler = new Handler();
+    public CollisionHandler(Context context, GameActivity gameActivity) {
         this.context = context;
         apiHelper = new ApiHelper();
+        this.gameActivity = gameActivity;
     }
-    public void ghostCollision() {
+    public void ghostCollision(int id) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         if(player.getPlayerGameStats().getLifePoints() == 0) {
             lifePointsSet0 = -1;
@@ -40,6 +46,7 @@ public class CollisionHandler {
             JSONObject jsonParam = new JSONObject();
             try {
                 jsonParam.put("totalFailed", player.getPlayerStats().getTotalFailed());
+                jsonParam.put("lifePoints", -1);
                 jsonObject.put("stats", jsonParam);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -47,23 +54,23 @@ public class CollisionHandler {
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updatestats/" + Integer.toString(ApiHelper.player.getId()), jsonObject, new VolleyCallBack() {
                 @Override
                 public void onSuccess() {
-
+                    Toast.makeText(context, "No lifepoints left, resetting to a new game", Toast.LENGTH_SHORT).show();
+                    ApiHelper.player.getPlayerStats().setCurrentScore(0);
+                    gameActivity.resetAllGhosts();
                 }
             });
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
         }
         else {
+          //  gameActivity.ghostCollideTimer = true;
+            int newScore = Integer.valueOf(ApiHelper.player.getPlayerStats().getCurrentScore() / 2);
+            ApiHelper.player.getPlayerStats().setCurrentScore(newScore);
+            Log.d("Score", Integer.toString(newScore));
+            gameActivity.resetGhost(id);
             ApiHelper.player.getPlayerGameStats().setLifePoints(ApiHelper.player.getPlayerGameStats().getLifePoints() - 1);
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();
             try {
-                jsonParam.put("lifePoint", lifePointsSet0);
+                jsonParam.put("lifePoints", lifePointsSet0);
                 jsonObject.put("gameStats", jsonParam);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -115,7 +122,7 @@ public class CollisionHandler {
 
     public void visitedSightsSetBoolean() {
         for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
-            if(GameActivity.currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
+            if(gameActivity.getCurrentAssigment().getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
                 ApiHelper.visitedSights.get(i).setChecked(true);
             }}
     }
@@ -143,7 +150,4 @@ public class CollisionHandler {
         });
     }
 
-    public void gunCollision(Ghost ghost) {
-
-    }
 }

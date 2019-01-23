@@ -22,16 +22,15 @@ import java.util.List;
 
 public class GunHandler {
 
-    Activity activity;
+    GameActivity gameActivity;
     Ghost ghost;
     ApiHelper apiHelper;
     Skins player;
     BearingCalc bearingCalc = new BearingCalc();
     double pushDistance = 0.003;
-
-    public GunHandler(Ghost ghost, Skins player, Activity activity) {
+    public GunHandler(Ghost ghost, Skins player, GameActivity activity) {
         this.ghost = ghost;
-        this.activity = activity;
+        this.gameActivity = activity;
         this.player = player;
         apiHelper = new ApiHelper();
     }
@@ -60,9 +59,19 @@ public class GunHandler {
             ghost.handler.removeCallbacks(ghost.r);
             ghost.markerAnimation.handler.removeCallbacks(ghost.markerAnimation.r);
             marker.remove();
+            Log.d("Movement", "REKT");
+            Handler respawnHandler = new Handler();
+            respawnHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Hello There", "General Kenobi!");
+                    ghost.Draw(gameActivity.getmMap(), gameActivity.getApplicationContext());
+                    ghost.getSteps(gameActivity.getCurrentLocation());
+                }
+            }, 5000);
         }
         else {
-            Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(gameActivity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
         }
     }
     private void freezeHandler() {
@@ -96,7 +105,7 @@ public class GunHandler {
 
         }
         else {
-            Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(gameActivity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
         }
     }
     private void pushBackHandler() {
@@ -189,8 +198,7 @@ public class GunHandler {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
-                    Log.d("Assignment", ApiHelper.assignments.get(1).getName());
+                    ghost.getSteps(gameActivity.getCurrentLocation());
                     ghost.markerAnimation.isFrozen = false;
                     ghost.isFrozen = false;
                     //          ghost.handler = new Handler();
@@ -201,7 +209,7 @@ public class GunHandler {
             }, 3000);
         }
         else {
-            Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(gameActivity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
         }
     }
     private JSONObject putGameStats() {

@@ -108,3 +108,63 @@ Als je de streets hebt ingeladen zal de update knop in de devoptions alles updat
 
 ![screen13](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/devOptions.jpg?raw%20=%20true)
 
+## Handleiding spel
+
+Op het eerste scherm gaat u de snelheid van de spookjes moeten selecteren.  
+De opties zijn:  
+1. 2km/u
+2. 3km/u
+3. 4km/u
+4. 5km/u
+5. 6km/u  
+####
+Op dit scherm ziet u ook waar u naartoe moet gaan, hoeveel afstand tussen u en het monument en ook de windrichting.  
+Na een aftelscherm is het spel speelbaar en is het de bedoeling dat de speler zich richting het monument beweegt.  
+Bovenaan ziet de speler zijn behaalde punten voor deze ronde en zijn resterende levenspunten.  
+Ook ziet hij nogmaals het monument waar hij/zij naartoe moet gaan en de afstand/windrichting.  
+Door op het icoontje rechtsvanboven te klikken kan je het wapenmenu opendoen:  
+Om het de speler makkelijker te maken kan hij/zij beroep doen op drie verschillende wapens:
+1. Rifle gun - Dit zal een spookje doden en verwijderen voor de lopende opdracht.  
+2. Freeze gun - Dit zal een spookje voor 30 seconden freezen.
+3. Pushback gun - Dit zal een spookje de andere kant opduwen.
+Door op het icoontje rechtsvanonder te klikken kan de speler zijn camera unlocken om zo gemakkelijk rond te kijken.
+Via een swipe menu (Links -> Rechts) kan de speler meerdere opties/statistieken bekijken.
+
+### Shop
+Hier kan de speler wapens/levenspunten aanschaffen met de punten die hij heeft gekregen.
+Let op: Punten komen er alleen bij als je de opdracht hebt afgemaakt.  
+### Leaderboard
+Een leaderboard dat de top 10 spelers van PackYourCultureMan laat zien a.d.h.v. Highscore of totale punten.  
+De speler krijgt ook zijn rank te zien onderaan het scherm.
+### Score
+De speler kan al zijn statistieken hier bekijken:
+1. Highscore - Hoogste behaalde punten op 1 rondje.
+2. Total score - Totaal behaalde punten
+3. Total success - Hoeveel spelletjes de speler heeft afgewerkt.
+4. Total Lost - Hoeveel punten de speler is kwijtgeraakt aan spookjes.
+5. Total failed - Hoeveel keer de speler is doodgegaan wegens te weinig levenspunten.
+De speler kan deze statistieken ook resetten via de reset knop.
+### Sights
+De speler kan op dit scherm alle monumenten bekeken die hij heeft "unlocked" (Afgewerkt spelletje).
+Hij kan op een bepaald monument klikken om meer informatie te verkrijgen over dit monument.
+Opties:
+1. Openen op google maps
+2. Website openen
+De speler kan ook zijn unlocked monumenten resetten door op de reset knop te drukken.  
+### Skins
+De speler kan hier zijn Pacman icoon op de map aanpassen door een andere kleur te kiezen.  
+### Settings
+De speler kan hier persoonlijke informatie aanpassen zoals:
+1. Email
+2. Wachtwoord
+3. Voornaam
+4. Achternaam
+### Logout
+Spel afsluiten en terug naar loginscherm gaan
+### Dev (Alleen voor admin accounts)
+Admins kunnen hier de dots lijst aanpassen op de ASP server.  
+Admins kunnen ook meerdere aanpassingen doen voor hun game:
+1. Afstand tussen dots (Globale verandering)
+2. Afstand collision player vs monunment (Sessie verandering)
+3. Afstand collisiion player v spook (Sessie verandering)
+ 

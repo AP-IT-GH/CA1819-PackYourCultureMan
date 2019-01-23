@@ -68,6 +68,16 @@ public class DevOptions extends Activity{
         @Override
         public void onClick(final View v) {
             progressBar.setVisibility(View.VISIBLE);
+            if(!set_distAssign.getText().toString().isEmpty()) {
+                GameActivity.dist_assignment = Integer.parseInt(set_distAssign.getText().toString());
+            }
+            else {Log.d("Check", "Success");}
+            if(!set_distCoins.getText().toString().isEmpty()) {
+                GameActivity.dist_coins = Integer.parseInt(set_distCoins.getText().toString());
+            }
+            if(!set_distDots.getText().toString().isEmpty()) {
+                GameActivity.dist_dots = Integer.parseInt(set_distDots.getText().toString());
+            }
             deleteDots();
             correctDots();
             button.setEnabled(false);
@@ -102,7 +112,7 @@ public class DevOptions extends Activity{
     }
     private  void streetsGenerate(){
         for (int i = 0; i < ApiHelper.streets.size(); i++) {
-            GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots);}
+            GetDotsBetweenAanB(ApiHelper.streets.get(i).getLatA(),ApiHelper.streets.get(i).getLonA(),ApiHelper.streets.get(i).getLatB(),ApiHelper.streets.get(i).getLonB(),ApiHelper.generatedDots, GameActivity.dist_dots);}
     }
 
     private String linkGenerator(){
@@ -225,9 +235,7 @@ public class DevOptions extends Activity{
         txtGenerated.setVisibility(View.VISIBLE);
         txtDeleted.setVisibility(View.VISIBLE);
         txtPosted.setVisibility(View.VISIBLE);
-        GameActivity.dist_assignment = Integer.parseInt(set_distAssign.getText().toString());
-        GameActivity.dist_dots = Integer.parseInt(set_distDots.getText().toString());
-        GameActivity.dist_coins = Integer.parseInt(set_distCoins.getText().toString());
+
     }
 
     @Override

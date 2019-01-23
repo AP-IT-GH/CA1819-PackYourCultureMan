@@ -89,6 +89,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private CollisionDetection collisionDetection;
     private Intent iin;
     private Bundle b;
+    private Boolean timer1 = false;
     private String jwt,distance,bearing;
     private BearingCalc bearingCalc;
     private CollisionHandler collisionHandler;
@@ -99,20 +100,22 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private Skins dragablePlayer, playerpos;
     private LatLng currentLocation;
     private boolean startDialogEnded;
-    public static LatLng currentPos;
-    public static Boolean ghostCollide = false;
-    public static LatLng pinnedLocation;
-    public static Assignment currentAssigment;
-    public static float rotation;
-    public static Location mLastLocation;
+    private LatLng currentPos;
+    public Boolean ghostCollide = false;
+    public Boolean ghostCollideTimer = false;
+    private LatLng pinnedLocation;
+    private Assignment currentAssigment;
+    private float rotation;
+    private Location mLastLocation;
     BottomSlideMenu bottomSlideMenu;
     private ProgressDialog progressDialog;
     private FloatingActionButton fab;
     private Boolean lockCam = false;
-    private boolean initAssignment = false;
-    public static int dist_dots = 0;
-    public static int dist_assignment = 0;
-    public static int dist_coins = 0;
+    private boolean initAssignment = true;
+    Handler collisionTimerHandler;
+    public static int dist_dots = 30;
+    public static int dist_assignment = 30;
+    public static int dist_coins = 20;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,13 +174,14 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         currentAssigment = getRandomAssignment();
+        playerpos.setActivity(this);
         //draw ghost assignements players
         startDraw();
 
         //locationupdater
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(false);
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -211,17 +215,18 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Draggable Marker loc: ", "latitude : " + marker.getPosition().latitude + "longitude : " + marker.getPosition().longitude);
                 currentPos = marker.getPosition();
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
-                if (collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), 10)) {
+                if (collisionDetection.collisionDetect(marker.getPosition(), currentAssigment.getLatLng(), GameActivity.dist_assignment)) {
                     initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
                     currentAssigment = getRandomAssignment();
+                    resetAllGhosts();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                     openAssignmentStartDialog();
                 }
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8)) {
+                    if (collisionDetection.collisionDetect(marker.getPosition(), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), GameActivity.dist_coins)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -320,12 +325,13 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
                 }
-                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), 30)) {
+                if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), currentAssigment.getLatLng(), GameActivity.dist_assignment)) {
                     initAssignment = true;
                     collisionHandler.currentAssigmentCollision();
                     collisionHandler.visitedSightsSetBoolean();
                     collisionHandler.visitedSightsPut();
                     currentAssigment = getRandomAssignment();
+                    resetAllGhosts();
                     txtCurrentScore.setText(Integer.toString(player.getPlayerStats().getCurrentScore()));
                 }
                 drawPlayer();
@@ -341,7 +347,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     collisionDetection.collisionDetect(markableP, new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 8);
                 } */
                 for (int i = 0; i < correctedDots.size(); i++) {
-                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), 20)) {
+                    if (collisionDetection.collisionDetect(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(correctedDots.get(i).getLat(), correctedDots.get(i).getLon()), GameActivity.dist_coins)) {
                         player.getPlayerStats().setCurrentScore(player.getPlayerStats().getCurrentScore() + 1);
                         txtCurrentScore.setText("x " + player.getPlayerStats().getCurrentScore());
                         //removerMarkers On collision
@@ -349,15 +355,17 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         correctedDots.remove(i);
                     }
                 }
-                if(ghostCollide) {
+                if(ghostCollide && !ghostCollideTimer) {
                     currentAssigment = getRandomAssignment();
                     ghostCollide = false;
-                    collisionHandler.ghostCollision();
+
+                        ghostCollideTimer = true;
+                        collisionTimerHandler.postDelayed(ghostTimer, 11000);
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
                                         openAssignmentStartDialog();
                     }
-                    txtCurrentLifePoints.setText("x " + player.getPlayerGameStats().getLifePoints());
+                    txtCurrentLifePoints.setText("x " + ApiHelper.player.getPlayerGameStats().getLifePoints());
                 }
                 txtCurrentHeading.setText(bearingCalc.getBearingInString(location.getLatitude(), location.getLongitude(), currentAssigment.getLat(), currentAssigment.getLon()));
                 txtCurrentAssignment.setText(currentAssigment.getName());
@@ -376,11 +384,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.moveCamera(center);
                     mMap.animateCamera(zoom);
                 }
+                Log.d("ghostcollision", ghostCollide.toString());
+                Log.d("ghostTimer", ghostCollideTimer.toString());
             }
         }
     };
 
     private Assignment getRandomAssignment() {
+        Log.d("Assignment size", Integer.toString(assignments.size()));
+        currentAssigment = assignments.get(0);
         if(!initAssignment) {
             currentAssigment = assignments.get(20);
         }
@@ -455,12 +467,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private void initializer(Context context) {
         //objects init
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        pinnedLocation = new LatLng(51.230663, 4.407146);
+        pinnedLocation = new LatLng(51.2363848, 4.4121432);
 
-        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
-        Inky = new Ghost(new LatLng(51.219429, 4.395858));
-        Pinky = new Ghost(new LatLng(51.206207, 4.387096));
-        Clyde = new Ghost(new LatLng(51.212186, 4.408376));
+        Blinky = new Ghost(new LatLng(51.228925, 4.417244), this);
+        Inky = new Ghost(new LatLng(51.219429, 4.395858), this);
+        Pinky = new Ghost(new LatLng(51.206207, 4.387096), this);
+        Clyde = new Ghost(new LatLng(51.212186, 4.408376), this);
         Ghosts = new ArrayList<>();
         Ghosts.add(Blinky);
         Ghosts.add(Inky);
@@ -476,9 +488,11 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         gunmenu = new Gunmenu(this);
         dragablePlayer = new Skins();
         playerpos = new Skins();
+        playerpos.setActivity(this);
+        dragablePlayer.setActivity(this);
         collisionDetection = new CollisionDetection();
         bearingCalc = new BearingCalc();
-        collisionHandler = new CollisionHandler(GameActivity.this);
+        collisionHandler = new CollisionHandler(GameActivity.this, this);
         circles = new ArrayList<>();
         //findview
         bottomSlideMenu = new BottomSlideMenu(this);
@@ -514,6 +528,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         progressDialog = new ProgressDialog(GameActivity.this);
         fab = findViewById(R.id.fab);
         fab.setAlpha(0.5f);
+        collisionTimerHandler =  new Handler();
     }
 
     private void startDraw(){
@@ -522,7 +537,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         //draw dots on map
         for (int i = 0; i < correctedDots.size(); i++) {correctedDots.get(i).Draw(mMap, getApplicationContext());}
         //draw player
-        dragablePlayer.drawPlayer(mMap, getApplicationContext(),150,150);
+        dragablePlayer.drawPlayer(mMap, getApplicationContext(),120,120);
         playerpos.drawPlayer(mMap, getApplicationContext(),100,100);
         //draw assignments
         //Draw Ghosts
@@ -573,9 +588,9 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-    private boolean openAssignmentStartDialog(){
+    public boolean openAssignmentStartDialog(){
         for (Ghost ghost:Ghosts) {
-            ghost.setSpeed((int)(speed/3.6));
+            ghost.setSpeed((float)(speed/3.6));
         }
         final Dialog dialog1 = new Dialog(GameActivity.this);
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -614,7 +629,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         txt_distance.setText(distance);
         txt_bearing.setText(bearing);
         txt_speed.setText(addKm(speed));
-        //dialog1.setCancelable(false);
+        dialog1.setCancelable(false);
 
         dialog1.show();
         return startDialogEnded;
@@ -624,7 +639,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         final Dialog dialog = new Dialog(GameActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_counter);
-       // dialog.setCancelable(false);
+        dialog.setCancelable(false);
         final TextView txt_counter = dialog.findViewById(R.id.txt_counter);
         new CountDownTimer(6000, 1000) {
 
@@ -639,9 +654,23 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void run() {
                             Log.d("Steps", "Getting steps...");
-                            for (Ghost ghost:Ghosts) {
-                                ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
-                            }
+                            Handler locupdate = new Handler();
+                            locupdate.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (final Ghost ghost:Ghosts) {
+                                        Handler subhandler = new Handler();
+                                        subhandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ghost.stopGhost();
+                                                ghost.getSteps(currentLocation);
+                                            }
+                                        }, 500);
+                                    }
+                                }
+                            });
+                            locupdate.postDelayed(this, 180000);
                         }
                     });
                     Log.d("Movement", "Ik ben non-blocking");
@@ -659,7 +688,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         return speedStr + "km/h";
     }
     private int SetSpeed(int position){
-        int speed = 5;
+        int speed = 2;
         switch(position) {
             case 0:
                 speed = 2;
@@ -681,4 +710,71 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         return speed;
     }
 
+    public void resetGhost(int id){
+        final Ghost victim = Ghosts.get(id);
+        victim.handler.removeCallbacks(victim.r);
+        victim.markerAnimation.handler.removeCallbacks(victim.markerAnimation.r);
+        victim.marker.remove();
+        Handler respawnHandler = new Handler();
+        respawnHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("Hello There", "General Kenobi!");
+                victim.Draw(mMap, getApplicationContext());
+                victim.getSteps(currentLocation);
+            }
+        }, 5000);
+    }
+
+    public void resetAllGhosts() {
+        for (final Ghost ghost:Ghosts) {
+            ghost.handler.removeCallbacks(ghost.r);
+            ghost.markerAnimation.handler.removeCallbacks(ghost.markerAnimation.r);
+            ghost.marker.remove();
+            Handler respawnHandler = new Handler();
+            respawnHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Hello There", "General Kenobi!");
+                    ghost.Draw(mMap, getApplicationContext());
+                    ghost.getSteps(currentLocation);
+                }
+            }, 5000);
+        }
+    }
+    private Runnable ghostTimer = new Runnable() {
+        @Override
+        public void run() {
+            ghostCollideTimer = false;
+        }
+    };
+    public CollisionHandler getCollisionHandler() {
+        return collisionHandler;
+    }
+    public Assignment getCurrentAssigment() {
+        return currentAssigment;
+    }
+    public Float getRotation() {
+        return rotation;
+    }
+
+    public LatLng getCurrentLocation() {
+        return currentLocation;
+    }
+    public LatLng getCurrentPos() {
+        return currentPos;
+    }
+
+    public LatLng getPinnedLocation() {
+        return pinnedLocation;
+    }
+    public Location getmCurrentLocation() {
+        return mCurrentLocation;
+    }
+    public void setRotation(Float rotation) {
+        this.rotation = rotation;
+    }
+    public GoogleMap getmMap() {
+        return mMap;
+    }
 }
