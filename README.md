@@ -30,16 +30,16 @@ Je zal als User een account moeten maken waarmee je in het spel kan inloggen. na
 ## Installatie Backend
 
 Bij het openen van het ASPCoreApi project moet eerst een deploy worden uitgevoerd op Azure. Ga hiervoor naar de solution explorer
-en klik met de rechtermuisknop op het ASPCoreApi project en selecteer Publish. je zal eerst een nieuw profiel moeten aanmaken. Druk dus eerst op New Profile.
+en klik met de rechtermuisknop op het ASPCoreApi project en selecteer Publish. Je zal eerst een nieuw profiel moeten aanmaken. Druk dus eerst op New Profile.
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc1.PNG?raw%20=%20true)
 
-Kies een gepaste Api naam, selecteer de juiste subscription. maak eventueel een nieuwe recoursegroup aan indien dit nog niet gebeurd is.
+Kies een gepaste Api naam, selecteer de juiste subscription. Maak eventueel een nieuwe recoursegroup aan indien dit nog niet gebeurd is.
 Zelfde geldt voor een hostingplan. Voor studenten kies je best de F1 subscriptie.
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc2.PNG?raw%20=%20true)
 
-Vervolgens zal de Database moeten worden aangemaakt. klik op create database, zorg voor een gepaste naam. indien je nog geen server hebt om de database op te hosten klik je op new bij het server vak. je kiest ook hiervoor een gepaste naam en een admin username en password.
+Vervolgens zal de Database moeten worden aangemaakt. Klik op create database, zorg voor een gepaste naam. Indien je nog geen server hebt om de database op te hosten klik je op new bij het server vak. Je kiest ook hiervoor een gepaste naam en een admin username en password.
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc3.PNG?raw%20=%20true)
 
@@ -50,7 +50,7 @@ Vervolgens zal de Database moeten worden aangemaakt. klik op create database, zo
 Als dit gebeurd is kan je op create klikken.
 ### azure password ophalen
 
-Om het server password te krijgen ga je naar je azure dashboard en ga je naar de resources. Selecteer de App service en druk op publicatie profiel ophalen. open dit bestand met een text editor en haal het password eruit. Je kan hier ook de servernaam en alle andere benodigde info uit halen.
+Om het server password te krijgen ga je naar je azure dashboard en ga je naar de resources. Selecteer de App service en druk op publicatie profiel ophalen. Open dit bestand met een text editor en haal het password eruit. Je kan hier ook de servernaam en alle andere benodigde info uit halen.
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc6.PNG?raw%20=%20true)
 
@@ -63,7 +63,7 @@ In de publish page klik je nu op configure en zal je de nodige gegevens moeten i
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc8.PNG?raw%20=%20true)
 
 Hierna klik je op Settings en duid klik je op databases dropdown. Je vinkt hier "use this connectionstring at runtime". 
-Je klikt nu op Entity framework migrations, en duid "apply this migration on publish" aan. vervolgens klik je op saven.
+Je klikt nu op Entity framework migrations, en duid "apply this migration on publish" aan. Vervolgens klik je op saven.
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc9.PNG?raw%20=%20true)
 
@@ -118,6 +118,7 @@ De opties zijn:
 4. 5km/u
 5. 6km/u  
 ####
+
 Op dit scherm ziet u ook waar u naartoe moet gaan, hoeveel afstand tussen u en het monument en ook de windrichting.  
 Na een aftelscherm is het spel speelbaar en is het de bedoeling dat de speler zich richting het monument beweegt.  
 Bovenaan ziet de speler zijn behaalde punten voor deze ronde en zijn resterende levenspunten.  
