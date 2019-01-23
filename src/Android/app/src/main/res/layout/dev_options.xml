@@ -60,5 +60,4 @@
         android:textSize="25dp"
         android:text="@string/leeg" />
 
-
 </LinearLayout>

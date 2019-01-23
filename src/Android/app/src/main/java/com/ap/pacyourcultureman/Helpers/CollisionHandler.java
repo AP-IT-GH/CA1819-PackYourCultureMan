@@ -119,7 +119,7 @@ public class CollisionHandler {
 
     public void visitedSightsSetBoolean() {
         for (int i = 0; i <  ApiHelper.visitedSights.size(); i++) {
-            if(GameActivity.currentAssigment.getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
+            if(gameActivity.getCurrentAssigment().getId() == ApiHelper.visitedSights.get(i).getBuildingId()) {
                 ApiHelper.visitedSights.get(i).setChecked(true);
             }}
     }
