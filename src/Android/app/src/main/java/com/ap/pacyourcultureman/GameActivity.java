@@ -648,9 +648,15 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                             locupdate.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    for (Ghost ghost:Ghosts) {
-                                        ghost.stopGhost();
-                                        ghost.getSteps(currentLocation);
+                                    for (final Ghost ghost:Ghosts) {
+                                        Handler subhandler = new Handler();
+                                        subhandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ghost.stopGhost();
+                                                ghost.getSteps(currentLocation);
+                                            }
+                                        }, 500);
                                     }
                                 }
                             });
@@ -675,7 +681,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         int speed = 2;
         switch(position) {
             case 0:
-                speed = 20;
+                speed = 10;
                 break;
             case 1:
                 speed = 3;
