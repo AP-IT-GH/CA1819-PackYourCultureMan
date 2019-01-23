@@ -82,6 +82,10 @@ Selecteer het post Sights/postarray en kopieer de Sights JSON die je vindt in de
 
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc11.PNG?raw%20=%20true)
 
+![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc13.PNG?raw%20=%20true)
+
+![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc14.PNG?raw%20=%20true)
+
 ![asp](https://github.com/AP-Elektronica-ICT/CA1819-PackYourCultureMan/blob/master/img/sc12.PNG?raw%20=%20true)
 
 ### Streets inladen
