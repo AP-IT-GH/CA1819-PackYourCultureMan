@@ -82,6 +82,7 @@ public class Ghost {
             @Override
             public void onSuccess() {
                 steps.clear();
+                iter = 0;
                 steps = jsonDeserializer.getSteps(apiHelper.getJsonObject());
                 newDirections = true;
                 //marker.setPosition(steps.get(0).start);

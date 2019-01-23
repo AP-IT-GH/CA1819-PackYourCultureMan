@@ -689,77 +689,35 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void resetGhost(int id){
-        switch (id){
-            case 0:
-                Blinky.stopGhost();
-                Blinky.marker.remove();
-                Blinky = new Ghost(new LatLng(51.229796, 4.418413));
-                break;
-            case 1:
-                Inky.marker.remove();
-                Inky.stopGhost();
-                Inky = new Ghost(new LatLng(51.219429, 4.395858));
-                break;
-            case 2:
-                Pinky.stopGhost();
-                Pinky.marker.remove();
-                Pinky = new Ghost(new LatLng(51.206207, 4.387096));
-                break;
-            case 3:
-                Clyde.stopGhost();
-                Clyde.marker.remove();
-                Clyde = new Ghost(new LatLng(51.212186, 4.408376));
-                break;
-        }
+        final Ghost victim = Ghosts.get(id);
+        victim.handler.removeCallbacks(victim.r);
+        victim.markerAnimation.handler.removeCallbacks(victim.markerAnimation.r);
+        victim.marker.remove();
+        Handler respawnHandler = new Handler();
+        respawnHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("Hello There", "General Kenobi!");
+                victim.Draw(GameActivity.mMap, getApplicationContext());
+                victim.getSteps(ApiHelper.assignments.get(1).getLatLng());
+            }
+        }, 5000);
     }
-    public void killGhosts() {
-      /*  Blinky.stopGhost();
-        Inky.stopGhost();
-        Pinky.stopGhost();
-        Clyde.stopGhost();
-        Blinky.markerAnimation.isFrozen = true;
-        Blinky.isFrozen = true;
-        Blinky.stopGhost();
-        Blinky.marker.remove();
-        Inky.marker.remove();
-        Clyde.marker.remove();
-        Clyde.marker.remove(); */
-       for(Ghost ghost : Ghosts) {
-           ghost.markerAnimation.isFrozen = true;
-           ghost.isFrozen = true;
-           ghost.stopGhost();
-           ghost.marker.remove();
-       }
-        Blinky = null;
-        Inky = null;
-        Pinky = null;
-        Clyde = null;
-        Ghosts.clear();
-    }
+
     public void resetAllGhosts() {
-        Blinky = new Ghost(new LatLng(51.229796, 4.418413));
-        Blinky.id = 0;
-        //Blinky.marker.setPosition(new LatLng(51.229796, 4.418413));
-        Blinky.Draw(mMap, getApplicationContext());
-        Blinky.getSteps(currentPos);
-        Inky = new Ghost(new LatLng(51.219429, 4.395858));
-        Inky.id = 1;
-        //Inky.marker.setPosition(new LatLng(51.219429, 4.395858));
-        Inky.Draw(mMap, getApplicationContext());
-        Inky.getSteps(currentPos);
-        Pinky = new Ghost(new LatLng(51.206207, 4.387096));
-        Pinky.id = 2;
-        Pinky.Draw(mMap, getApplicationContext());
-      //  Pinky.marker.setPosition(new LatLng(51.206207, 4.387096));
-        Pinky.getSteps(currentPos);
-        Clyde = new Ghost(new LatLng(51.212186, 4.408376));
-        Clyde.id = 3;
-        Clyde.Draw(mMap, getApplicationContext());
-        //Clyde.marker.setPosition(new LatLng(51.212186, 4.408376));
-        Clyde.getSteps(currentPos);
-        Ghosts.add(Blinky);
-        Ghosts.add(Inky);
-        Ghosts.add(Pinky);
-        Ghosts.add(Clyde);
+        for (final Ghost ghost:Ghosts) {
+            ghost.handler.removeCallbacks(ghost.r);
+            ghost.markerAnimation.handler.removeCallbacks(ghost.markerAnimation.r);
+            ghost.marker.remove();
+            Handler respawnHandler = new Handler();
+            respawnHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Hello There", "General Kenobi!");
+                    ghost.Draw(GameActivity.mMap, getApplicationContext());
+                    ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                }
+            }, 5000);
+        }
     }
 }

@@ -47,7 +47,6 @@ public class CollisionHandler {
                 public void onSuccess() {
                     Toast.makeText(context, "No lifepoints left, resetting to a new game", Toast.LENGTH_SHORT).show();
                     ApiHelper.player.getPlayerStats().setCurrentScore(0);
-                    gameActivity.killGhosts();
                     gameActivity.resetAllGhosts();
                 }
             });
