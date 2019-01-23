@@ -94,7 +94,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static CollisionHandler collisionHandler;
     private Gunmenu gunmenu;
     private Handler handler;
-    private GoogleMap mMap;
+    public static GoogleMap mMap;
     private SensorManager mSensorManager;
     private Skins dragablePlayer, playerpos;
     public static LatLng currentLocation;
@@ -574,7 +574,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     }
     public boolean openAssignmentStartDialog(){
         for (Ghost ghost:Ghosts) {
-            ghost.setSpeed((int)(speed/3.6));
+            ghost.setSpeed((float)(speed/3.6));
         }
         final Dialog dialog1 = new Dialog(GameActivity.this);
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);

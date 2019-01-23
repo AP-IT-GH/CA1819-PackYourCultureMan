@@ -60,6 +60,16 @@ public class GunHandler {
             ghost.handler.removeCallbacks(ghost.r);
             ghost.markerAnimation.handler.removeCallbacks(ghost.markerAnimation.r);
             marker.remove();
+            Log.d("Movement", "REKT");
+            Handler respawnHandler = new Handler();
+            respawnHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Hello There", "General Kenobi!");
+                    ghost.Draw(GameActivity.mMap, activity.getApplicationContext());
+                    ghost.getSteps(ApiHelper.assignments.get(1).getLatLng());
+                }
+            }, 5000);
         }
         else {
             Toast.makeText(activity.getApplicationContext(), "No ammo", Toast.LENGTH_SHORT).show();
