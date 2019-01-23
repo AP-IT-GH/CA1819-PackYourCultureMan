@@ -100,7 +100,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     public static LatLng currentLocation;
     private boolean startDialogEnded;
     public static LatLng currentPos;
-    public static Boolean ghostCollide = false;
+    public Boolean ghostCollide = false;
+    public Boolean ghostCollideTimer = false;
     public static LatLng pinnedLocation;
     public static Assignment currentAssigment;
     public static float rotation;
@@ -110,6 +111,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
     private FloatingActionButton fab;
     private Boolean lockCam = false;
     private boolean initAssignment = true;
+    Handler collisionTimerHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -346,10 +348,12 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                         correctedDots.remove(i);
                     }
                 }
-                if(ghostCollide) {
+                if(ghostCollide && !ghostCollideTimer) {
                     currentAssigment = getRandomAssignment();
                     ghostCollide = false;
-                //    collisionHandler.ghostCollision();
+                    ghostCollideTimer = true;
+                    collisionTimerHandler.postDelayed(ghostTimer, 11000);
+                    collisionHandler.ghostCollision(0);
                     if(player.getPlayerGameStats().getLifePoints() == 0) {
                                         getRandomAssignment();
                                         openAssignmentStartDialog();
@@ -373,6 +377,8 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.moveCamera(center);
                     mMap.animateCamera(zoom);
                 }
+                Log.d("ghostcollision", ghostCollide.toString());
+                Log.d("ghostTimer", ghostCollideTimer.toString());
             }
         }
     };
@@ -455,10 +461,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         pinnedLocation = new LatLng(51.230663, 4.407146);
 
-        Blinky = new Ghost(new LatLng(51.228925, 4.417244));
-        Inky = new Ghost(new LatLng(51.219429, 4.395858));
-        Pinky = new Ghost(new LatLng(51.206207, 4.387096));
-        Clyde = new Ghost(new LatLng(51.212186, 4.408376));
+        Blinky = new Ghost(new LatLng(51.228925, 4.417244), this);
+        Inky = new Ghost(new LatLng(51.219429, 4.395858), this);
+        Pinky = new Ghost(new LatLng(51.206207, 4.387096), this);
+        Clyde = new Ghost(new LatLng(51.212186, 4.408376), this);
         Ghosts = new ArrayList<>();
         Ghosts.add(Blinky);
         Ghosts.add(Inky);
@@ -512,7 +518,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
         progressDialog = new ProgressDialog(GameActivity.this);
         fab = findViewById(R.id.fab);
         fab.setAlpha(0.5f);
-
+        collisionTimerHandler =  new Handler();
     }
 
     private void startDraw(){
@@ -535,7 +541,7 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Dot item : correctedDots ) {
                     item.setMarkerVisible(item.getMarker(),false);
                 }
-                if (mMap.getCameraPosition().zoom <= 15.9){
+                if (mMap.getCameraPosition().zoom <= 16.9){
                     for (Dot item : correctedDots ) {
                         item.setMarkerVisible(item.getMarker(),false);
                     }
@@ -720,4 +726,10 @@ public class GameActivity extends FragmentActivity implements OnMapReadyCallback
             }, 5000);
         }
     }
+    private Runnable ghostTimer = new Runnable() {
+        @Override
+        public void run() {
+            ghostCollideTimer = false;
+        }
+    };
 }

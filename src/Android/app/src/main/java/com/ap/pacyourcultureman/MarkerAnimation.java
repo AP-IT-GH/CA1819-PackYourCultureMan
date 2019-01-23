@@ -17,7 +17,10 @@ public class MarkerAnimation {
     public Handler handler = new Handler();
     public Runnable r;
     public Boolean isFrozen = false;
-    public MarkerAnimation() {}
+    GameActivity gameActivity;
+    public MarkerAnimation(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
+    }
     public void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolator latLngInterpolator, long time, final int id) {
         final LatLng startPosition = marker.getPosition();
         final long start = SystemClock.uptimeMillis();
@@ -39,13 +42,13 @@ public class MarkerAnimation {
                         marker.setPosition(latLngInterpolator.interpolate(v, startPosition, finalPosition));
                         CollisionDetection collisionDetection = new CollisionDetection();
                         CollisionHandler.ghostLatLng = marker.getPosition();
-                        if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
-                            GameActivity.ghostCollide = true;
+                        if(collisionDetection.collisionDetect(GameActivity.currentPos, marker.getPosition(), 15) && !gameActivity.ghostCollide) {
+                            gameActivity.ghostCollide = true;
                             Log.d("Ghost hit", "Ghost hit");
                             GameActivity.collisionHandler.ghostCollision(id);
                         }
-                        if(collisionDetection.collisionDetect(GameActivity.currentLocation, marker.getPosition(), 15) && GameActivity.ghostCollide == false) {
-                            GameActivity.ghostCollide = true;
+                        if(collisionDetection.collisionDetect(GameActivity.currentLocation, marker.getPosition(), 15) && !gameActivity.ghostCollide) {
+                            gameActivity.ghostCollide = true;
                             GameActivity.collisionHandler.ghostCollision(id);
                             Log.d("Ghost hit", "Ghost hit");
                         }

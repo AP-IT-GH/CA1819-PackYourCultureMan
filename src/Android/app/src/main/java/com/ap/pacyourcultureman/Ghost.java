@@ -36,15 +36,17 @@ public class Ghost {
     public Handler handler = new Handler();
     ApiHelper apiHelper;
     private float speed = 40;
-    public MarkerAnimation markerAnimation = new MarkerAnimation();
+    public MarkerAnimation markerAnimation;
     Boolean newDirections = false;
     public Runnable r;
     public Boolean isFrozen = false;
     public Boolean isDead = false;
-
-    public Ghost(LatLng location) {
+    GameActivity gameActivity;
+    public Ghost(LatLng location, GameActivity gameActivity) {
         apiHelper = new ApiHelper();
         initLoc = location;
+        this.gameActivity = gameActivity;
+        this.markerAnimation = new MarkerAnimation(this.gameActivity);
     }
 
     public void Draw(GoogleMap mMap, Context context) {
@@ -74,7 +76,7 @@ public class Ghost {
 
     public void getSteps(final LatLng destination) {
         steps = new ArrayList<>();
-        markerAnimation = new MarkerAnimation();
+        markerAnimation = new MarkerAnimation(gameActivity);
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=" + marker.getPosition().latitude + "," + marker.getPosition().longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&mode=walking&key=" + BuildConfig.GoogleSecAPIKEY;
         Log.d("Steps", baseUrl);
         final JSONDeserializer jsonDeserializer = new JSONDeserializer();

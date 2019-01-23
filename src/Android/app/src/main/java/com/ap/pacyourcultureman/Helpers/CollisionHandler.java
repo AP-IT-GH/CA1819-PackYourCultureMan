@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.logging.LogRecord;
 
 public class CollisionHandler {
     Context context;
@@ -27,13 +29,16 @@ public class CollisionHandler {
     public static LatLng ghostLatLng;
     CollisionDetection collisionDetection = new CollisionDetection();
     GameActivity gameActivity;
+    Handler mHandler = new Handler();
     public CollisionHandler(Context context, GameActivity gameActivity) {
         this.context = context;
         apiHelper = new ApiHelper();
         this.gameActivity = gameActivity;
     }
     public void ghostCollision(int id) {
-        if(player.getPlayerGameStats().getLifePoints() == 0) {
+
+        if(player.getPlayerGameStats().getLifePoints() == 0 ) {
+     //       gameActivity.ghostCollideTimer = true;
             JSONObject jsonObject = new JSONObject();
             JSONObject jsonParam = new JSONObject();
             try {
@@ -52,6 +57,7 @@ public class CollisionHandler {
             });
         }
         else {
+          //  gameActivity.ghostCollideTimer = true;
             int newScore = Integer.valueOf(ApiHelper.player.getPlayerStats().getCurrentScore() / 2);
             ApiHelper.player.getPlayerStats().setCurrentScore(newScore);
             Log.d("Score", Integer.toString(newScore));
@@ -140,7 +146,4 @@ public class CollisionHandler {
         });
     }
 
-    public void gunCollision(Ghost ghost) {
-
-    }
 }
