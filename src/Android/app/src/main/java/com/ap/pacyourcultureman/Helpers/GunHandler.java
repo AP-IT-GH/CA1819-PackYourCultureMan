@@ -110,7 +110,7 @@ public class GunHandler {
     }
     private void pushBackHandler() {
         if(ApiHelper.player.getPlayerGameStats().getPushBackGun() > 0) {
-            //ApiHelper.player.getPlayerGameStats().setPushBackGun(ApiHelper.player.getPlayerGameStats().getPushBackGun() - 1);
+            ApiHelper.player.getPlayerGameStats().setPushBackGun(ApiHelper.player.getPlayerGameStats().getPushBackGun() - 1);
             Log.d("Ghost", "hit with pushback");
             apiHelper.put("https://aspcoreapipycm.azurewebsites.net/Users/updategamestats/" + Integer.toString(ApiHelper.player.getId()), putGameStats(), new VolleyCallBack() {
                 @Override
